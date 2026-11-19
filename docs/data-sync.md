@@ -31,6 +31,9 @@ python publish/publish.py \
   --target ec2-user@shotokan:/srv/shotokan/data \
   [--private]        # default: full names; --anonymize: aliases for opponents
   [--dry-run]        # build and validate only
+
+# local target, no upload (also how the Docker image runs it):
+python publish/publish.py --source sf6.db --out ./data
 ```
 Steps:
 1. Copy the source tables listed in [data-model.md](data-model.md), dropping private columns.

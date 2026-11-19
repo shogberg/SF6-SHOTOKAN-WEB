@@ -13,7 +13,8 @@
 | API | **Python 3.12 + FastAPI**, served by uvicorn behind nginx | Same language as the SF6-SHOTOKAN tooling, so spectra, profile and MR-band code can be shared rather than rewritten. Typed responses and auto-generated API docs. |
 | Data access | **SQLAlchemy Core** (no ORM) with plain SQL per module | Readable queries; swapping SQLite for MariaDB later only touches the engine URL and a few dialect-specific queries. |
 | Frontend | **Svelte (SvelteKit, static adapter) + Vite**, charts with d3 | Small output, one file per component, one folder per route. Built to static files, so the server needs no Node at runtime. |
-| Web server | **nginx** | Serves the static build, proxies `/api` to uvicorn, handles TLS and caching. |
+| Web server | **nginx** (on EC2) | Serves the static build, proxies `/api` to uvicorn, handles TLS and caching. In the Docker image the API serves the static build itself, so a local run needs no nginx. |
+| Packaging | **Docker image** on GHCR | One artifact for local runs and, optionally, the server. See [docker.md](docker.md). |
 
 ### Why SQLite rather than MariaDB
 - **One writer, many readers.** All data is produced on the local PC. The site never writes, so a database server's concurrency features aren't needed.
@@ -80,6 +81,10 @@ SF6-SHOTOKAN-WEB/
 │   ├── publish.py              build snapshot from sf6.db, validate, upload
 │   ├── derive/                 one module per derived table
 │   └── schema.sql              snapshot schema (versioned)
+├── docker/
+│   ├── Dockerfile              multi-stage: build web, then Python runtime serving API + static
+│   └── compose.yml             local run + on-demand publish
+├── .github/workflows/docker.yml  build, test and push the image on version tags
 └── deploy/
     ├── nginx.conf.example
     ├── shotokan-api.service    systemd unit

@@ -16,7 +16,8 @@
 - [ ] Frontend: home/search, profile, player sets, set detail, head to head; shared components (spectrum bar, archetype badge, set card, sample-size badge).
 - [ ] Deploy to `shotokan.hogberg.dev`: EC2 layout, systemd, nginx with a shared login, TLS, `swap_snapshot.sh`.
 - [ ] First real publish with the existing 25 sets.
-- **Milestone:** look up any player and set without building a dashboard.
+- [ ] Docker: `docker/Dockerfile` (multi-stage), `compose.yml`, `publish --out` local mode, synthetic demo snapshot, GitHub Actions build/test/push to GHCR on tags.
+- **Milestone:** look up any player and set without building a dashboard, on the server and via `docker run` locally.
 
 ## Phase 3: General analysis
 - [ ] Derive modules: `mr_band_stats`, `trait_success`, `archetype_matchups`, MR weighting and the Japan adjustment.

@@ -2,6 +2,8 @@
 
 Uses what's on the instance: nginx, Python, Node (build only). MariaDB isn't needed for the SQLite plan.
 
+Two supported ways to run the API: **systemd + venv** (below), or **the Docker image** behind the same nginx (see [docker.md](docker.md#running-the-container-on-ec2-option)). Everything about the data folder, snapshot swap, TLS and the shared login is the same either way.
+
 ## Layout on the server
 ```
 /srv/shotokan/

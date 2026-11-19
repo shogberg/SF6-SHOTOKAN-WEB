@@ -45,6 +45,7 @@ All games of one character pairing (e.g. Cammy vs Blanka) across every player. P
 - **Datastore: a read-only SQLite snapshot.** The local tools already write SQLite, the site only reads, and there's one writer (your PC). Publishing means building a snapshot file and swapping it in atomically: no SQL dumps to convert and no database server to run or secure. MariaDB stays an option if the site ever needs to accept writes (accounts, comments); the API's data layer is written so that switch is contained. See [docs/architecture.md](docs/architecture.md).
 - **Backend:** Python (FastAPI), so it can reuse the spectra and profile logic from SF6-SHOTOKAN.
 - **Frontend:** Svelte + Vite, built to static files that nginx serves. Node is only needed at build time.
+- **Docker:** the whole site ships as one container image (`ghcr.io/shogberg/sf6-shotokan-web`), so anyone can run it locally against their own data, or a synthetic demo. The publish step runs from the same image. See [docs/docker.md](docs/docker.md).
 - **Modular:** each section is its own API router, query module and frontend route folder. Adding a section means adding files, not editing a monolith.
 
 ## Docs
@@ -55,7 +56,8 @@ All games of one character pairing (e.g. Cammy vs Blanka) across every player. P
 | [Data sync](docs/data-sync.md) | Getting data from the local PC to the server |
 | [Analysis methods](docs/analysis-methods.md) | MR bands, the Japan MR adjustment, weighting, archetype deviation, confidence and sample sizes |
 | [Pages](docs/pages/) | One spec per view |
-| [Deployment](docs/deployment.md) | EC2, nginx, systemd, TLS, backups |
+| [Docker](docs/docker.md) | Container image, running locally, demo data, releases |
+| [Deployment](docs/deployment.md) | EC2, nginx, systemd or container, TLS, backups |
 | [Project plan](docs/project-plan.md) | Phases, milestones and open questions |
 
 ## Related repos
