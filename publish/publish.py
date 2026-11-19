@@ -40,9 +40,41 @@ def copy_source(src, dst, cfg):
             rows = [r for r in rows if r[0] in KEEP_SETTINGS]
         dst.executemany(f"insert into {t} values ({','.join('?' * len(cols_out))})", rows)
     s.close()
+    backfill_spectra(dst)
     merge_players(dst, cfg.get("merge") or {})
     if cfg.get("anonymize"):
         anonymize(dst)
+
+
+def backfill_spectra(con):
+    """Some reviews (Full / Tournament dashboards) keep a player's spectra only inside review_docs 'archetypes'.
+    Add them to the spectra table where it has nothing for that set and player. Runs before merge_players,
+    so names match the players as they were named in that review."""
+    import json as _json
+    ids = {r[1]: r[0] for r in con.execute("select player_id, name from players")}
+    ids.update({r[1]: r[0] for r in con.execute("select player_id, name from player_names") if r[1] not in ids})
+    have = {(r[0], r[1]) for r in con.execute("select distinct set_key, player_id from spectra")}
+    added = 0
+    for key, rows in con.execute("select set_key, rows from review_docs where dataset='archetypes'").fetchall():
+        try:
+            items = _json.loads(rows) or []
+        except ValueError:
+            continue
+        for it in items:
+            pid = ids.get(it.get("player"))
+            sp = it.get("spectra")
+            if isinstance(sp, str):
+                try: sp = _json.loads(sp)
+                except ValueError: sp = None
+            if pid is None or not sp or (key, pid) in have:
+                continue
+            for x in sp:
+                if x.get("axis"):
+                    con.execute("insert into spectra (set_key, player_id, axis, score, label, evidence) values (?,?,?,?,?,?)",
+                                (key, pid, x["axis"], x.get("score"), x.get("label"), x.get("evidence")))
+            have.add((key, pid)); added += 1
+    if added:
+        print(f"  spectra filled from review write-ups for {added} player-sets")
 
 
 def merge_players(con, merge):

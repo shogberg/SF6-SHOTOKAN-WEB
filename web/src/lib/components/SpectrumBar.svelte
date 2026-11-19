@@ -10,7 +10,7 @@
     <span class="dots">{#each [1, 2, 3, 4, 5] as i}<i class:on={s.score === i} class:range={s.lo != null && i >= (s.lo ?? 0) && i <= (s.hi ?? 0)}></i>{/each}</span>
     <span>{s.right}</span>
   </div>
-  <div class="ev muted small">{s.score ? `${s.label}${s.n && s.n > 1 ? ` (range ${s.lo}-${s.hi} over ${s.n} sets)` : ''}: ` : 'Not enough data: '}{s.evidence}</div>
+  <div class="ev muted small">{s.score ? `${s.label}${s.n && s.n > 1 ? ` (range ${s.lo}-${s.hi} over ${s.n} sets). Latest set: ` : ': '}` : 'Not enough data: '}{s.evidence}</div>
 </div>
 
 <style>

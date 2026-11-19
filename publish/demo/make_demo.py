@@ -88,6 +88,7 @@ def main(out, seed=7):
                             (f"{rid}-{h}", key, rid, R.randint(1, 3), R.randint(5, 99), att, vic, R.randint(300, 3500), R.choice(["2MK", "5HP", "Throw", "j.HK", "5MP"]),
                              R.randint(1, 6), R.choice(["clean hit", "counter hit", "punish counter", "throw"]), int(R.random() < 0.1),
                              R.choice(["neutral", "pressure", "oki", "punish"]), R.choice(LENSES)))
+        doc_arch = []
         for pid, p, opp in ((a, pa, b), (b, pb, a)):
             games = len(wins)
             for m in METRICS:
@@ -98,12 +99,18 @@ def main(out, seed=7):
             arch = p["arch"] if R.random() < 0.75 else R.choice(ARCH)
             con.execute("insert into reads values (?,?,?,?,?,?,?,?,?,?,?)", (key, pid, p["char"], arch, "demo lean", R.choice(["Low", "Medium", "High"]),
                         "synthetic evidence", "How to beat this: block their early presses and frame-trap them; anti-air their jumps.", None, None, "demo"))
-            for ax in AXES:
-                s = max(1, min(5, p["spec"][ax] + R.choice([-1, 0, 0, 1])))
-                con.execute("insert into spectra values (?,?,?,?,?,?)", (key, pid, ax, s, f"{LABEL[s]} (demo)", "synthetic"))
+            sp = [dict(axis=ax, score=max(1, min(5, p["spec"][ax] + R.choice([-1, 0, 0, 1]))), evidence="synthetic") for ax in AXES]
+            for x in sp: x["label"] = f"{LABEL[x['score']]} (demo)"
+            if k == 0:   # like some real Full reviews: spectra only inside the review write-up, not in the spectra table
+                doc_arch.append(dict(player=NAMES[pid - 1], spectra=sp))
+            else:
+                for x in sp:
+                    con.execute("insert into spectra values (?,?,?,?,?,?)", (key, pid, x["axis"], x["score"], x["label"], x["evidence"]))
             for kind, area, habit in R.sample(HABITS, 3):
                 hrow += 1
                 con.execute("insert into habits values (?,?,?,?,?,?,?,?,?,?,?)", (hrow, key, pid, kind, area, habit, "G1 R1 @80", R.randint(1, 6), "demo fix", "Medium", "demo"))
+        if doc_arch:
+            con.execute("insert into review_docs values (?,?,?,?)", (key, "archetypes", json.dumps(doc_arch), date))
         if review == "Full":
             pred_w = a if R.random() < 0.6 else b
             verdict = "Right" if pred_w == winner else "Wrong"

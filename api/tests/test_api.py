@@ -40,3 +40,13 @@ def test_placeholders_and_404(client):
     assert client.get("/api/v1/analysis/mr-bands").status_code == 501
     assert client.get("/api/v1/analysis/observations").status_code == 200
     assert client.get("/api/v1/players/99999").status_code == 404
+
+
+def test_spectra_from_review_writeups(client):
+    # demo set 0 keeps its spectra only in review_docs 'archetypes'; publish must fill them in
+    sets = client.get("/api/v1/players/1/sets").json()["data"]
+    first = [x for x in sets if x["set_key"].startswith("D000")][0]
+    d = client.get(f"/api/v1/sets/{first['set_key']}").json()["data"]
+    assert all(len(p["spectra"]) == 8 for p in d["players"])
+    prof = client.get("/api/v1/players/1").json()["data"]
+    assert all(s["score"] for s in prof["spectra"])
