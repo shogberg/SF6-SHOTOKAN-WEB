@@ -1,0 +1,5 @@
+{
+  "merge": { "local name": "CFN name it belongs to" },
+  "observations_dir": "observations",
+  "anonymize": false
+}

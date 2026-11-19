@@ -44,7 +44,7 @@ Weights live in `snapshot_meta` so each snapshot records the weights it used. A 
 ## Archetype deviation
 Per player, across their sets:
 - **Modal archetype**: the most common read (ties broken by most recent).
-- **Deviation rate**: share of sets with a different archetype read. Only Medium or High confidence reads count; Low-confidence reads are shown but not counted.
+- **Deviation rate**: share of sets with a different archetype read. All reads count (Quick reviews are mostly Low confidence, so excluding them would leave too little); each set's read confidence is shown next to it.
 - **Deviation direction**: which archetype they move to, and in what context. Context is split by:
   - result (win / loss);
   - the opponent's archetype;

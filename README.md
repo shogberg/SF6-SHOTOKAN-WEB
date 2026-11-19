@@ -4,9 +4,36 @@
 
 A searchable site over every Street Fighter 6 set SHOTOKAN has reviewed. It replaces building a new dashboard for each review: the analysis still happens locally (see [SF6-SHOTOKAN](https://github.com/shogberg/SF6-SHOTOKAN) and [SF6-SHOTOKAN-mods](https://github.com/shogberg/SF6-SHOTOKAN-mods)), then a snapshot of the results is published here.
 
-> Status: **planning**. This repo holds the design docs only; no code yet.
+> Status: **phase 2 built**. The publish step, API, player pages, Docker image and deploy files exist; the general-analysis pages (phase 3) and character matchups (phase 4) are placeholders. See [docs/project-plan.md](docs/project-plan.md).
 >
 > Site: `shotokan.hogberg.dev` (private, shared login).
+
+## Quick start
+
+**Try it with demo data (Docker):**
+```
+docker run --rm -p 8080:8080 ghcr.io/shogberg/sf6-shotokan-web serve --demo
+```
+Open http://localhost:8080. The demo is synthetic: made-up players and sets.
+
+**Use your own data (Docker):**
+```
+docker run --rm -v "D:\SF6-Claude-Coaching\history:/src:ro" -v shotokan-data:/data ghcr.io/shogberg/sf6-shotokan-web publish --source /src/sf6.db --out /data
+docker run -d -p 8080:8080 -v shotokan-data:/data ghcr.io/shogberg/sf6-shotokan-web
+```
+
+**Without Docker (development):**
+```
+pip install -r api/requirements-dev.txt
+python publish/publish.py --source path/to/sf6.db --out ./data [--config publish.json]
+cd api && SHOTOKAN_DB=../data/current.db uvicorn app.main:app --port 8100       # API on :8100, docs at /api/docs
+cd web && npm ci && npm run dev                                                  # site on :5173, proxies /api
+python -m pytest -q api/tests                                                    # tests run on the demo data
+```
+
+**Publish to the server:** `python publish/publish.py --source sf6.db --target shotokan@shotokan.hogberg.dev:/srv/shotokan/data`. See [docs/data-sync.md](docs/data-sync.md) and [docs/deployment.md](docs/deployment.md).
+
+**Publish config** (optional, keep it outside the repo, see `publish/publish.example.json`): `merge` folds a name used in local matches into the CFN player it belongs to (e.g. a local "shog" into ".shog"); `observations_dir` points at your observation notes; `anonymize` replaces opponent names with aliases.
 
 ## What the site does
 

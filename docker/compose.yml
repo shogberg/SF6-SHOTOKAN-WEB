@@ -1,0 +1,22 @@
+# Local run:   docker compose -f docker/compose.yml up -d          -> http://localhost:8080
+# Demo data:   SHOTOKAN_ARGS=--demo docker compose -f docker/compose.yml up -d
+# Publish:     SF6_HISTORY_DIR="D:\SF6-Claude-Coaching\history" docker compose -f docker/compose.yml run --rm publish
+services:
+  web:
+    image: ghcr.io/shogberg/sf6-shotokan-web:latest
+    build: { context: .., dockerfile: docker/Dockerfile }
+    command: ["serve", "${SHOTOKAN_ARGS:-}"]
+    ports: ["8080:8080"]
+    volumes: ["shotokan-data:/data"]
+    environment:
+      SHOTOKAN_AUTH: ${SHOTOKAN_AUTH:-}        # optional "user:sha256-of-password"
+    restart: unless-stopped
+  publish:
+    image: ghcr.io/shogberg/sf6-shotokan-web:latest
+    command: ["publish", "--source", "/src/sf6.db", "--out", "/data"]
+    volumes:
+      - shotokan-data:/data
+      - ${SF6_HISTORY_DIR:-./history}:/src:ro
+    profiles: ["tools"]
+volumes:
+  shotokan-data:

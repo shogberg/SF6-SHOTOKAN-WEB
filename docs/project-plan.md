@@ -5,18 +5,20 @@
 - [ ] Confirm the open questions below.
 
 ## Phase 1: Data foundation (local, in SF6-SHOTOKAN + publish/)
+- [x] Predictions read from `review_docs` into a `predictions` table in the snapshot (no sf6.db change needed yet).
 - [ ] Add the `predictions` table and the `observations` source to sf6.db (migration in SF6-SHOTOKAN).
 - [ ] Backfill opponent MR / league where the capture has it (capture v3.3+); mark older opponents MR unknown.
-- [ ] `publish/schema.sql` v1 and `publish.py` skeleton: copy source tables, drop private columns, write `snapshot_meta`.
-- [ ] Derive modules: `player_profile`, `player_archetype_history`, `player_archetype_summary`, `set_summary`, `h2h_summary`.
-- [ ] Validation step and `--dry-run`.
+- [x] `publish/schema.sql` v1 and `publish.py` skeleton: copy source tables, drop private columns, write `snapshot_meta`.
+- [x] Derive modules: `player_set` (archetype history), `player_profile`, `player_archetype_summary`, `player_spectra_by_result`, `player_deviation`, `set_summary`, `predictions`, `observations`. Head to head is computed in the API for now.
+- [x] Validation step and `--dry-run`.
 
 ## Phase 2: Player section (MVP)
-- [ ] API: search, profile, archetypes, sets, set detail, head to head.
-- [ ] Frontend: home/search, profile, player sets, set detail, head to head; shared components (spectrum bar, archetype badge, set card, sample-size badge).
-- [ ] Deploy to `shotokan.hogberg.dev`: EC2 layout, systemd, nginx with a shared login, TLS, `swap_snapshot.sh`.
-- [ ] First real publish with the existing 25 sets.
-- [ ] Docker: `docker/Dockerfile` (multi-stage), `compose.yml`, `publish --out` local mode, synthetic demo snapshot, GitHub Actions build/test/push to GHCR on tags.
+- [x] API: search, profile, archetypes, sets, set detail, head to head.
+- [x] Frontend: home/search, profile, player sets, set detail, head to head; shared components (spectrum bar, archetype badge, set card, sample-size badge).
+- [x] Deploy files: nginx example (`shotokan.hogberg.dev`, shared login, TLS), systemd unit, `swap_snapshot.sh`.
+- [ ] Stand up the EC2 instance, DNS and certbot; first deploy.
+- [ ] First real publish with the existing 25 sets (tested locally: 25 sets, 26 players).
+- [x] Docker: `docker/Dockerfile` (multi-stage), `compose.yml`, `publish --out` local mode, synthetic demo snapshot, GitHub Actions build/test/push to GHCR on tags. *(The image build itself is first exercised by CI: Docker Hub isn't reachable from where this was written.)*
 - **Milestone:** look up any player and set without building a dashboard, on the server and via `docker run` locally.
 
 ## Phase 3: General analysis

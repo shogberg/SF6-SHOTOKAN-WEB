@@ -1,0 +1,8 @@
+.git
+**/node_modules
+web/build
+web/.svelte-kit
+publish/out
+**/__pycache__
+**/*.db
+data

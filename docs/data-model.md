@@ -51,6 +51,8 @@ Excluded from the snapshot: local file paths (`games.capture_file`), dashboard l
 - **`player_archetype_history`**: one row per player per set.
   - The archetype read, result, MR band, opponent's archetype, character.
   - Whether it's a **deviation** from their modal archetype.
+- **`player_set`**: one row per player per set (built). The base for every player view: MR / league at the time, band, weight, archetype read, opponent's read, result, lost game 1, deviation flag.
+- **`player_spectra_by_result`** and **`player_deviation`** (built): spectra means in won vs lost sets, and deviations by context.
 - **`player_archetype_summary`**: one row per player per archetype.
   - Sets, wins and losses, win rate.
   - Spectra means **in wins vs losses**.
@@ -63,7 +65,8 @@ Excluded from the snapshot: local file paths (`games.capture_file`), dashboard l
   - Archetype of each side.
 
 ### Head to head
-- **`h2h_summary`**: one row per ordered pair of players.
+- Computed by the API from `player_set`, `set_summary` and `set_stats` (cheap at this size), rather than stored. Moves to an `h2h_summary` table if it gets slow.
+- Planned **`h2h_summary`**: one row per ordered pair of players.
   - Sets and record, first and last meeting.
   - Each side's archetype in this pairing vs overall.
   - Biggest stat deltas (e.g. "jon presses after blocking 10.7× a game vs shog, 4.8× in general").

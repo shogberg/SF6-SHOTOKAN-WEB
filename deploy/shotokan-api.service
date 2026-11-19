@@ -1,0 +1,17 @@
+# /etc/systemd/system/shotokan-api.service  (systemd + venv option; see docs/deployment.md)
+[Unit]
+Description=SHOTOKAN Web API
+After=network.target
+
+[Service]
+User=shotokan-api
+WorkingDirectory=/srv/shotokan/api
+Environment=SHOTOKAN_DB=/srv/shotokan/data/current.db
+ExecStart=/srv/shotokan/api/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8100 --workers 2 --proxy-headers
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadOnlyPaths=/srv/shotokan/data
+
+[Install]
+WantedBy=multi-user.target
