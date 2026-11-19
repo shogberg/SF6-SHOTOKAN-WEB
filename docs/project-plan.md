@@ -5,7 +5,7 @@
 - [ ] Confirm the open questions below.
 
 ## Phase 1: Data foundation (local, in SF6-SHOTOKAN + publish/)
-- [ ] Add `players.region`, the `predictions` table and the `observations` source to sf6.db (migration in SF6-SHOTOKAN).
+- [ ] Add the `predictions` table and the `observations` source to sf6.db (migration in SF6-SHOTOKAN).
 - [ ] Backfill opponent MR / league where the capture has it (capture v3.3+); mark older opponents MR unknown.
 - [ ] `publish/schema.sql` v1 and `publish.py` skeleton: copy source tables, drop private columns, write `snapshot_meta`.
 - [ ] Derive modules: `player_profile`, `player_archetype_history`, `player_archetype_summary`, `set_summary`, `h2h_summary`.
@@ -14,7 +14,7 @@
 ## Phase 2: Player section (MVP)
 - [ ] API: search, profile, archetypes, sets, set detail, head to head.
 - [ ] Frontend: home/search, profile, player sets, set detail, head to head; shared components (spectrum bar, archetype badge, set card, sample-size badge).
-- [ ] Deploy: EC2 layout, systemd, nginx with basic auth, TLS, `swap_snapshot.sh`.
+- [ ] Deploy to `shotokan.hogberg.dev`: EC2 layout, systemd, nginx with a shared login, TLS, `swap_snapshot.sh`.
 - [ ] First real publish with the existing 25 sets.
 - **Milestone:** look up any player and set without building a dashboard.
 
@@ -30,15 +30,22 @@
 - [ ] Page and API (replace the placeholder).
 
 ## Phase 5: Later ideas
+- `players.region` and the Japan MR adjustment, once JP data is imported (region possibly read from replays).
 - Public anonymized snapshot.
 - Clip links (video timestamps) from set detail, if videos get hosted somewhere.
 - Rank/MR trends over time per player.
-- Moving to MariaDB if the site ever takes writes (accounts, comments).
+- **User accounts:** per-user login to track chosen players, sets or goals. Means app-side auth and somewhere to store writes (likely MariaDB alongside the read-only snapshot).
+- Moving the rest to MariaDB only if it helps then.
+
+## Decisions
+| Question | Decision (2026-11-19) |
+|---|---|
+| MR bands | Diamond and below · **below 1400** (all Master under 1400) · 1400-1600 · **1600-1800** · 1800-2000 · 2000+ |
+| Region / Japan adjustment | Deferred. No JP data imported for now; region may later be read from replays. The rule stays documented. |
+| Access | Private, one shared login (nginx basic auth). Per-user accounts later (phase 5). |
+| Domain | `shotokan.hogberg.dev` |
+| MR weights | Draft values in place; Sean to review. |
 
 ## Open questions
-1. **MR 1600-1800:** the brief lists 1200-1400, 1400-1600, 1800-2000 and 2000+. I've added a **1600-1800** band to close the gap. OK?
-2. **Below 1200:** grouped into 1200-1400 for now (Master MR rarely goes that low). Separate band instead?
-3. **Region:** the capture doesn't include it. Enter it by hand per player, or leave it unknown (no JP adjustment) unless set?
-4. **Public or private:** recommended private (basic auth) to start, since profiles describe real players' leaks.
-5. **Domain and TLS:** subdomain to use?
-6. **Weights:** the MR weights in [analysis-methods.md](analysis-methods.md) are a starting point. Adjust?
+1. **MR weights:** review the draft weights in [analysis-methods.md](analysis-methods.md).
+2. **Region from replays:** check whether the replay info carries a region or country field (capture v3.3 already lists the player object's fields under `player_fields`).

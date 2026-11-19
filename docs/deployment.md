@@ -23,10 +23,10 @@ Users: `shotokan` owns `/srv/shotokan`; the API runs as `shotokan-api`, with rea
 ```
 server {
     listen 443 ssl http2;
-    server_name shotokan.example.com;
+    server_name shotokan.hogberg.dev;
     # ssl_certificate ... (Let's Encrypt via certbot)
 
-    auth_basic "SHOTOKAN";                 # recommended while the data is private
+    auth_basic "SHOTOKAN";                 # shared login while the site is private
     auth_basic_user_file /etc/nginx/shotokan.htpasswd;
 
     root /srv/shotokan/web;
@@ -42,7 +42,8 @@ server {
 
 ## Security
 - Security group: 443 (and 80 for the certbot redirect) open to where you want; SSH from your IP only.
-- Basic auth or an IP allow-list until you decide the data is public.
+- Shared login (basic auth, one htpasswd entry you hand out). Per-user accounts come later, in the app.
+- DNS: an A record (or CNAME to the instance's Elastic IP) for `shotokan.hogberg.dev`; TLS from Let's Encrypt via certbot.
 - No secrets in the repo: the htpasswd file and any env file live only on the server.
 - Uploads over SSH key; the `shotokan` user can write only to `data/incoming`.
 

@@ -31,7 +31,7 @@ Excluded from the snapshot: local file paths (`games.capture_file`), dashboard l
 
 | Field | Where | Why |
 |---|---|---|
-| `players.region` (e.g. JP, NA, EU, ASIA, other) | players | Japan MR adjustment. Not in the capture data; entered by hand or from CFN when known. Default: unknown, treated as non-JP. |
+| `players.region` (e.g. JP, NA, EU, ASIA, other) | players | Japan MR adjustment. **Deferred:** no JP data is imported for now. Later, possibly read from replays. Until then: unknown, treated as non-JP. |
 | `players.alias_public` | players | Optional stable alias if a public snapshot is ever made. |
 | Opponent MR / league per set | `games.p*_mr`, `p*_rank` | Capture v3.3 saves both players' MR and LP from the replay info. Older sets only have the focus player's MR (`sets.focus_mr_start`); those opponents stay **MR unknown** and are left out of band stats. |
 | `sets.event` / `sets.context` | sets | Ranked, casual, local, tournament. `ranked` and `note` cover this loosely today; a clean enum makes filters reliable. |

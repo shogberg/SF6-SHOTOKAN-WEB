@@ -6,7 +6,7 @@ How the derived numbers are defined. Everything here is computed at publish time
 | Band | Rule |
 |---|---|
 | **Diamond and below** | Not yet Master (Rookie through Diamond). Ranked by league, no MR. One band, labelled by league name only (e.g. "Platinum") where a league is shown. |
-| **MR 1200-1400** | Master, effective MR < 1400 (includes anything under 1200). |
+| **MR below 1400** | Master, effective MR < 1400. |
 | **MR 1400-1600** | 1400 ≤ effective MR < 1600 |
 | **MR 1600-1800** | 1600 ≤ effective MR < 1800 *(added: the brief skipped this range, see open questions)* |
 | **MR 1800-2000** | 1800 ≤ effective MR < 2000 |
@@ -17,6 +17,8 @@ How the derived numbers are defined. Everything here is computed at publish time
 - Local and casual matches (no rank data) are MR unknown unless the reviewer enters a rank.
 
 ### Japan MR adjustment
+**Status: deferred.** No Japanese data is being imported for now, and players' region isn't recorded yet (it may be possible to read it from replays later). Until then every player is treated as non-JP. The rule below is kept so it's ready when JP data arrives.
+
 Japanese MR is inflated relative to other regions. For banding and weighting:
 
 `effective_mr = mr - 200` when `players.region = 'JP'`, else `effective_mr = mr`.
@@ -24,6 +26,7 @@ Japanese MR is inflated relative to other regions. For banding and weighting:
 So a Japanese 2300 MR player is treated like a 2100 from another region. This is an approximation, and the page says so wherever effective MR is used. The raw MR is always shown next to it. If region is unknown, no adjustment is made.
 
 ## Weighting toward stronger players
+> **Status: draft weights, pending review.** The values below are a starting point and will change.
 Used **only in data processing**: the "what winning players do" traits, the archetype-matchup model, and the observations evidence. The interface shows the results, not the weights.
 
 | Effective MR | Meaning | Weight |

@@ -113,4 +113,4 @@ GET /api/v1/meta                            snapshot info, band definitions, glo
 ```
 
 ## Access
-The data is about real players (CFN names, habits, leaks). Recommended default: **private** (nginx basic auth, or restricted by IP or security group) until you decide what to publish. The publish step can also export an "anonymized" snapshot that replaces opponent names with stable aliases, if you ever want a public version.
+The data is about real players (CFN names, habits, leaks), so the site is **private**: one shared login (nginx basic auth) for now. Per-user **accounts** are a later phase (e.g. to let each user track their own players or sets); that's also the point where the app gets its own auth and may move to MariaDB for the writes. The publish step can also export an "anonymized" snapshot that replaces opponent names with stable aliases, if you ever want a public version.

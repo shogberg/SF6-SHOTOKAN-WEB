@@ -5,6 +5,8 @@
 A searchable site over every Street Fighter 6 set SHOTOKAN has reviewed. It replaces building a new dashboard for each review: the analysis still happens locally (see [SF6-SHOTOKAN](https://github.com/shogberg/SF6-SHOTOKAN) and [SF6-SHOTOKAN-mods](https://github.com/shogberg/SF6-SHOTOKAN-mods)), then a snapshot of the results is published here.
 
 > Status: **planning**. This repo holds the design docs only; no code yet.
+>
+> Site: `shotokan.hogberg.dev` (private, shared login).
 
 ## What the site does
 
@@ -24,7 +26,7 @@ All games of one character pairing (e.g. Cammy vs Blanka) across every player. P
 ### General analysis
 | View | What it shows |
 |---|---|
-| **MR bands** | How players differ by skill band: Diamond and below (no MR), 1200-1400, 1400-1600, 1600-1800, 1800-2000, 2000+. |
+| **MR bands** | How players differ by skill band: Diamond and below (no MR), below 1400, 1400-1600, 1600-1800, 1800-2000, 2000+. |
 | **What winning players do** | Typical archetypes and spectra of successful players, weighted toward higher MR. |
 | **Observations** | Written notes on what makes a winning or struggling player, dated, so changes in the model over time stay visible. |
 | **Archetype matchups** | Predicted and observed results when archetypes and spectra meet (e.g. Impulsive defense vs heavy frame-trap offense). |
