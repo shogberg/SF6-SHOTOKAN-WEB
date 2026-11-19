@@ -1,0 +1,12 @@
+# snapshots and local data never go in git
+*.db
+*.db-*
+publish/out/
+data/
+.env
+*.env
+__pycache__/
+.venv/
+node_modules/
+web/build/
+web/.svelte-kit/
