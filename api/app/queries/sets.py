@@ -2,7 +2,9 @@ import json
 from ..db import rows, one
 from ..util import loads
 
-DOCS = ("story", "story_games", "set_gameplan", "tournament", "tournament_obi1", "findings", "fixes", "training", "punish", "habits", "archetypes")
+DOCS = ("story", "story_games", "set_gameplan", "tournament", "findings", "fixes", "training", "punish", "habits", "archetypes")
+# extra tournament write-ups from the other player's side are stored as "tournament_<player>"
+is_doc = lambda name: name in DOCS or name.startswith("tournament_")
 
 
 def detail(set_key):
@@ -18,7 +20,7 @@ def detail(set_key):
         p["read"] = one("select archetype, lean, confidence, evidence, counter_note, risk_tolerance, temperament from reads where set_key=:k and player_id=:pid", k=k, pid=pid)
         p["habits"] = rows("select kind, area, habit, seen, times, fix, confidence, source from habits where set_key=:k and player_id=:pid order by habit_row", k=k, pid=pid)
         p["stats"] = {r["metric"]: r["value"] for r in rows("select metric, value from set_stats where set_key=:k and player_id=:pid", k=k, pid=pid)}
-    docs = {r["dataset"]: loads(r["rows"], []) for r in rows("select dataset, rows from review_docs where set_key=:k", k=k) if r["dataset"] in DOCS}
+    docs = {r["dataset"]: loads(r["rows"], []) for r in rows("select dataset, rows from review_docs where set_key=:k", k=k) if is_doc(r["dataset"])}
     return {
         "summary": s,
         "games": rows("""select replay_id, game_no, played_time, p1_player_id, p2_player_id, p1_char, p2_char, p1_control, p2_control,
