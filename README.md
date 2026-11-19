@@ -74,6 +74,7 @@ Search by player name or CFN ID, then:
 |---|---|
 | **Profile** | Archetype and lean, the eight spectra, strengths and weaknesses, per-game numbers, and how their archetype holds up: in winning vs losing sets, how often they deviate from their usual archetype, and in which direction. |
 | **Sets** | Every set they've played: date, opponent, characters, result, review level, MR at the time. |
+| **Set search** | Search any player by name or CFN ID, pick from the matching players, and page through all their sets, 25 per page (or browse every set). |
 | **Set detail** | One set: games and rounds, the prediction made before review (if any) and how it graded, story, habits, Drive economy, hits. |
 | **Head to head** | All sets between two players (e.g. .shog vs jon): record, how each played the other, what changed over time. |
 

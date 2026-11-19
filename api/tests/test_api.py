@@ -50,3 +50,21 @@ def test_spectra_from_review_writeups(client):
     assert all(len(p["spectra"]) == 8 for p in d["players"])
     prof = client.get("/api/v1/players/1").json()["data"]
     assert all(s["score"] for s in prof["spectra"])
+
+
+def test_sets_search_paginated(client):
+    r = client.get("/api/v1/sets", params={"q": "Ryuko"}).json()
+    assert r["player"]["name"] == "Ryuko" and r["page"]["per_page"] == 25
+    assert len(r["data"]) == min(25, r["page"]["total"]) and r["page"]["total"] == r["totals"]["sets"]
+    if r["page"]["pages"] > 1:
+        p2 = client.get("/api/v1/sets", params={"player": r["player"]["player_id"], "page": 2}).json()
+        assert p2["page"]["page"] == 2 and {x["set_key"] for x in p2["data"]}.isdisjoint({x["set_key"] for x in r["data"]})
+    # a partial name that matches several players returns candidates to pick from
+    many = client.get("/api/v1/sets", params={"q": "o"}).json()
+    assert many["player"] is None and len(many["candidates"]) > 1 and many["data"] == []
+    # no query: every set, paged
+    allr = client.get("/api/v1/sets", params={"per_page": 10}).json()
+    assert len(allr["data"]) == 10 and allr["page"]["total"] == 40
+    # player sets endpoint is paged too
+    ps = client.get("/api/v1/players/1/sets", params={"per_page": 5}).json()
+    assert len(ps["data"]) == 5 and ps["totals"]["sets"] == ps["page"]["total"]

@@ -49,4 +49,5 @@ Steps:
 
 ## Schema versions
 - `publish/schema.sql` carries a version number; the API refuses a snapshot whose major version it doesn't know, and keeps serving the previous one.
-- Adding a derived table is a minor version, and older API builds ignore it. Changing a column is a major version, so deploy the API first.
+- Adding a table or a column is a minor version (1.0 → 1.1). An API that needs the new column sets its minimum minor version and asks for a re-publish if the snapshot is older. Renaming or removing a column is a major version, so deploy the API first.
+- History: **1.1** added `set_summary.game_scores_p2` (game scores from the second player's side).

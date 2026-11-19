@@ -36,6 +36,15 @@ def detail(set_key):
     }
 
 
+def all_sets():
+    """Every set, newest first (for browsing without a player)."""
+    return rows("""select ss.set_key, ss.played_date, ss.context, ss.format, ss.review, ss.p1_id, ss.p2_id, a.name as p1_name, b.name as p2_name,
+                          ss.p1_char, ss.p2_char, ss.p1_games, ss.p2_games, ss.winner_id, ss.game_scores,
+                          ss.p1_mr, ss.p2_mr, ss.p1_league, ss.p2_league, ss.has_prediction, ss.prediction_correct
+                   from set_summary ss join players a on a.player_id=ss.p1_id join players b on b.player_id=ss.p2_id
+                   order by ss.played_date desc, ss.set_key desc""")
+
+
 def recent(limit=12):
     return rows("""select ss.set_key, ss.played_date, ss.context, ss.review, ss.p1_id, ss.p2_id, a.name as p1_name, b.name as p2_name,
                           ss.p1_char, ss.p2_char, ss.p1_games, ss.p2_games, ss.winner_id

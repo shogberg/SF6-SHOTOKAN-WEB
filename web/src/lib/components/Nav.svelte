@@ -5,6 +5,7 @@
 <header>
   <a class="brand" href="/">SHOTOKAN</a>
   <nav>
+    <a href="/sets">Sets</a>
     <a href="/analysis/mr-bands">MR bands</a>
     <a href="/analysis/traits">Winning traits</a>
     <a href="/analysis/observations">Observations</a>

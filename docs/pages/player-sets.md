@@ -14,4 +14,4 @@ A table of every set the player is in, newest first.
 | Review | Quick / Full / Tournament |
 | Prediction | ✓ / ✗ when there was one |
 
-Filters: date range, opponent, character, result, review level, ranked/casual/local, MR band. Totals at the top follow the filters: record, sets, games.
+Filters: date range, opponent, character, result, review level, ranked/casual/local, MR band. Totals at the top follow the filters: record, sets, games. 25 sets per page.

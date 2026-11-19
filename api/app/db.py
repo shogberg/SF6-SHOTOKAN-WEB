@@ -29,9 +29,11 @@ def engine():
             eng = create_engine(f"sqlite:///file:{real}?mode=ro&uri=true", poolclass=NullPool, future=True)
             with eng.connect() as c:
                 meta = dict(c.execute(text("select key, value from snapshot_meta")).all())
-            major = str(meta.get("schema_version", "0")).split(".")[0]
-            if major != settings.SUPPORTED_MAJOR:
-                raise SnapshotError(f"snapshot schema {meta.get('schema_version')} not supported (this build reads {settings.SUPPORTED_MAJOR}.x)")
+            ver = str(meta.get("schema_version", "0.0"))
+            major, _, minor = ver.partition(".")
+            if major != settings.SUPPORTED_MAJOR or int(minor or 0) < settings.MIN_MINOR:
+                raise SnapshotError(f"snapshot schema {ver} not supported (this build reads {settings.SUPPORTED_MAJOR}.{settings.MIN_MINOR} or newer "
+                                    f"{settings.SUPPORTED_MAJOR}.x): run publish again with this version")
             _state.update(key=k, engine=eng, meta=meta)
         return _state["engine"]
 

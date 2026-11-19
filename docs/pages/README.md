@@ -7,6 +7,7 @@ One spec per view. Each maps to one API router (`api/app/routers/`) and one fron
 | [Search and home](search.md) | `/` | `/api/v1/search` |
 | [Player profile](player-profile.md) | `/players/{id}` | `/api/v1/players/{id}`, `/archetypes` |
 | [Player sets](player-sets.md) | `/players/{id}/sets` | `/api/v1/players/{id}/sets` |
+| [Set search](set-search.md) | `/sets` | `/api/v1/sets` |
 | [Set detail](set-detail.md) | `/sets/{set_key}` | `/api/v1/sets/{set_key}` |
 | [Head to head](head-to-head.md) | `/h2h/{a}/{b}` | `/api/v1/h2h/{a}/{b}` |
 | [Character matchups](character-matchups.md) *(placeholder)* | `/matchups` | `/api/v1/matchups/...` |

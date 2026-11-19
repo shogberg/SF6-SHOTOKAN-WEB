@@ -3,11 +3,14 @@
   import { api } from '$lib/api';
   import SetTable from '$lib/components/SetTable.svelte';
   import Loading from '$lib/components/Loading.svelte';
+  import Pager from '$lib/components/Pager.svelte';
 
   let id = $derived($page.params.id);
   let f = $state({ result: '', review: '', context: '', character: '', opponent: '' });
+  let pageNo = $state(1);
+  $effect(() => { JSON.stringify(f); id; pageNo = 1; });   // new filters or player: back to page 1
   let profile = $derived(api(`/players/${id}`));
-  let sets = $derived(api(`/players/${id}/sets`, { ...f }));
+  let sets = $derived(api(`/players/${id}/sets`, { ...f, page: pageNo }));
 </script>
 
 {#await profile then pr}
@@ -23,5 +26,7 @@
 {/await}
 {#await sets}<Loading />{:then s}
   <p class="small">{s.totals.sets} sets · {s.totals.won}-{s.totals.sets - s.totals.won} in sets · {s.totals.games_won}-{s.totals.games_lost} in games</p>
+  <Pager page={s.page} onpage={(n) => (pageNo = n)} />
   <SetTable sets={s.data} />
+  {#if s.page.pages > 1}<Pager page={s.page} onpage={(n) => (pageNo = n)} />{/if}
 {:catch e}<Loading error={e} />{/await}

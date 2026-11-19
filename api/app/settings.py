@@ -7,3 +7,4 @@ BASE_URL = os.environ.get("SHOTOKAN_BASE_URL", "/")
 # optional shared login inside the app, for running without nginx: "user:sha256-hex-of-password"
 AUTH = os.environ.get("SHOTOKAN_AUTH", "")
 SUPPORTED_MAJOR = "1"
+MIN_MINOR = 1          # 1.1 added set_summary.game_scores_p2

@@ -13,7 +13,7 @@
   <div class="tiles">
     {#each Object.entries(m.data.counts) as [k, v]}<div class="card tile"><div class="muted small">{k}</div><div class="v">{v}</div></div>{/each}
   </div>
-  <h2>Latest reviewed sets</h2>
+  <h2>Latest reviewed sets <a class="small muted" href="/sets" style="font-weight:400">all sets →</a></h2>
   <div class="wrap card" style="padding:0"><table>
     <thead><tr><th>Date</th><th>Players</th><th>Score</th><th>Review</th></tr></thead>
     <tbody>{#each m.data.recent_sets as s}

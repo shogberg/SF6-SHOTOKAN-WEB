@@ -65,13 +65,10 @@ def main(out, seed=7):
         b = R.choice([x for x in range(1, 11) if x != a])
         pa, pb = base[a], base[b]
         skill = lambda p: (p["mr"] or 1300) + R.randint(-150, 150)
-        n_games = 2 if R.random() < 0.5 else 3
-        wins = [a if skill(pa) >= skill(pb) else b for _ in range(n_games)]
-        if n_games == 2 and wins[0] != wins[1]: wins.append(wins[0])
+        wins = []
+        while max(wins.count(a), wins.count(b)) < 2:   # FT2: play until someone has 2 games
+            wins.append(a if skill(pa) >= skill(pb) else b)
         ga, gb = wins.count(a), wins.count(b)
-        if ga == gb: wins[-1] = a; ga, gb = wins.count(a), wins.count(b)
-        if max(ga, gb) > 2:  # keep FT2
-            wins = wins[:3]; ga, gb = min(ga, 2), min(gb, 2)
         winner = a if ga > gb else b
         ids = [f"D{k:03d}G{g}" for g in range(1, len(wins) + 1)]
         key = "_".join(ids); date = f"2026-{10 + k // 25:02d}-{1 + k % 25:02d}"
