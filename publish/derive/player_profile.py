@@ -48,7 +48,7 @@ def build(con, cfg):
             continue
         keys = [s["set_key"] for s in sets]
         ph = ",".join("?" * len(keys))
-        won = sum(s["won"] for s in sets); gw = sum(s["games_won"] or 0 for s in sets); gl = sum(s["games_lost"] or 0 for s in sets)
+        won = sum(s["won"] or 0 for s in sets); gw = sum(s["games_won"] or 0 for s in sets); gl = sum(s["games_lost"] or 0 for s in sets)
         chars = collections.Counter(s["character"] for s in sets)
         latest = next((s for s in reversed(sets) if s["mr"] or s["league"]), sets[-1])
         reviews = collections.Counter(s["review"] for s in sets)
@@ -79,7 +79,8 @@ def build(con, cfg):
         for r in con.execute(f"select set_key, axis, score, evidence from spectra where player_id=? and set_key in ({ph})", [pid, *keys]):
             if not r["score"]: continue
             sp[r["axis"]].append(r["score"]); ev[r["axis"]].append(r["evidence"])
-            (spw if won_by_set.get(r["set_key"]) else spl)[r["axis"]].append(r["score"])
+            if won_by_set.get(r["set_key"]) is not None:   # unfinished sets count in the overall spectra only
+                (spw if won_by_set[r["set_key"]] else spl)[r["axis"]].append(r["score"])
         spectra = []
         for a in AXES:
             v = sp[a]
@@ -103,11 +104,12 @@ def build(con, cfg):
         conf = "Low" if len(arch_sets) < 2 else "High" if len(arch_sets) >= 4 and top_n / len(arch_sets) >= 0.75 else "Medium"
         devs = [s for s in arch_sets if s["is_deviation"]]
         for a, k in cnt.items():
-            w = sum(1 for s in arch_sets if s["archetype"] == a and s["won"])
-            con.execute("insert into player_archetype_summary values (?,?,?,?,?)", (pid, a, k, w, k - w))
+            w = sum(1 for s in arch_sets if s["archetype"] == a and s["won"] == 1)
+            l_ = sum(1 for s in arch_sets if s["archetype"] == a and s["won"] == 0)
+            con.execute("insert into player_archetype_summary values (?,?,?,?,?)", (pid, a, k, w, l_))
         dev_ctx = collections.Counter()
         for s in devs:
-            dev_ctx[(top, s["archetype"], "won" if s["won"] else "lost")] += 1
+            if s["won"] is not None: dev_ctx[(top, s["archetype"], "won" if s["won"] else "lost")] += 1
             if s["lost_game1"]: dev_ctx[(top, s["archetype"], "after losing game 1")] += 1
             if s["opp_archetype"]: dev_ctx[(top, s["archetype"], f"vs {s['opp_archetype']}")] += 1
             if len(chars) > 1: dev_ctx[(top, s["archetype"], f"on {s['character']}")] += 1

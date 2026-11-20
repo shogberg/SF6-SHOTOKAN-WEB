@@ -29,7 +29,7 @@ def list_sets(q: str | None = Query(None, description="player name, past name or
         if not prof:
             not_found("player")
         r = P.sets(player, result=result, review=review, context=context)
-        totals = {"sets": len(r), "won": sum(x["won"] for x in r), "games_won": sum(x["games_won"] or 0 for x in r),
+        totals = {"sets": len(r), "won": sum(x["won"] or 0 for x in r), "lost": sum(1 for x in r if x["won"] == 0), "games_won": sum(x["games_won"] or 0 for x in r),
                   "games_lost": sum(x["games_lost"] or 0 for x in r)}
         data, pg = paginate(r, page, per_page)
         return wrap(data, candidates=candidates, totals=totals, page=pg,

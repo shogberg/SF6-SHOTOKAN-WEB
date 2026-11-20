@@ -31,7 +31,7 @@ def sets(pid: int, opponent: int | None = None, character: str | None = None, re
         not_found("player")
     r = Q.sets(pid, opponent=opponent, character=character, result=result, review=review, context=context, band=band,
                date_from=date_from, date_to=date_to)
-    totals = {"sets": len(r), "won": sum(x["won"] for x in r), "games_won": sum(x["games_won"] or 0 for x in r),
+    totals = {"sets": len(r), "won": sum(x["won"] or 0 for x in r), "lost": sum(1 for x in r if x["won"] == 0), "games_won": sum(x["games_won"] or 0 for x in r),
               "games_lost": sum(x["games_lost"] or 0 for x in r)}
     data, pg = paginate(r, page, per_page)
     return wrap(data, totals=totals, page=pg)

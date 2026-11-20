@@ -41,9 +41,10 @@ def build(con, cfg):
             mr, league = mr_at_set(con, s["set_key"], pid, s)
             bid, blabel = band_for(mr, league, region.get(pid))
             rd, ord_ = reads.get((s["set_key"], pid)), reads.get((s["set_key"], opp))
+            # won is None for an unfinished set (e.g. a ranked FT2 left at 1-1)
             rows.append(dict(set_key=s["set_key"], player_id=pid, opp_id=opp, played_date=s["played_date"], context=context_of(s),
                              format=s["format"], review=s["review"], character=ch, opp_character=och, games_won=gw, games_lost=gl,
-                             won=int(s["winner_player_id"] == pid), mr=mr, league=league, band=bid, band_label=blabel,
+                             won=None if s["winner_player_id"] is None else int(s["winner_player_id"] == pid), mr=mr, league=league, band=bid, band_label=blabel,
                              weight=weight_for(mr, league, region.get(pid)),
                              archetype=rd["archetype"] if rd else None, lean=rd["lean"] if rd else None,
                              read_confidence=rd["confidence"] if rd else None, opp_archetype=ord_["archetype"] if ord_ else None,

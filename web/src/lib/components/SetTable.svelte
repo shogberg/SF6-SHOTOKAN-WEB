@@ -12,7 +12,7 @@
           <td><a href={`/sets/${s.set_key}`}>{s.played_date}</a></td>
           <td><a href={`/players/${s.opp_id}`}>{s.opponent}</a></td>
           <td>{s.character} / {s.opp_character}</td>
-          <td class={s.won ? 'ok' : 'bad'}><a href={`/sets/${s.set_key}`}>{s.won ? 'W' : 'L'} {s.games_won}-{s.games_lost}</a></td>
+          <td class={s.won == null ? '' : s.won ? 'ok' : 'bad'}><a href={`/sets/${s.set_key}`} title={s.won == null ? 'Unfinished set' : ''}>{s.won == null ? '–' : s.won ? 'W' : 'L'} {s.games_won}-{s.games_lost}</a></td>
           <td class="muted">{s.game_scores}</td>
           <td class="small">{rank(s.mr, s.league)} / {rank(s.opp_mr, s.opp_league)}</td>
           {#if showArchetype}<td>{s.archetype ?? '—'}{#if s.read_confidence === 'Low'} <span class="muted small">(low)</span>{/if}</td>{/if}

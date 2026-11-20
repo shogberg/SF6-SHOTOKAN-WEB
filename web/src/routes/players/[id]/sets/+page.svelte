@@ -25,7 +25,7 @@
   </div>
 {/await}
 {#await sets}<Loading />{:then s}
-  <p class="small">{s.totals.sets} sets · {s.totals.won}-{s.totals.sets - s.totals.won} in sets · {s.totals.games_won}-{s.totals.games_lost} in games</p>
+  <p class="small">{s.totals.sets} sets · {s.totals.won}-{s.totals.lost} in sets · {s.totals.games_won}-{s.totals.games_lost} in games</p>
   <Pager page={s.page} onpage={(n) => (pageNo = n)} />
   <SetTable sets={s.data} />
   {#if s.page.pages > 1}<Pager page={s.page} onpage={(n) => (pageNo = n)} />{/if}

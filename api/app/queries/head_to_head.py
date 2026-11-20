@@ -33,7 +33,7 @@ def h2h(a, b):
         return {"pairing": per_game(pid, keys), "overall": per_game(pid), "archetypes_here": here, "archetype_overall": overall.get("archetype")}
     return {
         "a": pa, "b": pb, "sets": sets,
-        "record": {"sets": len(sets), "a_sets": sum(s["a_won"] for s in sets), "a_games": sum(s["a_games"] or 0 for s in sets),
+        "record": {"sets": len(sets), "a_sets": sum(s["a_won"] or 0 for s in sets), "a_games": sum(s["a_games"] or 0 for s in sets),
                    "b_games": sum(s["b_games"] or 0 for s in sets),
                    "first": sets[0]["played_date"] if sets else None, "last": sets[-1]["played_date"] if sets else None},
         "sides": {"a": side(a, "a_archetype"), "b": side(b, "b_archetype")},

@@ -26,7 +26,7 @@
   <div class="grid">{#each d.sets as s}
     <a class="card" style="text-decoration:none" href={`/sets/${s.set_key}`}>
       <div class="muted small">{s.played_date} · {contextLabel[s.context] ?? s.context} · {s.format} · {s.review}</div>
-      <h3 class={s.a_won ? 'ok' : 'bad'}>{d.a.name} {s.a_games}-{s.b_games}</h3>
+      <h3 class={s.a_won == null ? '' : s.a_won ? 'ok' : 'bad'}>{d.a.name} {s.a_games}-{s.b_games}</h3>
       <div class="small">{s.a_char} vs {s.b_char} · {s.a_game_scores}</div>
       <div class="small muted">{d.a.name}: {s.a_archetype ?? '—'} · {d.b.name}: {s.b_archetype ?? '—'}{s.has_prediction ? ` · prediction ${s.prediction_correct ? '✓' : '✗'}` : ''}</div>
     </a>{/each}</div>

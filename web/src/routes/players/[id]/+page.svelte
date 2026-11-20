@@ -56,7 +56,7 @@
   <h3 style="margin-top:16px">Archetype by set</h3>
   <div class="timeline">{#each a.timeline as t}
     <a href={`/sets/${t.set_key}`} class="chip" title={`${t.played_date} vs ${t.opponent}: ${t.archetype ?? 'unread'} (${t.read_confidence ?? '—'})`}
-       style:outline={t.is_deviation ? '1px dashed var(--accent)' : 'none'}><span class={t.won ? 'ok' : 'bad'}>{t.won ? 'W' : 'L'}</span> {t.archetype ?? '?'}</a>
+       style:outline={t.is_deviation ? '1px dashed var(--accent)' : 'none'}><span class={t.won == null ? '' : t.won ? 'ok' : 'bad'}>{t.won == null ? '–' : t.won ? 'W' : 'L'}</span> {t.archetype ?? '?'}</a>
   {/each}</div>
   <p class="muted small">Dashed: a deviation from their usual archetype.</p>
 

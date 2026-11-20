@@ -48,7 +48,7 @@
     {#if r.player}
       <p><a href={`/players/${r.player.player_id}`}><b>{r.player.name}</b></a>
         <span class="muted small">{r.player.characters.map((c: any) => c[0]).join(' / ')}{r.player.cfn_id ? ` · CFN ${r.player.cfn_id}` : ''}</span>
-        · {r.totals.won}-{r.totals.sets - r.totals.won} in sets · {r.totals.games_won}-{r.totals.games_lost} in games</p>
+        · {r.totals.won}-{r.totals.lost} in sets · {r.totals.games_won}-{r.totals.games_lost} in games</p>
     {/if}
     <div class="filters">
       {#if r.player}<select value={params.result} onchange={(e) => update({ result: e.currentTarget.value })}><option value="">Any result</option><option value="won">Won</option><option value="lost">Lost</option></select>{/if}
