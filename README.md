@@ -2,7 +2,7 @@
 
 **Strategic Hit-confirm Oracle for Tactics, Okizeme, Knockdowns And Neutral**: the web front end.
 
-A searchable site over every Street Fighter 6 set SHOTOKAN has reviewed. It replaces building a new dashboard for each review: the analysis still happens locally (see [SF6-SHOTOKAN](https://github.com/shogberg/SF6-SHOTOKAN) and [SF6-SHOTOKAN-mods](https://github.com/shogberg/SF6-SHOTOKAN-mods)), then a snapshot of the results is published here.
+A searchable site over every Street Fighter 6 set SHOTOKAN has reviewed. It replaces building a new dashboard for each review: the analysis still happens locally (see [shotokan-sf6/tools](https://github.com/shotokan-sf6/tools) and [shotokan-sf6/mods](https://github.com/shotokan-sf6/mods)), then a snapshot of the results is published here.
 
 > Status: **phase 2 built**. The publish step, API, player pages, Docker image and deploy files exist; the general-analysis pages (phase 3) and character matchups (phase 4) are placeholders. See [docs/project-plan.md](docs/project-plan.md).
 >
@@ -13,28 +13,28 @@ A searchable site over every Street Fighter 6 set SHOTOKAN has reviewed. It repl
 ### Docker (Docker Desktop on Windows or macOS, or Docker on Linux)
 The image is a standard Linux image (amd64 and arm64), so Docker Desktop with the WSL 2 backend runs it as-is.
 
-**1. Get the image.** Tagged releases are published to `ghcr.io/shogberg/sf6-shotokan-web`:
+**1. Get the image.** Tagged releases are published to `ghcr.io/shotokan-sf6/web`:
 ```powershell
-docker pull ghcr.io/shogberg/sf6-shotokan-web
+docker pull ghcr.io/shotokan-sf6/web
 ```
 Before the first release (or to run your own changes), build it from a clone instead. Tagging it with the registry name means the commands below work unchanged:
 ```powershell
-git clone https://github.com/shogberg/SF6-SHOTOKAN-WEB
-cd SF6-SHOTOKAN-WEB
-docker build -f docker/Dockerfile -t ghcr.io/shogberg/sf6-shotokan-web .
+git clone https://github.com/shotokan-sf6/web
+cd web
+docker build -f docker/Dockerfile -t ghcr.io/shotokan-sf6/web .
 ```
 
 **2. Try it with demo data:**
 ```powershell
-docker run --rm -p 8080:8080 ghcr.io/shogberg/sf6-shotokan-web serve --demo
+docker run --rm -p 8080:8080 ghcr.io/shotokan-sf6/web serve --demo
 ```
 Open http://localhost:8080. The demo is synthetic: made-up players and sets.
 
 **3. Use your own data.** Build a snapshot from your `sf6.db` into a Docker volume, then start the site (PowerShell; the backtick continues the line):
 ```powershell
 docker run --rm -v "D:\SF6-Claude-Coaching\history:/src:ro" -v "D:\SF6-Claude-Coaching:/cfg:ro" -v shotokan-data:/data `
-  ghcr.io/shogberg/sf6-shotokan-web publish --source /src/sf6.db --out /data --config /cfg/shotokan-publish.json
-docker run -d --name shotokan -p 8080:8080 -v shotokan-data:/data ghcr.io/shogberg/sf6-shotokan-web
+  ghcr.io/shotokan-sf6/web publish --source /src/sf6.db --out /data --config /cfg/shotokan-publish.json
+docker run -d --name shotokan -p 8080:8080 -v shotokan-data:/data ghcr.io/shotokan-sf6/web
 ```
 Then open http://localhost:8080. After new reviews, run the publish command again: the running site picks up the new snapshot without a restart. `--config` is optional (see "Publish config" below).
 
@@ -95,15 +95,15 @@ All games of one character pairing (e.g. Cammy vs Blanka) across every player. P
  local PC (Windows)                                   EC2
  ───────────────────                                  ───────────────────────────
  SF6 + REFramework ─► capture JSON                    nginx ─┬─ static site (built frontend)
- SF6-SHOTOKAN tools ─► sf6.db (full, private)                └─ /api ─► FastAPI (uvicorn)
+ tools repo ─► sf6.db (full, private)                └─ /api ─► FastAPI (uvicorn)
  publish.py ─► shotokan_web.db (snapshot) ──scp/rsync──►               │ read-only
                                                       /srv/shotokan/data/current.db (SQLite)
 ```
 
 - **Datastore: a read-only SQLite snapshot.** The local tools already write SQLite, the site only reads, and there's one writer (your PC). Publishing means building a snapshot file and swapping it in atomically: no SQL dumps to convert and no database server to run or secure. MariaDB stays an option if the site ever needs to accept writes (accounts, comments); the API's data layer is written so that switch is contained. See [docs/architecture.md](docs/architecture.md).
-- **Backend:** Python (FastAPI), so it can reuse the spectra and profile logic from SF6-SHOTOKAN.
+- **Backend:** Python (FastAPI), so it can reuse the spectra and profile logic from the tools repo (shotokan-sf6/tools).
 - **Frontend:** Svelte + Vite, built to static files that nginx serves. Node is only needed at build time.
-- **Docker:** the whole site ships as one container image (`ghcr.io/shogberg/sf6-shotokan-web`), so anyone can run it locally against their own data, or a synthetic demo. The publish step runs from the same image. See [docs/docker.md](docs/docker.md).
+- **Docker:** the whole site ships as one container image (`ghcr.io/shotokan-sf6/web`), so anyone can run it locally against their own data, or a synthetic demo. The publish step runs from the same image. See [docs/docker.md](docs/docker.md).
 - **Modular:** each section is its own API router, query module and frontend route folder. Adding a section means adding files, not editing a monolith.
 
 ## Docs
@@ -119,5 +119,5 @@ All games of one character pairing (e.g. Cammy vs Blanka) across every player. P
 | [Project plan](docs/project-plan.md) | Phases, milestones and open questions |
 
 ## Related repos
-- [SF6-SHOTOKAN](https://github.com/shogberg/SF6-SHOTOKAN): analysis tooling and the local database.
-- [SF6-SHOTOKAN-mods](https://github.com/shogberg/SF6-SHOTOKAN-mods): REFramework capture scripts and move names.
+- [shotokan-sf6/tools](https://github.com/shotokan-sf6/tools): analysis tooling and the local database.
+- [shotokan-sf6/mods](https://github.com/shotokan-sf6/mods): REFramework capture scripts and move names.

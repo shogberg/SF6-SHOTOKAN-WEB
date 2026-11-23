@@ -4,9 +4,9 @@
 - [x] README, architecture, data model, data sync, analysis methods, page specs, deployment, plan.
 - [ ] Confirm the open questions below.
 
-## Phase 1: Data foundation (local, in SF6-SHOTOKAN + publish/)
+## Phase 1: Data foundation (local, in the tools repo + publish/)
 - [x] Predictions read from `review_docs` into a `predictions` table in the snapshot (no sf6.db change needed yet).
-- [ ] Add the `predictions` table and the `observations` source to sf6.db (migration in SF6-SHOTOKAN).
+- [ ] Add the `predictions` table and the `observations` source to sf6.db (migration in the tools repo).
 - [ ] Backfill opponent MR / league where the capture has it (capture v3.3+); mark older opponents MR unknown.
 - [x] `publish/schema.sql` v1 and `publish.py` skeleton: copy source tables, drop private columns, write `snapshot_meta`.
 - [x] Derive modules: `player_set` (archetype history), `player_profile`, `player_archetype_summary`, `player_spectra_by_result`, `player_deviation`, `set_summary`, `predictions`, `observations`. Head to head is computed in the API for now.

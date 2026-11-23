@@ -1,5 +1,5 @@
 # SHOTOKAN Web: one image with the built site, the API and the publish tool.
-# build:  docker build -f docker/Dockerfile -t sf6-shotokan-web .
+# build:  docker build -f docker/Dockerfile -t shotokan-web .
 
 FROM node:22-alpine AS web
 WORKDIR /src/web
@@ -11,7 +11,7 @@ RUN npm run build
 FROM python:3.12-slim
 ARG VERSION=dev
 LABEL org.opencontainers.image.title="SHOTOKAN Web" \
-      org.opencontainers.image.source="https://github.com/shogberg/SF6-SHOTOKAN-WEB" \
+      org.opencontainers.image.source="https://github.com/shotokan-sf6/web" \
       org.opencontainers.image.version="${VERSION}" \
       dev.hogberg.shotokan.schema-major="1"
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \

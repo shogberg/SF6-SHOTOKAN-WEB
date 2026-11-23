@@ -27,7 +27,7 @@ The site reads a **snapshot** database built from the local `sf6.db`. It has two
 
 Excluded from the snapshot: local file paths (`games.capture_file`), dashboard links, and anything you mark private.
 
-## 2. New fields needed upstream (in SF6-SHOTOKAN)
+## 2. New fields needed upstream (in the tools repo)
 
 | Field | Where | Why |
 |---|---|---|

@@ -3,6 +3,7 @@
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
 ## 2026-11-22
+- Moved to the shotokan-sf6 organization (was shogberg/SF6-SHOTOKAN-WEB): image is now ghcr.io/shotokan-sf6/web; links to shotokan-sf6/tools and shotokan-sf6/mods.
 - Project plan: idea for a standalone self-serve analytics app (like lpp / sfbuff.site) fed by your own replays.
 - Players page next to Sets: pick a player to open their overview, or filter the full list (`/api/v1/players`).
 - What winning players do: winner vs loser of each set, stat by stat, MR-weighted, with what stands out and archetype win rates (`/api/v1/analysis/traits`).

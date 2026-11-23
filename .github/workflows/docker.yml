@@ -35,7 +35,7 @@ jobs:
       - id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/shogberg/sf6-shotokan-web
+          images: ghcr.io/shotokan-sf6/web
           tags: |
             type=semver,pattern={{version}}
             type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') }}

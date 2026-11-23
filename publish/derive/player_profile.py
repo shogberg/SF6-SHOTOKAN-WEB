@@ -1,7 +1,7 @@
 """player_profile, player_archetype_summary, player_spectra_by_result, player_deviation.
 
 Aggregates every set a player is in. Sentences are built from the numbers only (same approach as
-SF6-SHOTOKAN's profiles_from_db.py)."""
+the tools repo's profiles_from_db.py)."""
 import collections, json, re, statistics
 from common import AXES, ENDS, spectrum_label, confidence_for
 
