@@ -9,7 +9,7 @@ export const ABOUT: AboutItem[] = [
  {
   "section": "SHOTOKAN as a model",
   "title": "What it measures, and what it can't",
-  "body": "It measures exactly: damage, hit types, counter hits, anti-airs, throws, techs, Drive spent and lost, timings after blocking and on wake-up. It can't see intent. When the review says why something happened, that's a read on the data, and it says how confident it is."
+  "body": "It measures exactly: damage, hit types, counter hits, anti-airs, throws, techs, Drive spent and lost, timings after blocking and on wake-up. Damage is the permanent life a hit takes, so when a hit cashes in white (recoverable) health, such as after Arjun's blocked pressure or a Drive Reversal, that counts too. It can't see intent. When the review says why something happened, that's a read on the data, and it says how confident it is."
  },
  {
   "section": "SHOTOKAN as a model",
@@ -29,12 +29,12 @@ export const ABOUT: AboutItem[] = [
  {
   "section": "How I view the game",
   "title": "Drive is a second health bar",
-  "body": "Drive decides who gets to act. Spending it on things that don't buy damage or position, or losing it while blocking, gives the opponent turns for free. Burnout is often the real turning point of a round."
+  "body": "Drive decides who gets to act. What matters is what it buys: winners spend more Drive than losers, but they spend it after a hit (combo Drive Rush cancels) or cheaply from neutral (raw Drive Rush), not on 3-bar cancels into a blocked string. Burning out on its own doesn't separate winners from losers, and a burnout spent on a combo that kills isn't counted at all."
  },
  {
   "section": "How I evaluate players",
   "title": "Spectra, not labels",
-  "body": "Each player gets eight 1-5 scores between two opposite ends: temperament (impulsive to mindful), adaptability (inelastic to elastic), risk tolerance, initiative (reactive to proactive), composure, variety, and resource use. They describe how someone played in this set, not who they are, and they move from set to set."
+  "body": "Each player gets eight 1-5 scores between two opposite ends: temperament on defense and on offense (impulsive to mindful), adaptability (inelastic to elastic), risk tolerance, initiative (reactive to proactive), composure, variety, and resource use. They describe how someone played in this set, not who they are, and they move from set to set. Adaptability only counts a reused move against a player while it was losing them the game: keeping a winning plan isn't inelastic."
  },
  {
   "section": "How I evaluate players",
@@ -48,13 +48,18 @@ export const ABOUT: AboutItem[] = [
  },
  {
   "section": "Top player habits",
-  "title": "Block first, then decide",
-  "body": "Strong players treat blocking as the default and spend actions only when they have a reason. Most damage at every level comes from pressing at the wrong time, not from failing to press."
+  "title": "Don't get opened up on wake-up",
+  "body": "Blocking is still the default, but across the reviewed sets winners don't hold block more often than losers. The difference is what happens on wake-up: winners take less of their damage there. Pick a wake-up option that fits what the attacker has shown (block, tech, a reversal you can afford) rather than the same one every time."
+ },
+ {
+  "section": "Top player habits",
+  "title": "Throw, and cash in your hits",
+  "body": "The two clearest things winners do more of: they land more throws, and they turn hits into damage with combo Drive Rush cancels. The throw is the one option that always gives a definite answer, so it belongs in the default offense."
  },
  {
   "section": "Top player habits",
   "title": "Punish everything that is punishable",
-  "body": "Consistent players take every free punish and every anti-air. It's the cheapest damage in the game and it changes what the opponent dares to do."
+  "body": "Consistent players take every free punish and beat the opponent's buttons with their own: winners land more counter hits and about twice the punish counters of losers. It's the cheapest damage in the game and it changes what the opponent dares to do."
  },
  {
   "section": "Top player habits",
@@ -64,11 +69,31 @@ export const ABOUT: AboutItem[] = [
  {
   "section": "Top player habits",
   "title": "Manage Drive and the clock",
-  "body": "Keep enough Drive to defend, spend it when it buys damage or position, and make the opponent burn out first."
+  "body": "Keep enough Drive to defend, and spend it when it turns a hit into damage, position or a kill. Drive Reversal is mostly a losing player's tool: it costs 2 bars, is -6 if blocked, and usually only resets the situation, so blocking, a tech or a parry is often the cheaper answer."
  },
  {
   "section": "Top player habits",
   "title": "Keep the reads cheap",
   "body": "When they gamble, it's a low-cost gamble with a big payoff, and only after the opponent has shown the habit at least twice."
+ },
+ {
+  "section": "What the data says",
+  "title": "Winner vs loser, set by set",
+  "body": "The traits page compares the winner and the loser of the same set, stat by stat, weighted by MR, so the opponent, matchup and day stay the same. As of November 2026 that's 122 complete sets. The steadiest signals: resource use (winners spend more Drive, after hits), throws landed, combo Drive Rush cancels, counter hits and punish counters. Anti-airs, throw techs, burnouts and how often players hold block barely separate them; those track the matchup and the player more than winning."
+ },
+ {
+  "section": "What the data says",
+  "title": "Matchups can change the rules",
+  "body": "Some characters change what defense costs. Against Arjun, blocked pressure leaves white health on your bar and his next hit cashes it all in: in every reviewed Arjun set, a quarter to a third of his damage came that way. Getting out of his turn is worth more than usual."
+ },
+ {
+  "section": "What the data says",
+  "title": "How well the reviews predict",
+  "body": "Every review starts with a prediction written before the replay is analysed. Blind predictions picked the winner in 72% of sets (and 84% to 100% at Medium and High confidence), but simply picking the higher-MR player does as well, about 76%. The predictions are more useful for naming the factors that decide a set than for picking the winner."
+ },
+ {
+  "section": "What the data says",
+  "title": "Observations",
+  "body": "Dated notes on what the data shows and how the model changed are on the Observations page. When a finding stops holding as sets are added, a new note revises the old one instead of rewriting history."
  }
 ];
