@@ -2,6 +2,9 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-22
+- nginx example: HTTP/2 enabled with `http2 on;` (the `listen ... http2` form is deprecated from nginx 1.25.1, e.g. Amazon Linux 2023).
+
 ## 2026-11-21
 - Navigation: the main links show as buttons, with the current page marked.
 

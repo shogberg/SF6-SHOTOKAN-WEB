@@ -7,7 +7,8 @@ server {
 }
 
 server {
-    listen 443 ssl http2;
+    listen 443 ssl;
+    http2 on;               # nginx 1.25.1+ (older: listen 443 ssl http2;)
     server_name shotokan.hogberg.dev;
     ssl_certificate     /etc/letsencrypt/live/shotokan.hogberg.dev/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/shotokan.hogberg.dev/privkey.pem;

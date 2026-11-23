@@ -24,7 +24,8 @@ Users: `shotokan` owns `/srv/shotokan`; the API runs as `shotokan-api`, with rea
 ## nginx (sketch)
 ```
 server {
-    listen 443 ssl http2;
+    listen 443 ssl;
+    http2 on;               # nginx 1.25.1+ (older: listen 443 ssl http2;)
     server_name shotokan.hogberg.dev;
     # ssl_certificate ... (Let's Encrypt via certbot)
 
