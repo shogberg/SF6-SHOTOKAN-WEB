@@ -38,7 +38,7 @@ python publish/publish.py --source sf6.db --out ./data
 Steps:
 1. Copy the source tables listed in [data-model.md](data-model.md), dropping private columns.
 2. Run each `publish/derive/*.py` module in dependency order (profiles → archetype history → summaries → band stats → trait success → archetype matchups).
-3. Write `snapshot_meta` and the `observations` (from `observations/*.md` in the tools repo or a local folder).
+3. Write `snapshot_meta` and the `observations`: the markdown files in the publish config's `observations_dir` (a path relative to the config file, or absolute). Without a config, or with no `observations_dir`, the snapshot has no observations. A config at `publish/publish.json` is gitignored.
 4. Validate: schema version matches the API's, every derived table non-empty, foreign keys resolve, a sample of profile numbers matches a direct recomputation.
 5. Upload over SSH (key auth; no passwords in the script or config).
 6. Run `swap_snapshot.sh` remotely and print the new snapshot ID.

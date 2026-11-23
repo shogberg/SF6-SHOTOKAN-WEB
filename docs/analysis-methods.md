@@ -57,6 +57,10 @@ Per player, across their sets:
 - A player's score per axis = the rounded mean of per-set scores, with the range and number of sets shown.
 - Per-set scores are percentile strata against every player-set reviewed so far (20/40/60/80th percentile cut points), so they shift slightly as data grows. Each snapshot recomputes them and records the cut points.
 
+## Damage
+- A hit's damage is the permanent life the victim lost: the drop in the recoverable-health cap over the combo. When a hit lands while the victim has white (recoverable) health, the white health it cashes in counts. Damage that only adds white health (a blocked Arjun string, a Drive Reversal) counts 0 until a later hit cashes it in.
+- Every set with a capture was re-scored this way on 23 Nov 2026 (`tools/rescore_damage.py`); 11 video-only games keep the older count.
+
 ## Sample size and confidence
 Every derived number carries `n`. Display rules:
 - n < 3 sets: shown greyed, labelled "early read".
@@ -67,6 +71,7 @@ Every derived number carries `n`. Display rules:
 ## Predictions
 - Each set's pre-review prediction is shown with its grade (winner and score right or wrong, what it missed).
 - Accuracy over time: a running hit rate by month and by review level, so it's visible whether predictions improve.
+- Compare against a baseline: picking the higher-MR player. As of 23 Nov 2026, blind predictions picked the winner in 72% of 92 sets and the higher-MR player won 76% of the 83 sets where both MRs were known, so the pick alone doesn't beat MR yet.
 
 ## Archetype-vs-archetype predictions
 Two sources, shown side by side:

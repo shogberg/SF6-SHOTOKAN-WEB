@@ -63,7 +63,7 @@ python -m pytest -q api/tests                                                   
 
 **Publish to the server:** `python publish/publish.py --source sf6.db --target shotokan@shotokan.hogberg.dev:/srv/shotokan/data`. See [docs/data-sync.md](docs/data-sync.md) and [docs/deployment.md](docs/deployment.md).
 
-**Publish config** (optional, keep it outside the repo, see `publish/publish.example.json`): `merge` folds a name used in local matches into the CFN player it belongs to (e.g. a local "shog" into ".shog"); `observations_dir` points at your observation notes; `anonymize` replaces opponent names with aliases.
+**Publish config** (optional, keep it outside the repo, see `publish/publish.example.json`): `merge` folds a name used in local matches into the CFN player it belongs to (e.g. a local "shog" into ".shog"); `observations_dir` points at your observation notes (relative to the config file, or absolute; leave it out and the Observations page is empty); `anonymize` replaces opponent names with aliases.
 
 ## What the site does
 

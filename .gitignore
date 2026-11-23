@@ -2,6 +2,7 @@
 *.db
 *.db-*
 publish/out/
+publish/publish.json
 data/
 .env
 *.env
