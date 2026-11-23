@@ -3,6 +3,10 @@
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
 ## 2026-11-22
+- Players page next to Sets: pick a player to open their overview, or filter the full list (`/api/v1/players`).
+- What winning players do: winner vs loser of each set, stat by stat, MR-weighted, with what stands out and archetype win rates (`/api/v1/analysis/traits`).
+- About SHOTOKAN page, matching the review dashboards' About tab.
+- Navigation: Players and About added; "Winning traits" renamed "What winning players do".
 - nginx example: HTTP/2 enabled with `http2 on;` (the `listen ... http2` form is deprecated from nginx 1.25.1, e.g. Amazon Linux 2023).
 
 ## 2026-11-21

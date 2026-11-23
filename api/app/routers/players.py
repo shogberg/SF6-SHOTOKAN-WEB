@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Query
-from ..util import wrap, not_found, paginate, PER_PAGE
+from ..util import wrap, not_found, paginate, loads, PER_PAGE
 from ..queries import players as Q
 
 router = APIRouter(tags=["players"])
@@ -8,6 +8,14 @@ router = APIRouter(tags=["players"])
 @router.get("/search")
 def search(q: str = Query(..., min_length=1), limit: int = Query(20, le=50)):
     return wrap(Q.search(q, limit))
+
+
+@router.get("/players")
+def players():
+    r = Q.list_all()
+    for p in r:
+        p["characters"] = loads(p["characters"], [])
+    return wrap(r)
 
 
 @router.get("/players/{pid}")

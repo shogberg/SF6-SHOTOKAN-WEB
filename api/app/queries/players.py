@@ -16,6 +16,12 @@ def search(q, limit=20):
                 like=like, exact=q.strip(), exactl=q.strip().lower(), limit=limit)
 
 
+def list_all():
+    return rows("""select player_id, name, cfn_id, sets, sets_won, games_won, games_lost, characters, latest_mr, latest_league,
+                          latest_band_label, archetype, last_date
+                   from player_profile order by lower(name)""")
+
+
 def profile(pid):
     p = one("select * from player_profile where player_id=:pid", pid=pid)
     if not p:

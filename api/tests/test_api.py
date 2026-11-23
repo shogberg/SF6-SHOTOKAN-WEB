@@ -68,3 +68,18 @@ def test_sets_search_paginated(client):
     # player sets endpoint is paged too
     ps = client.get("/api/v1/players/1/sets", params={"per_page": 5}).json()
     assert len(ps["data"]) == 5 and ps["totals"]["sets"] == ps["page"]["total"]
+
+
+def test_players_list(client):
+    r = client.get("/api/v1/players").json()["data"]
+    assert r and {"player_id", "name", "sets", "sets_won", "characters"} <= set(r[0])
+    assert r == sorted(r, key=lambda p: p["name"].lower())
+
+
+def test_traits(client):
+    d = client.get("/api/v1/analysis/traits").json()["data"]
+    assert d["pairs"] > 0 and d["rows"]
+    groups = {r["group"] for r in d["rows"]}
+    assert {"Offense", "Defense", "Drive"} <= groups
+    for r in d["rows"]:
+        assert r["n"] > 0 and (r["winner_higher"] is None or 0 <= r["winner_higher"] <= 1)

@@ -5,6 +5,7 @@ One spec per view. Each maps to one API router (`api/app/routers/`) and one fron
 | Page | Route | API |
 |---|---|---|
 | [Search and home](search.md) | `/` | `/api/v1/search` |
+| [Players](players.md) | `/players` | `/api/v1/players` |
 | [Player profile](player-profile.md) | `/players/{id}` | `/api/v1/players/{id}`, `/archetypes` |
 | [Player sets](player-sets.md) | `/players/{id}/sets` | `/api/v1/players/{id}/sets` |
 | [Set search](set-search.md) | `/sets` | `/api/v1/sets` |
@@ -15,5 +16,6 @@ One spec per view. Each maps to one API router (`api/app/routers/`) and one fron
 | [What winning players do](traits.md) | `/analysis/traits` | `/api/v1/analysis/traits` |
 | [Observations](observations.md) | `/analysis/observations` | `/api/v1/analysis/observations` |
 | [Archetype matchups](archetype-predictions.md) | `/analysis/archetype-predictions` | `/api/v1/analysis/archetype-predictions` |
+| [About SHOTOKAN](about.md) | `/about` | none (static text) |
 
 Shared components: player search box, spectrum bar (five dots between two labels), archetype badge with confidence, set card, MR band picker, sample-size badge, "data as of" snapshot footer.

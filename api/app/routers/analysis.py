@@ -1,7 +1,7 @@
-"""General analysis. Observations are live; the computed pages arrive in phase 3 (docs/project-plan.md)."""
+"""General analysis. Observations and traits are live; the other computed pages arrive in phase 3 (docs/project-plan.md)."""
 from fastapi import APIRouter
 from ..util import wrap, planned
-from ..queries import observations as O
+from ..queries import observations as O, traits as T
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
 
@@ -18,7 +18,7 @@ def mr_bands():
 
 @router.get("/traits")
 def traits():
-    planned(3, "traits of winning players")
+    return wrap(T.traits())
 
 
 @router.get("/archetype-predictions")

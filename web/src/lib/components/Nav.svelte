@@ -4,11 +4,13 @@
 
   const links = [
     { href: '/sets', label: 'Sets' },
+    { href: '/players', label: 'Players' },
     { href: '/analysis/mr-bands', label: 'MR bands' },
-    { href: '/analysis/traits', label: 'Winning traits' },
+    { href: '/analysis/traits', label: 'What winning players do' },
     { href: '/analysis/observations', label: 'Observations' },
     { href: '/analysis/archetype-predictions', label: 'Archetype matchups' },
-    { href: '/matchups', label: 'Characters' }
+    { href: '/matchups', label: 'Characters' },
+    { href: '/about', label: 'About' }
   ];
   const active = (href: string) => page.url.pathname === href || page.url.pathname.startsWith(href + '/');
 </script>
