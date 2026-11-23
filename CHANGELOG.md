@@ -3,6 +3,7 @@
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
 ## 2026-11-22
+- Player overview by character: a By character table and a Character picker for spectra and per-game stats (snapshot schema 1.2 adds `player_character`, built from the source's new per-game `game_stats`; older snapshots still load).
 - Moved to the shotokan-sf6 organization (was shogberg/SF6-SHOTOKAN-WEB): image is now ghcr.io/shotokan-sf6/web; links to shotokan-sf6/tools and shotokan-sf6/mods.
 - Project plan: idea for a standalone self-serve analytics app (like lpp / sfbuff.site) fed by your own replays.
 - Players page next to Sets: pick a player to open their overview, or filter the full list (`/api/v1/players`).

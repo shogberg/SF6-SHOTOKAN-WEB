@@ -29,6 +29,13 @@ def profile(pid):
     for k in PROFILE_JSON:
         p[k.replace("_json", "")] = loads(p.pop(k), [] if k == "characters" else {})
     p["other_names"] = [r["name"] for r in rows("select distinct name from player_names where player_id=:pid and lower(name)<>lower(:n)", pid=pid, n=p["name"])]
+    try:   # snapshots before schema 1.2 have no player_character table
+        p["by_character"] = rows("""select character, sets, sets_won, games, games_won, games_lost, per_game_json, spectra_json, stats_source
+                                    from player_character where player_id=:pid order by games desc, character""", pid=pid)
+    except Exception:
+        p["by_character"] = []
+    for c in p["by_character"]:
+        c["per_game"] = loads(c.pop("per_game_json"), {}); c["spectra"] = loads(c.pop("spectra_json"), [])
     p["top_opponents"] = rows("""select ps.opp_id as player_id, pp.name, count(*) as sets, sum(ps.won) as wins
         from player_set ps join players pp on pp.player_id=ps.opp_id where ps.player_id=:pid
         group by ps.opp_id order by sets desc, pp.name limit 8""", pid=pid)

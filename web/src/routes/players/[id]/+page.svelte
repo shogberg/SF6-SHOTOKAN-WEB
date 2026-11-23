@@ -10,6 +10,9 @@
   const PG: [string, string][] = [['throws', 'Throws'], ['throw_techs', 'Throw techs'], ['anti_airs', 'Anti-airs'], ['counter_hits', 'Counter hits'],
     ['punish_counters', 'Punish counters'], ['raw_drive_rush', 'Raw Drive Rushes'], ['burnouts', 'Burnouts'], ['perfect_parries', 'Perfect parries']];
   const diff = (a?: number | null, b?: number | null) => (a == null || b == null ? null : Math.round((a - b) * 10) / 10);
+  let char = $state('');   // '' = all characters
+  $effect(() => { id; char = ''; });
+  const byChar = (p: any) => (char ? (p.by_character ?? []).find((c: any) => c.character === char) : null);
 </script>
 
 {#await data}<Loading />{:then [pr, ar]}
@@ -60,8 +63,27 @@
   {/each}</div>
   <p class="muted small">Dashed: a deviation from their usual archetype.</p>
 
-  <h2>Spectra</h2>
-  <div class="card">{#each p.spectra as s}<SpectrumBar {s} />{/each}</div>
+  {#if (p.by_character ?? []).length > 1}
+    <h2>By character</h2>
+    <div class="wrap card" style="padding:0"><table>
+      <thead><tr><th>Character</th><th class="n">Sets</th><th class="n">Games</th><th class="n">Throws</th><th class="n">Anti-airs</th><th class="n">Counter hits</th><th class="n">Punish counters</th><th class="n">Burnouts</th><th class="n">Attacks first on wake-up</th></tr></thead>
+      <tbody>{#each p.by_character as c}
+        <tr><td><button class="linklike" onclick={() => (char = c.character)}>{c.character}</button></td><td class="n">{c.sets_won}-{c.sets - c.sets_won}</td><td class="n">{c.games_won}-{c.games_lost}</td>
+          <td class="n">{num(c.per_game.throws)}</td><td class="n">{num(c.per_game.anti_airs)}</td><td class="n">{num(c.per_game.counter_hits)}</td><td class="n">{num(c.per_game.punish_counters)}</td>
+          <td class="n">{num(c.per_game.burnouts)}</td><td class="n">{pct(c.per_game.wake_up_attack_pct)}</td></tr>
+      {/each}</tbody></table></div>
+    <p class="muted small">Per game on each character. Pick one below to see its spectra and per-game numbers on their own.</p>
+  {/if}
+
+  {#if (p.by_character ?? []).length > 1}
+    <div class="filters" style="margin-top:16px"><label class="small" for="char-pick">Character</label>
+      <select id="char-pick" bind:value={char}><option value="">All characters</option>{#each p.by_character as c}<option value={c.character}>{c.character} ({c.games} games)</option>{/each}</select></div>
+  {/if}
+  {@const pc = byChar(p)}
+  {@const pg = pc ? pc.per_game : p.per_game}
+
+  <h2>Spectra{pc ? ` on ${pc.character}` : ''}</h2>
+  <div class="card">{#each (pc ? pc.spectra : p.spectra) as s}<SpectrumBar {s} />{/each}</div>
 
   <h2>Strengths and weaknesses</h2>
   <div class="grid">
@@ -70,13 +92,13 @@
   </div>
   <div class="card try" style="margin-top:14px">{p.player_id && p.how_to_beat ? p.how_to_beat : '—'}</div>
 
-  <h2>Per game</h2>
+  <h2>Per game{pc ? ` on ${pc.character}` : ''}</h2>
   <div class="tiles">
-    {#each PG as [k, l]}<div class="card tile"><div class="muted small">{l}</div><div class="v">{num(p.per_game[k])}</div></div>{/each}
-    <div class="card tile"><div class="muted small">Attacks first after blocking</div><div class="v">{pct(p.per_game.after_block_attack_pct)}</div></div>
-    <div class="card tile"><div class="muted small">Attacks first on wake-up</div><div class="v">{pct(p.per_game.wake_up_attack_pct)}</div></div>
+    {#each PG as [k, l]}<div class="card tile"><div class="muted small">{l}</div><div class="v">{num(pg[k])}</div></div>{/each}
+    <div class="card tile"><div class="muted small">Attacks first after blocking</div><div class="v">{pct(pg.after_block_attack_pct)}</div></div>
+    <div class="card tile"><div class="muted small">Attacks first on wake-up</div><div class="v">{pct(pg.wake_up_attack_pct)}</div></div>
   </div>
-  <p class="muted small">Over {p.per_game.games} games. Opponents counter-hit them {num(p.opp_did.counter_hits_taken)}×, anti-aired them {num(p.opp_did.anti_aired)}× and threw them {num(p.opp_did.thrown)}× a game.</p>
+  <p class="muted small">Over {pg.games} games{pc && pc.stats_source === 'sets' ? ' (from whole-set stats: these sets were reviewed before per-game stats were kept)' : ''}. Opponents counter-hit them {num(p.opp_did.counter_hits_taken)}×, anti-aired them {num(p.opp_did.anti_aired)}× and threw them {num(p.opp_did.thrown)}× a game.</p>
 {:catch e}<Loading error={e} />{/await}
 
-<style>.timeline { display: flex; flex-wrap: wrap; }</style>
+<style>.timeline { display: flex; flex-wrap: wrap; } .linklike { font: inherit; background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; }</style>

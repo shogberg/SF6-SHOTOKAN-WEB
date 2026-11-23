@@ -1,7 +1,7 @@
 """Shared definitions for the publish step: schema version, MR bands, weights, spectra."""
 import re
 
-SCHEMA_VERSION = "1.1"          # major.minor: the API refuses an unknown major, or a minor older than it needs
+SCHEMA_VERSION = "1.2"          # major.minor: the API refuses an unknown major, or a minor older than it needs
 # 1.1: set_summary.game_scores_p2 (game scores from the second player's side)
 
 # ---- MR bands (docs/analysis-methods.md) -------------------------------------

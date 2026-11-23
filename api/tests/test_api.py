@@ -83,3 +83,12 @@ def test_traits(client):
     assert {"Offense", "Defense", "Drive"} <= groups
     for r in d["rows"]:
         assert r["n"] > 0 and (r["winner_higher"] is None or 0 <= r["winner_higher"] <= 1)
+
+
+def test_profile_by_character(client):
+    pid = client.get("/api/v1/players").json()["data"][0]["player_id"]
+    p = client.get(f"/api/v1/players/{pid}").json()["data"]
+    assert p["by_character"], "every player with a set has at least one character row"
+    c = p["by_character"][0]
+    assert c["games"] >= 1 and "throws" in c["per_game"] and len(c["spectra"]) == 8
+    assert sum(x["sets"] for x in p["by_character"]) == p["sets"]

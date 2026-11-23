@@ -20,6 +20,11 @@ CREATE TABLE player_profile (
   summary TEXT, strengths TEXT, leaks TEXT, patterns TEXT, how_to_beat TEXT,
   spectra_json TEXT, per_game_json TEXT, opp_did_json TEXT);
 
+CREATE TABLE player_character (       -- per player per character: record, per-game stats and spectra on that character
+  player_id INTEGER, character TEXT, sets INTEGER, sets_won INTEGER, games INTEGER, games_won INTEGER, games_lost INTEGER,
+  per_game_json TEXT, spectra_json TEXT, stats_source TEXT,  -- stats_source: 'games' (per-game stats) or 'sets' (older sets: whole-set stats)
+  PRIMARY KEY (player_id, character));
+
 CREATE TABLE player_archetype_summary (  -- per player per archetype read
   player_id INTEGER, archetype TEXT, sets INTEGER, wins INTEGER, losses INTEGER, PRIMARY KEY (player_id, archetype));
 

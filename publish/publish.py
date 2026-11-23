@@ -17,7 +17,7 @@ import derive  # noqa: E402
 # source tables copied as-is, minus private columns
 SOURCE = {
     "players": None, "player_names": None, "sets": ["dashboard", "ingested_at"], "games": ["capture_file"],
-    "hits": None, "events": None, "resources": None, "parries": None, "timings": None, "set_stats": None,
+    "hits": None, "events": None, "resources": None, "parries": None, "timings": None, "set_stats": None, "game_stats": None,
     "reads": None, "spectra": None, "habits": None, "usage": None, "review_docs": None, "settings": None,
 }
 KEEP_SETTINGS = ("me",)
@@ -82,7 +82,9 @@ def merge_players(con, merge):
     ids = {r[1]: r[0] for r in con.execute("select player_id, name from players")}
     refs = [("sets", "focus_player_id"), ("sets", "opp_player_id"), ("sets", "winner_player_id"), ("games", "p1_player_id"),
             ("games", "p2_player_id"), ("games", "winner_player_id"), ("hits", "attacker_id"), ("hits", "victim_id")]
-    refs += [(t, "player_id") for t in ("events", "resources", "parries", "timings", "set_stats", "reads", "spectra", "habits", "usage", "player_names")]
+    refs += [(t, "player_id") for t in ("events", "resources", "parries", "timings", "set_stats", "game_stats", "reads", "spectra", "habits", "usage", "player_names")]
+    have = {r[0] for r in con.execute("select name from sqlite_master where type='table'")}
+    refs = [(t, c) for t, c in refs if t in have]   # game_stats only exists in newer source databases
     for local, canon in merge.items():
         a, b = ids.get(local), ids.get(canon)
         if a is None or b is None or a == b:

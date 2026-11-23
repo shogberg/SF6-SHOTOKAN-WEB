@@ -17,3 +17,6 @@
 8. **Links:** all sets, head to head with frequent opponents, their band on the MR bands page.
 
 API: `GET /players/{id}` (profile), `GET /players/{id}/archetypes` (history, by result, deviations).
+
+## By character (schema 1.2)
+When a player has played more than one character, the overview shows a **By character** table (sets and games won-lost, throws, anti-airs, counter hits, punish counters, burnouts and wake-up attacks per game on each character) and a **Character** picker that switches the Spectra and Per game sections to that character. Data: `player_character`, built from the source's `game_stats` (per game, with that game's character), so a mid-set character switch is split correctly. Sets reviewed before `game_stats` existed fall back to their whole-set stats (`stats_source = 'sets'`). Spectra are per set, so they count under the set's character.

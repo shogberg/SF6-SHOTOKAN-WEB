@@ -41,6 +41,7 @@ Excluded from the snapshot: local file paths (`games.capture_file`), dashboard l
 ## 3. Derived tables (built at publish)
 
 ### Player
+- **`player_character`** (schema 1.2): one row per player per character: sets and games won-lost, per-game stats (from the source's `game_stats`, or whole-set stats for older sets) and spectra on that character.
 - **`player_profile`**: one row per player.
   - Modal archetype, lean and confidence.
   - Spectra means and spread per axis.
