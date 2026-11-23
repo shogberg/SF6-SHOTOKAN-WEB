@@ -39,6 +39,7 @@
 - Rank/MR trends over time per player.
 - **User accounts:** per-user login to track chosen players, sets or goals. Means app-side auth and somewhere to store writes (likely MariaDB alongside the read-only snapshot).
 - Moving the rest to MariaDB only if it helps then.
+- **Idea: a standalone self-serve app** (in the spirit of lpp and sfbuff.site). Anyone feeds it their own replays (capture files, and/or replay IDs pulled from Buckler the way `buckler_replays.py` does) and gets analytics and progress tracking: damage sources, Drive economy, anti-airs, throws and techs, counter hits, spectra and their trend over time, by character and matchup. It reuses the analyzer and the snapshot schema but skips most of the coaching layer (hand-written reviews, coach lenses, predictions, the ML / model side). Open questions: running the analyzer for other people (local app vs upload), where their data lives, and Buckler cookie handling (each user's own, never stored server-side).
 
 ## Decisions
 | Question | Decision (2026-11-19) |
