@@ -3,6 +3,7 @@
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
 ## 2026-11-24
+- Docs: Observations page doc lists 18 notes for 130 compared sets (obs-0018: predictions pick the winner but undersell the margin).
 - Traits page doc: sf6-meta-description.md now lives in shotokan-sf6/meta-docs.
 
 ## 2026-11-23
