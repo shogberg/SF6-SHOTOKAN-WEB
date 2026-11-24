@@ -2,6 +2,11 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-24 (later)
+- Traits: `/analysis/traits?view=all|others|me`. `others` leaves out sets with the configured player (settings `me`); `me` compares the configured player's won sets with their lost sets (unpaired, MR-weighted means, `won` / `lost` counts, `n_won` / `n_lost` per row). The Traits page has a switch for the three views.
+- Set detail: each player gets `baseline` (the configured player's set against their own previous 7 days, from the tools' new `player_baseline` table); the set page shows it as "vs their last 7 days". Publish copies `player_baseline` when the source has it.
+- Docs: analysis-methods.md explains the spectra pool without the configured player, the player weighting, the personal baseline and the three traits views.
+
 ## 2026-11-24
 - Docs: Observations page doc lists 18 notes for 130 compared sets (obs-0018: predictions pick the winner but undersell the margin).
 - Traits page doc: sf6-meta-description.md now lives in shotokan-sf6/meta-docs.

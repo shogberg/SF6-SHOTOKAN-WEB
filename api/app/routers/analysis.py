@@ -17,8 +17,11 @@ def mr_bands():
 
 
 @router.get("/traits")
-def traits():
-    return wrap(T.traits())
+def traits(view: str = "all"):
+    """view=all | others (sets without the configured player) | me (the configured player's wins against losses)"""
+    if view not in ("all", "others", "me"):
+        view = "all"
+    return wrap(T.traits(view))
 
 
 @router.get("/archetype-predictions")

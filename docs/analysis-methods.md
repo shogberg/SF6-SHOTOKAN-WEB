@@ -55,7 +55,13 @@ Per player, across their sets:
 
 ## Spectra over sets
 - A player's score per axis = the rounded mean of per-set scores, with the range and number of sets shown.
-- Per-set scores are percentile strata against every player-set reviewed so far (20/40/60/80th percentile cut points), so they shift slightly as data grows. Each snapshot recomputes them and records the cut points.
+- Per-set scores are percentile strata (20/40/60/80th percentile cut points) against every reviewed player-set **except the configured player's** (settings `me`), so the coached player is compared with everyone else instead of a pool that is largely their own games. Each other player counts equally: their sets share one weight, min(1, games / 10), so players with only a couple of short sets count less. The tools recalibrate them (`spectra_calibrate.py`) and store them in sf6.db (settings `spectra_cuts`); since 24 Nov 2026 the pool is 234 player-sets from 122 players (effective weight 47).
+- **Personal baseline:** for the configured player only, each set is also compared with the median of their own sets in the previous 7 days (`player_baseline` table): the eight spectra (raw values, and the change on the 1-5 scale) and per-game stats (counter hits, throws, Drive Rush, decision presses, damage per decision press, wake-up and after-block choices). The set page shows it as "vs their last 7 days".
+
+## Traits views
+- **All sets:** winner vs loser of every decided set (paired within the set).
+- **Everyone else:** the same, leaving out sets with the configured player.
+- **You: wins vs losses:** the configured player's own stats in the sets they won against the sets they lost. Not paired (different opponents and days), so each side is the MR-weighted mean over its sets and there is no "higher in" share.
 
 ## Damage
 - A hit's damage is the permanent life the victim lost: the drop in the recoverable-health cap over the combo. When a hit lands while the victim has white (recoverable) health, the white health it cashes in counts. Damage that only adds white health (a blocked Arjun string, a Drive Reversal) counts 0 until a later hit cashes it in.

@@ -20,6 +20,7 @@ def detail(set_key):
         p["read"] = one("select archetype, lean, confidence, evidence, counter_note, risk_tolerance, temperament from reads where set_key=:k and player_id=:pid", k=k, pid=pid)
         p["habits"] = rows("select kind, area, habit, seen, times, fix, confidence, source from habits where set_key=:k and player_id=:pid order by habit_row", k=k, pid=pid)
         p["stats"] = {r["metric"]: r["value"] for r in rows("select metric, value from set_stats where set_key=:k and player_id=:pid", k=k, pid=pid)}
+        p["baseline"] = _baseline(k, pid)
     docs = {r["dataset"]: loads(r["rows"], []) for r in rows("select dataset, rows from review_docs where set_key=:k", k=k) if is_doc(r["dataset"])}
     return {
         "summary": s,
@@ -34,6 +35,14 @@ def detail(set_key):
         "resources": rows("select * from resources where set_key=:k", k=k),
         "parries": rows("select * from parries where set_key=:k", k=k),
     }
+
+
+def _baseline(k, pid):
+    """The configured player's set against their own previous 7 days (player_baseline, written by the tools); [] otherwise."""
+    if not one("select 1 as x from sqlite_master where type='table' and name='player_baseline'"):
+        return []
+    return rows("""select metric, label, value, baseline, n_sets, delta, delta_score, window_days from player_baseline
+                   where set_key=:k and player_id=:pid order by metric""", k=k, pid=pid)
 
 
 def all_sets():

@@ -92,3 +92,21 @@ def test_profile_by_character(client):
     c = p["by_character"][0]
     assert c["games"] >= 1 and "throws" in c["per_game"] and len(c["spectra"]) == 8
     assert sum(x["sets"] for x in p["by_character"]) == p["sets"]
+
+
+def test_traits_views(client):
+    all_ = client.get("/api/v1/analysis/traits").json()["data"]
+    oth = client.get("/api/v1/analysis/traits?view=others").json()["data"]
+    me = client.get("/api/v1/analysis/traits?view=me").json()["data"]
+    assert all_["view"] == "all" and oth["view"] == "others" and me["view"] == "me"
+    assert me["me"] is not None, "the demo snapshot has a configured player (settings 'me')"
+    assert oth["pairs"] <= all_["pairs"]
+    assert me["won"] + me["lost"] == me["pairs"]
+    for r in me["rows"]:
+        assert r["winner_higher"] is None and r["n_won"] + r["n_lost"] == r["n"]
+
+
+def test_set_baseline_field(client):
+    k = client.get("/api/v1/sets").json()["data"][0]["set_key"]
+    d = client.get(f"/api/v1/sets/{k}").json()["data"]
+    assert all(isinstance(p["baseline"], list) for p in d["players"])

@@ -32,6 +32,14 @@ HIGH_END = {"Temperament (defense)": "mindful", "Temperament (offense)": "mindfu
             "Initiative": "proactive", "Composure": "tilts", "Variety": "mixed", "Resource use": "spendthrift"}
 
 
+def me_id():
+    """The configured player (settings 'me' in the snapshot), or None."""
+    r = rows("select p.player_id from settings s join players p on p.name = s.value where s.key = 'me'")
+    if not r:
+        r = rows("select n.player_id from settings s join player_names n on n.name = s.value where s.key = 'me'")
+    return r[0]["player_id"] if r else None
+
+
 def _pairs():
     sets = rows("""select s.set_key, s.focus_player_id as f, s.opp_player_id as o, s.winner_player_id as w,
                           coalesce(pf.weight, 1) as wf, coalesce(po.weight, 1) as wo
@@ -51,7 +59,7 @@ def _pairs():
         W, L = st.get((s["set_key"], s["w"])), st.get((s["set_key"], loser))
         if not W or not L or not W.get("games"):
             continue
-        out.append(dict(set_key=s["set_key"], weight=(s["wf"] + s["wo"]) / 2, W=W, L=L, games=W["games"],
+        out.append(dict(set_key=s["set_key"], weight=(s["wf"] + s["wo"]) / 2, W=W, L=L, games=W["games"], w=s["w"], l=loser,
                         sW=sp.get((s["set_key"], s["w"]), {}), sL=sp.get((s["set_key"], loser), {})))
     return out
 
@@ -71,8 +79,15 @@ def _row(metric, label, group, vals, unit, better=None):
                 winner_higher=None if hi is None else round(hi, 3), lower_is_better=better)
 
 
-def traits():
+def traits(view="all"):
+    """view: 'all' (every decided set), 'others' (sets without the configured player) or 'me' (the configured
+    player's own won sets against their lost sets)."""
+    me = me_id()
+    if view == "me":
+        return _my_traits(me)
     P = _pairs()
+    if view == "others" and me is not None:
+        P = [p for p in P if me not in (p["w"], p["l"])]
     out = []
     for m, label, group, better in PER_GAME:
         out.append(_row(m, label, group, [(p["W"].get(m, 0) / p["games"], p["L"].get(m, 0) / p["games"], p["weight"]) for p in P], "per game", better))
@@ -93,4 +108,50 @@ def traits():
         a["win_rate"] = round(a["wins"] / a["n"], 3) if a["n"] else None
         w, ww = a.pop("w"), a.pop("ww")
         a["weighted_win_rate"] = round(ww / w, 3) if w else None
-    return dict(pairs=len(P), rows=out, archetypes=arch)
+    return dict(view=view, me=me, pairs=len(P), rows=out, archetypes=arch)
+
+
+def _my_traits(me):
+    """The configured player's stats in the sets they won against the sets they lost (not paired: each side is the
+    MR-weighted mean over those sets). 'winner' / 'loser' hold the won-sets / lost-sets means; winner_higher is None."""
+    if me is None:
+        return dict(view="me", me=None, pairs=0, won=0, lost=0, rows=[], archetypes=[])
+    sets = rows("""select s.set_key, s.winner_player_id = :me as won, coalesce(ps.weight, 1) as w
+                   from sets s left join player_set ps on ps.set_key = s.set_key and ps.player_id = :me
+                   where s.winner_player_id is not null and :me in (s.focus_player_id, s.opp_player_id)""", me=me)
+    st = defaultdict(dict)
+    for r in rows("select set_key, metric, value from set_stats where player_id = :me", me=me):
+        st[r["set_key"]][r["metric"]] = r["value"] or 0
+    sp = defaultdict(dict)
+    for r in rows("select set_key, axis, score from spectra where player_id = :me and score is not null", me=me):
+        sp[r["set_key"]][r["axis"]] = r["score"]
+    S = [dict(s, W=st.get(s["set_key"], {}), sW=sp.get(s["set_key"], {})) for s in sets if st.get(s["set_key"], {}).get("games")]
+    won, lost = [s for s in S if s["won"]], [s for s in S if not s["won"]]
+
+    def mean(group, f):
+        v = [(f(s), s["w"]) for s in group]
+        v = [x for x in v if x[0] is not None]
+        tw = sum(w for _, w in v)
+        return (sum(a * w for a, w in v) / tw if tw else None), len(v)
+
+    def row(metric, label, group, f, unit, better=None):
+        a, na = mean(won, f)
+        b, nb = mean(lost, f)
+        if a is None or b is None:
+            return None
+        return dict(metric=metric, label=label, group=group, unit=unit, n=na + nb, ties=0, n_won=na, n_lost=nb,
+                    winner=round(a, 3), loser=round(b, 3), diff=round(a - b, 3), winner_higher=None, lower_is_better=better)
+
+    out = []
+    for m, label, group, better in PER_GAME:
+        out.append(row(m, label, group, lambda s, m=m: s["W"].get(m, 0) / s["W"]["games"], "per game", better))
+    for a_, b_, label, group in RATES:
+        out.append(row(a_, label, group, lambda s, a_=a_, b_=b_: (s["W"].get(a_, 0) / s["W"][b_]) if s["W"].get(b_) else None,
+                       "per round" if b_ == "press_rounds" else "share"))
+    for sit in SITUATIONS:
+        k = f"taken_situation_share: {sit}"
+        out.append(row(k, f"Damage taken in {sit}", "Damage taken", lambda s, k=k: s["W"].get(k, 0), "share", True))
+    for ax in sorted({a for s in S for a in s["sW"]}):
+        out.append(row(f"spectrum: {ax}", f"{ax} (higher = {HIGH_END[ax]})" if ax in HIGH_END else ax, "Spectra",
+                       lambda s, ax=ax: s["sW"].get(ax), "score 1-5"))
+    return dict(view="me", me=me, pairs=len(S), won=len(won), lost=len(lost), rows=[r for r in out if r], archetypes=[])

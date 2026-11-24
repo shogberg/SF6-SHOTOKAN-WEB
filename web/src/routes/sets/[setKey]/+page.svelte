@@ -78,6 +78,17 @@
         <p class="small muted">Damage taken by situation: {share(d, p.player_id, 'situation').slice(0, 4).map(([a, b]) => `${a} ${b}%`).join(', ')}</p>
         <details><summary>Spectra</summary>
           {#each p.spectra as sp}<SpectrumBar s={{ ...sp, left: ENDS[sp.axis]?.[0] ?? '', right: ENDS[sp.axis]?.[1] ?? '' }} />{/each}</details>
+        {#if p.baseline?.length}
+          {@const bl = p.baseline.filter((x: any) => x.baseline != null)}
+          <details><summary>vs their last {p.baseline[0].window_days} days ({bl.length ? `${bl[0].n_sets} earlier sets` : 'no earlier sets'})</summary>
+            {#if bl.length}<table class="small"><thead><tr><th>Stat</th><th>This set</th><th>Usual</th><th>Change</th></tr></thead><tbody>
+              {#each bl as x}
+                {@const pct = x.label.startsWith('Pressed') || x.label.startsWith('Held') || x.label.startsWith('Share')}
+                {@const f = (v: number) => (pct ? `${Math.round(v * 100)}%` : Math.abs(v) >= 100 ? Math.round(v).toString() : v.toFixed(2))}
+                <tr><td>{x.label}{x.metric.startsWith('spectrum') ? ' (raw)' : ''}</td><td>{f(x.value)}</td><td>{f(x.baseline)}</td>
+                  <td>{x.delta > 0 ? '+' : ''}{f(x.delta)}{x.delta_score ? ` (${x.delta_score > 0 ? '+' : ''}${x.delta_score} on the 1-5 scale)` : ''}</td></tr>
+              {/each}</tbody></table>{/if}</details>
+        {/if}
         <details><summary>Habits ({p.habits.length})</summary>
           {#each p.habits as h}<p class="small"><span class="chip" class:ok={h.kind === 'Strength'} class:bad={h.kind === 'Leak'}>{h.kind} · {h.area}</span>{h.habit}
             <span class="muted">Seen: {h.seen}{h.times ? ` (${h.times}×)` : ''}</span><br /><span class="try" style="display:block">{h.fix}</span></p>{/each}</details>
