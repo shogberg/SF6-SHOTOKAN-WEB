@@ -2,6 +2,9 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-24
+- Traits page doc: sf6-meta-description.md now lives in shotokan-sf6/meta-docs.
+
 ## 2026-11-23
 - Docs: Observations page doc lists 17 notes (obs-0014 to obs-0017: button economy, the average game, blind MR-based predictions, lessons under pressure).
 - Docs: analysis-methods.md gains a Damage section (white health, the 23 Nov rescore) and the prediction-vs-MR baseline; traits, observations and About page docs updated (122 sets, 13 notes, obs-0010 revises obs-0004, About differs from the dashboards' tab); data-sync.md and README explain `observations_dir` (relative to the config; none without it). `publish/publish.json` is gitignored.
