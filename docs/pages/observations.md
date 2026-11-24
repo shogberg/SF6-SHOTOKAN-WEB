@@ -6,7 +6,7 @@ Notes on what makes a winning player, what makes a struggling player, and how th
 - **Timeline** view and **by topic** view.
 - Written locally (markdown files with front matter), shipped in the snapshot; nothing is edited on the server.
 
-As of 23 Nov 2026 there are 13 notes (obs-0001 to obs-0013), updated for 122 compared sets. obs-0010 revises obs-0004 ("winners are more patient on defense"), which stopped holding as sets were added; obs-0004 stays visible as the earlier view.
+As of 23 Nov 2026 there are 17 notes (obs-0001 to obs-0017), updated for 122 compared sets; obs-0014 to obs-0017 add the button economy (damage per decision press), the average game, blind MR-based predictions and how lessons hold up under pressure. obs-0010 revises obs-0004 ("winners are more patient on defense"), which stopped holding as sets were added; obs-0004 stays visible as the earlier view.
 
 Front matter example:
 ```

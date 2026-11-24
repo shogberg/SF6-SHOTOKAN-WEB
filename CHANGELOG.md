@@ -3,6 +3,7 @@
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
 ## 2026-11-23
+- Docs: Observations page doc lists 17 notes (obs-0014 to obs-0017: button economy, the average game, blind MR-based predictions, lessons under pressure).
 - Docs: analysis-methods.md gains a Damage section (white health, the 23 Nov rescore) and the prediction-vs-MR baseline; traits, observations and About page docs updated (122 sets, 13 notes, obs-0010 revises obs-0004, About differs from the dashboards' tab); data-sync.md and README explain `observations_dir` (relative to the config; none without it). `publish/publish.json` is gitignored.
 - About page updated with what the data now shows (122 complete sets): damage counts cashed-in white health; Drive is judged by what it buys (burnouts alone don't separate winners); "Block first" replaced by "Don't get opened up on wake-up"; new "Throw, and cash in your hits" habit; Drive Reversal note; spectra list fixed (eight scores, temperament on defense and offense).
 - About page: new "What the data says" section (winner vs loser signals, Arjun's white health, prediction accuracy vs the higher-MR baseline, Observations page).
