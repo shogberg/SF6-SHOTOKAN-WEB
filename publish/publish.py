@@ -120,7 +120,8 @@ def build(source, out_file, cfg):
                 snapshot_id=os.path.splitext(os.path.basename(out_file))[0], source_name=os.path.basename(source),
                 bands=json.dumps([dict(id=b[0], label=b[1], lo=b[2], hi=b[3]) for b in BANDS] + [dict(id=NON_MASTER[0], label=NON_MASTER[1]), dict(id=UNKNOWN[0], label=UNKNOWN[1])]),
                 weights=json.dumps(WEIGHTS), jp_offset=str(JP_OFFSET), jp_adjustment="deferred", anonymized=str(bool(cfg.get("anonymize"))),
-                counts=json.dumps(counts))
+                counts=json.dumps(counts),
+                phases=json.dumps(cfg.get("phases") or []))   # ranked phase start dates from the config, for the MR chart's "Last phase"
     con.executemany("insert into snapshot_meta values (?,?)", meta.items())
     con.commit(); con.execute("vacuum"); con.close()
     return counts

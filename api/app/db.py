@@ -53,3 +53,9 @@ def rows(sql, **params):
 def one(sql, **params):
     r = rows(sql, **params)
     return r[0] if r else None
+
+
+def meta_value(key, default=None):
+    """One raw snapshot_meta value (e.g. 'phases'), or default."""
+    engine()
+    return _state["meta"].get(key, default)

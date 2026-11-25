@@ -1,5 +1,13 @@
 {
-  "merge": { "local name": "CFN name it belongs to" },
+  "merge": {
+    "local name": "CFN name it belongs to"
+  },
   "observations_dir": "observations",
-  "anonymize": false
+  "anonymize": false,
+  "phases": [
+    {
+      "name": "Phase N",
+      "start": "YYYY-MM-DD"
+    }
+  ]
 }

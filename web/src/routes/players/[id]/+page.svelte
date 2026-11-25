@@ -4,6 +4,7 @@
   import { rank, num, pct } from '$lib/format';
   import SpectrumBar from '$lib/components/SpectrumBar.svelte';
   import Loading from '$lib/components/Loading.svelte';
+  import MrChart from '$lib/components/MrChart.svelte';
 
   let id = $derived($page.params.id);
   let data = $derived(Promise.all([api(`/players/${id}`), api(`/players/${id}/archetypes`)]));
@@ -30,6 +31,9 @@
   <p style="margin-top:16px">{p.summary}</p>
   <p class="small"><a href={`/players/${p.player_id}/sets`}>All {p.sets} sets →</a>
     {#each p.top_opponents.slice(0, 4) as o} · <a href={`/h2h/${p.player_id}/${o.player_id}`}>vs {o.name} ({o.wins}-{o.sets - o.wins})</a>{/each}</p>
+
+  <h2>MR over time</h2>
+  <MrChart pid={p.player_id} />
 
   <h2>Archetype</h2>
   <div class="grid">

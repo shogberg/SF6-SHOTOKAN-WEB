@@ -2,6 +2,10 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-25 (MR over time)
+- Player profile: **MR over time** chart, one line per character, from reviewed ranked games (MR before the first game, then after each game), with presets (Last day, Last week, Last month, Last phase, 90 days, Year, All), a From / To range, a character picker, a hover crosshair and a table view. New `GET /api/v1/players/{id}/mr` (`date_from`, `date_to`, `character`). Per-game changes come from the tools' new `games.p1/p2_mr_change` (observed from the next game, or sfbuff's Elo formula, K = 16, for a set's last game); older snapshots fall back to the formula.
+- Publish config: optional `phases` (`[{"name", "start"}]`), copied to `snapshot_meta.phases`, drives "Last phase" (Buckler doesn't expose the current phase).
+
 ## 2026-11-25
 - About page: counts updated for 154 complete sets (throws, combo Drive Rush cancels, counter hits and punish counters with per-game numbers; resource use is higher for the winner in 86% of sets); new "Spend super before the round ends" habit card; prediction accuracy recounted (74% of 111 blind predictions vs 70% for the higher-MR player).
 - Docs: Observations page doc lists 25 notes (obs-0023 revises obs-0016; obs-0024 a punished reversal comes back; obs-0025 rounds lost with super); traits and About page docs updated to 154 sets.

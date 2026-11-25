@@ -78,3 +78,49 @@ def sets(pid, **f):
         left join player_set opp on opp.set_key = ps.set_key and opp.player_id = ps.opp_id
         where {' and '.join(where)}
         order by ps.played_date desc, ps.set_key desc""", **params)
+
+
+def _mr_change(my_mr, opp_mr, won):
+    """sfbuff's MR formula (Elo, K = 16): used when the snapshot has no stored change for a game (older sources)."""
+    return round(16 * ((1 if won else 0) - 1 / (1 + 10 ** ((opp_mr - my_mr) / 400.0))))
+
+
+def mr_history(pid, date_from=None, date_to=None, character=None):
+    """The player's MR over time from reviewed ranked games: one point per game with the MR before it and after it.
+    MR is per character, so each point carries its character. The change after a game is the tools' stored
+    p1/p2_mr_change (observed from the next game in the set, or calculated for the last one) when the source has it,
+    else sfbuff's formula. Games without an MR on both sides (below Master, unranked) are left out."""
+    cols = {r["name"] for r in rows("select name from pragma_table_info('games')")}
+    chg = ("case when g.p1_player_id = :pid then g.p1_mr_change else g.p2_mr_change end" if "p1_mr_change" in cols else "null")
+    src = "g.mr_change_source" if "mr_change_source" in cols else "null"
+    r = rows(f"""
+        select g.replay_id, g.set_key, g.game_no, s.played_date, g.played_time,
+               case when g.p1_player_id = :pid then g.p1_char else g.p2_char end as character,
+               case when g.p1_player_id = :pid then g.p1_mr else g.p2_mr end as mr,
+               case when g.p1_player_id = :pid then g.p2_mr else g.p1_mr end as opp_mr,
+               case when g.p1_player_id = :pid then g.p2_player_id else g.p1_player_id end as opp_id,
+               g.winner_player_id = :pid as won, {chg} as change, {src} as source
+        from games g join sets s on s.set_key = g.set_key
+        where s.ranked = 1 and (g.p1_player_id = :pid or g.p2_player_id = :pid)""", pid=pid)
+    names = {x["player_id"]: x["name"] for x in rows("select player_id, name from players")}
+    out = []
+    for x in r:
+        if not x["mr"] or not x["opp_mr"] or x["mr"] <= 0 or x["opp_mr"] <= 0:
+            continue
+        t = x["played_time"] or ""
+        x["at"] = t if len(t) > 8 else f"{x['played_date']} {t or '00:00'}"
+        if x["change"] is None:
+            x["change"] = _mr_change(x["mr"], x["opp_mr"], x["won"]); x["source"] = "calculated"
+        x["mr_after"] = x["mr"] + x["change"]
+        x["opponent"] = names.get(x["opp_id"])
+        x["won"] = bool(x["won"])
+        out.append(x)
+    out.sort(key=lambda x: (x["at"], x["set_key"], x["game_no"]))
+    chars = sorted({x["character"] for x in out}, key=lambda c: min(i for i, y in enumerate(out) if y["character"] == c))
+    if character:
+        out = [x for x in out if x["character"] == character]
+    if date_from:
+        out = [x for x in out if x["at"][:10] >= date_from]
+    if date_to:
+        out = [x for x in out if x["at"][:10] <= date_to]
+    return out, chars

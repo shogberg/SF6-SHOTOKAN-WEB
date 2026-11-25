@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Query
 from ..util import wrap, not_found, paginate, loads, PER_PAGE
 from ..queries import players as Q
+from ..db import meta_value
 
 router = APIRouter(tags=["players"])
 
@@ -29,6 +30,17 @@ def archetypes(pid: int):
     if not Q.profile(pid):
         not_found("player")
     return wrap(Q.archetypes(pid))
+
+
+@router.get("/players/{pid}/mr")
+def mr(pid: int, date_from: str | None = None, date_to: str | None = None, character: str | None = None):
+    """MR over time (reviewed ranked games). `characters` lists every character with MR points, in first-played order,
+    so colours stay fixed when a filter narrows the points; `phases` are the ranked phase start dates from the publish config."""
+    if not Q.profile(pid):
+        not_found("player")
+    pts, chars = Q.mr_history(pid, date_from=date_from, date_to=date_to, character=character)
+    phases = loads(meta_value("phases"), [])
+    return wrap(pts, characters=chars, phases=phases)
 
 
 @router.get("/players/{pid}/sets")

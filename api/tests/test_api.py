@@ -110,3 +110,17 @@ def test_set_baseline_field(client):
     k = client.get("/api/v1/sets").json()["data"][0]["set_key"]
     d = client.get(f"/api/v1/sets/{k}").json()["data"]
     assert all(isinstance(p["baseline"], list) for p in d["players"])
+
+
+def test_player_mr_history(client):
+    pid = client.get("/api/v1/players").json()["data"][0]["player_id"]
+    r = client.get(f"/api/v1/players/{pid}/mr").json()
+    assert "characters" in r and "phases" in r and isinstance(r["data"], list)
+    for p in r["data"]:
+        assert p["mr_after"] == p["mr"] + p["change"] and p["character"] in r["characters"]
+    assert [p["at"] for p in r["data"]] == sorted(p["at"] for p in r["data"])
+    if r["data"]:
+        d = r["data"][-1]["at"][:10]
+        later = client.get(f"/api/v1/players/{pid}/mr", params={"date_from": d}).json()["data"]
+        assert later and all(p["at"][:10] >= d for p in later)
+    assert client.get("/api/v1/players/999999/mr").status_code == 404
