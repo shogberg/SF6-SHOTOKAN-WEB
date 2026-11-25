@@ -54,12 +54,12 @@ export const ABOUT: AboutItem[] = [
  {
   "section": "Top player habits",
   "title": "Throw, and cash in your hits",
-  "body": "The two clearest things winners do more of: they land more throws, and they turn hits into damage with combo Drive Rush cancels. The throw is the one option that always gives a definite answer, so it belongs in the default offense."
+  "body": "The two clearest things winners do more of: they land more throws (2.0 a game to the loser's 1.3) and turn hits into damage with combo Drive Rush cancels (1.9 to 1.0). The throw is the one option that always gives a definite answer, so it belongs in the default offense."
  },
  {
   "section": "Top player habits",
   "title": "Punish everything that is punishable",
-  "body": "Consistent players take every free punish and beat the opponent's buttons with their own: winners land more counter hits and about twice the punish counters of losers. It's the cheapest damage in the game and it changes what the opponent dares to do."
+  "body": "Consistent players take every free punish and beat the opponent's buttons with their own: winners land more counter hits (5.9 a game to 4.7) and nearly twice the punish counters (0.8 to 0.4). It's the cheapest damage in the game and it changes what the opponent dares to do."
  },
  {
   "section": "Top player habits",
@@ -69,7 +69,12 @@ export const ABOUT: AboutItem[] = [
  {
   "section": "Top player habits",
   "title": "Manage Drive and the clock",
-  "body": "Keep enough Drive to defend, and spend it when it turns a hit into damage, position or a kill. Drive Reversal is mostly a losing player's tool: it costs 2 bars, is -6 if blocked, and usually only resets the situation, so blocking, a tech or a parry is often the cheaper answer."
+  "body": "Keep enough Drive to defend, and spend it when it turns a hit into damage, position or a kill. Drive Reversal is mostly a losing player's tool (losers use it about twice as often): it costs 2 bars, is -6 if blocked, and usually only resets the situation, so blocking, a tech or a parry is often the cheaper answer."
+ },
+ {
+  "section": "Top player habits",
+  "title": "Spend super before the round ends",
+  "body": "Round winners spend about 1.1 bars of super a round; round losers 0.3, and most lost rounds end with 2 or more bars still in the gauge. A full gauge at the KO is damage that was never used. When a hit can carry into super and the round is close, cash it out."
  },
  {
   "section": "Top player habits",
@@ -79,7 +84,7 @@ export const ABOUT: AboutItem[] = [
  {
   "section": "What the data says",
   "title": "Winner vs loser, set by set",
-  "body": "The traits page compares the winner and the loser of the same set, stat by stat, weighted by MR, so the opponent, matchup and day stay the same. As of November 2026 that's 122 complete sets. The steadiest signals: resource use (winners spend more Drive, after hits), throws landed, combo Drive Rush cancels, counter hits and punish counters. Anti-airs, throw techs, burnouts and how often players hold block barely separate them; those track the matchup and the player more than winning."
+  "body": "The traits page compares the winner and the loser of the same set, stat by stat, weighted by MR, so the opponent, matchup and day stay the same. As of 25 November 2026 that's 154 complete sets. The steadiest signals: resource use (winners are the bigger spender in 86% of sets, and they spend after hits), throws landed, combo Drive Rush cancels, counter hits and punish counters. Anti-airs, throw techs, burnouts and how often players hold block barely separate them; those track the matchup and the player more than winning."
  },
  {
   "section": "What the data says",
@@ -89,7 +94,7 @@ export const ABOUT: AboutItem[] = [
  {
   "section": "What the data says",
   "title": "How well the reviews predict",
-  "body": "Every review starts with a prediction written before the replay is analysed. Blind predictions picked the winner in 72% of sets (and 84% to 100% at Medium and High confidence), but simply picking the higher-MR player does as well, about 76%. The predictions are more useful for naming the factors that decide a set than for picking the winner."
+  "body": "Every review starts with a prediction written before the replay is analysed. Blind predictions picked the winner in 74% of 111 sets (86% at Medium confidence, 8 of 8 at High), a little better than simply picking the higher-MR player (70% of 133 sets). Low-confidence calls do no better than MR, so the predictions are still most useful for naming the factors that decide a set."
  },
  {
   "section": "What the data says",

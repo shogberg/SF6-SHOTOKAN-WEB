@@ -2,6 +2,10 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-25
+- About page: counts updated for 154 complete sets (throws, combo Drive Rush cancels, counter hits and punish counters with per-game numbers; resource use is higher for the winner in 86% of sets); new "Spend super before the round ends" habit card; prediction accuracy recounted (74% of 111 blind predictions vs 70% for the higher-MR player).
+- Docs: Observations page doc lists 25 notes (obs-0023 revises obs-0016; obs-0024 a punished reversal comes back; obs-0025 rounds lost with super); traits and About page docs updated to 154 sets.
+
 ## 2026-11-24 (later)
 - Traits: `/analysis/traits?view=all|others|me`. `others` leaves out sets with the configured player (settings `me`); `me` compares the configured player's won sets with their lost sets (unpaired, MR-weighted means, `won` / `lost` counts, `n_won` / `n_lost` per row). The Traits page has a switch for the three views.
 - Set detail: each player gets `baseline` (the configured player's set against their own previous 7 days, from the tools' new `player_baseline` table); the set page shows it as "vs their last 7 days". Publish copies `player_baseline` when the source has it.
