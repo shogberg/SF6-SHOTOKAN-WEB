@@ -124,3 +124,44 @@ def mr_history(pid, date_from=None, date_to=None, character=None):
     if date_to:
         out = [x for x in out if x["at"][:10] <= date_to]
     return out, chars
+
+
+def win_rates(pid, context=None):
+    """Game win rates per character the player used: against the opponent's MR (100-point bands, from the MR the
+    opponent carried into that game; games without an opponent MR are left out of that table) and against each
+    opponent character. Per game, so a character switch inside a set is split correctly. `context`: 'ranked' keeps
+    ranked sets only; default is every reviewed game."""
+    q = """
+        select case when g.p1_player_id = :pid then g.p1_char else g.p2_char end as character,
+               case when g.p1_player_id = :pid then g.p2_char else g.p1_char end as opp_char,
+               case when g.p1_player_id = :pid then g.p2_mr else g.p1_mr end as opp_mr,
+               g.winner_player_id = :pid as won, s.ranked as ranked
+        from games g join sets s on s.set_key = g.set_key
+        where (g.p1_player_id = :pid or g.p2_player_id = :pid) and g.winner_player_id is not null"""
+    games = rows(q, pid=pid)
+    if context == "ranked":
+        games = [x for x in games if x["ranked"] == 1]
+
+    def row(key, xs):
+        w = sum(1 for x in xs if x["won"])
+        return {**key, "games": len(xs), "won": w, "lost": len(xs) - w, "win_pct": round(100 * w / len(xs)) if xs else None}
+
+    out = []
+    for ch in sorted({x["character"] for x in games if x["character"]}, key=lambda c: -sum(1 for x in games if x["character"] == c)):
+        mine = [x for x in games if x["character"] == ch]
+        bands = {}
+        for x in mine:
+            if x["opp_mr"] and x["opp_mr"] > 0:
+                lo = int(x["opp_mr"]) // 100 * 100
+                bands.setdefault(lo, []).append(x)
+        opp = {}
+        for x in mine:
+            opp.setdefault(x["opp_char"] or "Unknown", []).append(x)
+        out.append({
+            **row({"character": ch}, mine),
+            "by_mr": [row({"band": f"{lo}-{lo + 99}", "mr_from": lo}, xs) for lo, xs in sorted(bands.items())],
+            "mr_games": sum(len(xs) for xs in bands.values()),
+            "by_opponent_character": sorted((row({"opp_character": c}, xs) for c, xs in opp.items()),
+                                           key=lambda r: (-r["games"], r["opp_character"])),
+        })
+    return out

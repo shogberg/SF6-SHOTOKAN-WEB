@@ -5,6 +5,7 @@
   import SpectrumBar from '$lib/components/SpectrumBar.svelte';
   import Loading from '$lib/components/Loading.svelte';
   import MrChart from '$lib/components/MrChart.svelte';
+  import WinRates from '$lib/components/WinRates.svelte';
 
   let id = $derived($page.params.id);
   let data = $derived(Promise.all([api(`/players/${id}`), api(`/players/${id}/archetypes`)]));
@@ -34,6 +35,9 @@
 
   <h2>MR over time</h2>
   <MrChart pid={p.player_id} />
+
+  <h2>Win rate</h2>
+  <WinRates pid={p.player_id} />
 
   <h2>Archetype</h2>
   <div class="grid">

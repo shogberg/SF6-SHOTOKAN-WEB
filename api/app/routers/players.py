@@ -43,6 +43,15 @@ def mr(pid: int, date_from: str | None = None, date_to: str | None = None, chara
     return wrap(pts, characters=chars, phases=phases)
 
 
+@router.get("/players/{pid}/winrates")
+def winrates(pid: int, context: str | None = None):
+    """Game win rates per character played: by the opponent's MR (100-point bands, games where the opponent had an MR)
+    and by opponent character. `context=ranked` keeps ranked sets only."""
+    if not Q.profile(pid):
+        not_found("player")
+    return wrap(Q.win_rates(pid, context=context))
+
+
 @router.get("/players/{pid}/sets")
 def sets(pid: int, opponent: int | None = None, character: str | None = None, result: str | None = None, review: str | None = None,
          context: str | None = None, band: str | None = None, date_from: str | None = None, date_to: str | None = None,

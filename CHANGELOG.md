@@ -2,6 +2,28 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-26 (Stats by MR, Stats by Character, Archetypes, reviewed date)
+- **Stats by MR** (was "MR bands", phase 3 first version):
+    - Band tables for button economy, Drive economy, offense / pressure / oki, defense, damage taken by lens, spectra and archetype mix.
+    - Biggest differences between neighbouring bands.
+    - Dated hand-written notes (`web/src/lib/mrBandsNotes.ts`).
+    - A "without the site owner" toggle.
+    - New `GET /api/v1/analysis/mr-bands`.
+- **Bands revised:** Under Master, Below 1400, 1400-1599, 1600-1699, 1700-1799, 1800-1999, 2000+ (`publish/common.py`). 1600-1800 is split in two, and "Diamond and below" is relabelled "Under Master" (id unchanged).
+- **Stats by Character** (was the "Characters" placeholder): character vs character game win rates with an MR band filter. `GET /api/v1/matchups?band=`; the per-pairing detail is still planned.
+- **Archetypes** (was "Archetype matchups"):
+    - Notes on each archetype and why players lean that way (`web/src/lib/archetypeNotes.ts`).
+    - Summary per archetype, head to head, and spectra by archetype, all with the MR band filter.
+    - `GET /api/v1/analysis/archetypes?band=`; the old path redirects.
+- Shared `BandFilter` component.
+- **Nav:** "Sets" removed (the set list stays at `/sets`, linked from the home page); new labels Stats by MR, Stats by Character, Archetypes.
+- **Home page:** latest reviewed sets sorted by `sets.reviewed_at` (first review time, new in the tools; older sets backfilled from their ingest time), with Reviewed and Played columns. Older snapshots fall back to the played date.
+- Tests for the new endpoints; docs for the three pages, the bands and the project plan.
+
+## 2026-11-26 (win rates on player profiles)
+- Player profile: new **Win rate** section, one block per character played. It has game win rate vs opponent MR in 100-point bands (only bands with games) and vs each opponent character, with an all-games / ranked-only toggle, a character picker for multi-character players, dimmed rows under 5 games and a bar against 50%. New `GET /api/v1/players/{id}/winrates` (`context=ranked`), with a test.
+- Docs: player profile page doc describes the section and the endpoint.
+
 ## 2026-11-26 (A.K.I. character card)
 - About page: new "Learning a character from a stronger player" card (Broski vs Zastorial, A.K.I.: throw loops, fireball Drive Rush follow-ups, wiki move names; obs-0026 to obs-0028), and the A.K.I. batch's prediction accuracy (21 of 32) in "How well the reviews predict".
 - Docs: Observations page doc lists 28 notes; About page doc notes the new card.

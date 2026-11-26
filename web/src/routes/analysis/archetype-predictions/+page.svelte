@@ -1,6 +1,7 @@
 <script lang="ts">
-  import Planned from '$lib/components/Planned.svelte';
+  // Renamed to Archetypes (/analysis/archetypes) on 2026-11-26; this path stays for old links.
+  import { goto } from '$app/navigation';
+  import { onMount } from 'svelte';
+  onMount(() => { goto('/analysis/archetypes', { replaceState: true }); });
 </script>
-<Planned title="Archetype matchups" phase={3}>
-  Predicted and observed results when archetypes and spectra meet, most common pairings first.
-</Planned>
+<p class="muted">Archetype matchups moved to <a href="/analysis/archetypes">Archetypes</a>.</p>

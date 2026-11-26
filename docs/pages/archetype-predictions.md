@@ -1,4 +1,17 @@
-# Archetype matchups (`/analysis/archetype-predictions`)
+# Archetypes (`/analysis/archetypes`)
+
+Renamed from "Archetype matchups" on 2026-11-26; `/analysis/archetype-predictions` redirects here.
+
+## Built (2026-11-26)
+- **The four archetypes:** hand-written notes on what each archetype looks like and why players lean that way (character kit, matchup, score, MR), plus general notes. Text in `web/src/lib/archetypeNotes.ts`, dated; rewrite when the tables stop matching it.
+- **MR filter** (All plus the Stats by MR bands; the band of the player whose archetype it is).
+- **Summary per archetype:** share of reads, player-sets, players, set win rate, most common characters and leans.
+- **Head to head:** set win rate of the row archetype against the column archetype (the filter applies to the row player).
+- **Spectra by archetype:** mean of each spectrum.
+
+API: `GET /api/v1/analysis/archetypes?band=` returns `summary` (per archetype), `matrix` and `player_sets`, plus `bands`.
+
+## Still planned: predictions
 
 Predictions for the most common archetypes and spectra when they meet.
 - **Archetype matrix:** rows and columns are Aggressive, Defensive, Fundamentalist and Balanced (and common leans). Each cell shows:

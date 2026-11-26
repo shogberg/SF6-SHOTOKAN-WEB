@@ -5,12 +5,13 @@ How the derived numbers are defined. Everything here is computed at publish time
 ## MR bands
 | Band | Rule |
 |---|---|
-| **Diamond and below** | Not yet Master (Rookie through Diamond). Ranked by league, no MR. One band, labelled by league name only (e.g. "Platinum") where a league is shown. |
-| **MR below 1400** | Master, effective MR < 1400. |
-| **MR 1400-1600** | 1400 ≤ effective MR < 1600 |
-| **MR 1600-1800** | 1600 ≤ effective MR < 1800 *(added: the brief skipped this range, see open questions)* |
-| **MR 1800-2000** | 1800 ≤ effective MR < 2000 |
-| **MR 2000+** | effective MR ≥ 2000 |
+| **Under Master** | Not yet Master (Rookie through Diamond). Ranked by league, no MR. One band (id `diamond_below`, labelled "Diamond and below" until 2026-11-26), labelled by league name only (e.g. "Platinum") where a league is shown. |
+| **Below 1400** | Master, effective MR < 1400. |
+| **1400-1599** | 1400 ≤ effective MR < 1600 |
+| **1600-1699** | 1600 ≤ effective MR < 1700 *(split from 1600-1800 on 2026-11-26)* |
+| **1700-1799** | 1700 ≤ effective MR < 1800 |
+| **1800-1999** | 1800 ≤ effective MR < 2000 |
+| **2000+** | effective MR ≥ 2000 |
 | **MR unknown** | Master with no MR recorded (e.g. older opponents, local matches). Shown in lists, left out of band statistics. |
 
 - A player's band is taken **per set**, from their MR at that set, not their current MR. A player who climbs counts in each band they played in.

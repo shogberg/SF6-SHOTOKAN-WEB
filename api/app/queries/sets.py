@@ -55,7 +55,12 @@ def all_sets():
 
 
 def recent(limit=12):
-    return rows("""select ss.set_key, ss.played_date, ss.context, ss.review, ss.p1_id, ss.p2_id, a.name as p1_name, b.name as p2_name,
+    """Latest reviewed sets: by the date each set was first reviewed (sets.reviewed_at, from tools 2026-11-26), then by
+    played date. Older snapshots without reviewed_at fall back to the played date."""
+    has = any(r["name"] == "reviewed_at" for r in rows("select name from pragma_table_info('sets')"))
+    rev = "s.reviewed_at" if has else "null"
+    return rows(f"""select ss.set_key, ss.played_date, {rev} as reviewed_at, ss.context, ss.review, ss.p1_id, ss.p2_id, a.name as p1_name, b.name as p2_name,
                           ss.p1_char, ss.p2_char, ss.p1_games, ss.p2_games, ss.winner_id
                    from set_summary ss join players a on a.player_id=ss.p1_id join players b on b.player_id=ss.p2_id
-                   order by ss.played_date desc, ss.set_key desc limit :n""", n=limit)
+                   left join sets s on s.set_key = ss.set_key
+                   order by coalesce({rev}, ss.played_date) desc, ss.played_date desc, ss.set_key desc limit :n""", n=limit)

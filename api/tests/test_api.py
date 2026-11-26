@@ -36,8 +36,9 @@ def test_h2h(client):
 
 
 def test_placeholders_and_404(client):
-    assert client.get("/api/v1/matchups").status_code == 501
-    assert client.get("/api/v1/analysis/mr-bands").status_code == 501
+    assert client.get("/api/v1/matchups").status_code == 200
+    assert client.get("/api/v1/matchups/Ryu/Ken").status_code == 501
+    assert client.get("/api/v1/analysis/mr-bands").status_code == 200
     assert client.get("/api/v1/analysis/observations").status_code == 200
     assert client.get("/api/v1/players/99999").status_code == 404
 
@@ -124,3 +125,31 @@ def test_player_mr_history(client):
         later = client.get(f"/api/v1/players/{pid}/mr", params={"date_from": d}).json()["data"]
         assert later and all(p["at"][:10] >= d for p in later)
     assert client.get("/api/v1/players/999999/mr").status_code == 404
+
+
+def test_winrates(client):
+    w = client.get("/api/v1/players/1/winrates").json()["data"]
+    assert w and all(c["games"] == c["won"] + c["lost"] for c in w)
+    for c in w:
+        assert sum(o["games"] for o in c["by_opponent_character"]) == c["games"]
+        assert sum(b["games"] for b in c["by_mr"]) == c["mr_games"] <= c["games"]
+        assert all(b["band"] == f"{b['mr_from']}-{b['mr_from'] + 99}" and b["mr_from"] % 100 == 0 for b in c["by_mr"])
+    r = client.get("/api/v1/players/1/winrates", params={"context": "ranked"}).json()["data"]
+    assert sum(c["games"] for c in r) <= sum(c["games"] for c in w)
+    assert client.get("/api/v1/players/999999/winrates").status_code == 404
+
+
+def test_stats_pages(client):
+    m = client.get("/api/v1/analysis/mr-bands").json()["data"]
+    assert m["bands"] and m["metrics"] and all(set(r["bands"]) == {b["id"] for b in m["bands"]} for r in m["metrics"])
+    c = client.get("/api/v1/matchups").json()
+    assert c["bands"][0]["id"] == "all" and c["data"]
+    for ch in c["data"]:
+        assert sum(v["games"] for v in ch["vs"]) == ch["games"]
+        assert ch["games_non_mirror"] == ch["won"] + ch["lost"]
+    b = c["bands"][1]["id"]
+    cb = client.get("/api/v1/matchups", params={"band": b}).json()["data"]
+    assert sum(x["games"] for x in cb) <= sum(x["games"] for x in c["data"])
+    a = client.get("/api/v1/analysis/archetypes").json()["data"]
+    assert [s["archetype"] for s in a["summary"]] == ["Aggressive", "Balanced", "Defensive", "Fundamentalist"]
+    assert sum(s["player_sets"] for s in a["summary"]) == a["player_sets"]

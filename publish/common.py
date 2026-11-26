@@ -7,12 +7,13 @@ SCHEMA_VERSION = "1.2"          # major.minor: the API refuses an unknown major,
 # ---- MR bands (docs/analysis-methods.md) -------------------------------------
 BANDS = [  # (id, label, lo, hi) on effective MR; Master only
     ("lt1400", "Below 1400", None, 1400),
-    ("1400_1600", "1400-1600", 1400, 1600),
-    ("1600_1800", "1600-1800", 1600, 1800),
-    ("1800_2000", "1800-2000", 1800, 2000),
+    ("1400_1600", "1400-1599", 1400, 1600),
+    ("1600_1700", "1600-1699", 1600, 1700),
+    ("1700_1800", "1700-1799", 1700, 1800),
+    ("1800_2000", "1800-1999", 1800, 2000),
     ("2000p", "2000+", 2000, None),
 ]
-NON_MASTER = ("diamond_below", "Diamond and below")
+NON_MASTER = ("diamond_below", "Under Master")   # id kept from schema 1.0 (was "Diamond and below")
 UNKNOWN = ("unknown", "MR unknown")
 LEAGUES = ("rookie", "iron", "bronze", "silver", "gold", "platinum", "diamond")
 
