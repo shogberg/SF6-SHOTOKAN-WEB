@@ -1,6 +1,21 @@
 from ..db import rows, one
 from ..util import loads
 
+FLAG_LABELS = {"notable": "Notable player"}   # flag -> badge text; unknown flags show as written
+
+
+def _has_flags():
+    return bool(rows("select 1 from sqlite_master where type='table' and name='player_flags'"))
+
+
+def flags_by_player():
+    """{player_id: [{flag, label, note}]} from player_flags (snapshots before 2026-11-26 have none)."""
+    out = {}
+    if _has_flags():
+        for r in rows("select player_id, flag, note from player_flags order by flag"):
+            out.setdefault(r["player_id"], []).append({"flag": r["flag"], "label": FLAG_LABELS.get(r["flag"], r["flag"]), "note": r["note"]})
+    return out
+
 PROFILE_JSON = ("characters", "reviews_json", "spectra_json", "per_game_json", "opp_did_json")
 
 
@@ -29,6 +44,7 @@ def profile(pid):
     for k in PROFILE_JSON:
         p[k.replace("_json", "")] = loads(p.pop(k), [] if k == "characters" else {})
     p["other_names"] = [r["name"] for r in rows("select distinct name from player_names where player_id=:pid and lower(name)<>lower(:n)", pid=pid, n=p["name"])]
+    p["flags"] = flags_by_player().get(pid, [])
     try:   # snapshots before schema 1.2 have no player_character table
         p["by_character"] = rows("""select character, sets, sets_won, games, games_won, games_lost, per_game_json, spectra_json, stats_source
                                     from player_character where player_id=:pid order by games desc, character""", pid=pid)

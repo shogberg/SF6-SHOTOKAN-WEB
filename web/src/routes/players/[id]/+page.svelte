@@ -21,7 +21,7 @@
   {@const p = pr.data}
   {@const a = ar.data}
   <div class="muted small">{p.characters.map((c: any) => c[0]).join(' / ')} · {rank(p.latest_mr, p.latest_league)} · {p.latest_band_label}{p.cfn_id ? ` · CFN ${p.cfn_id}` : ''}</div>
-  <h1>{p.name}</h1>
+  <h1>{p.name}{#each p.flags ?? [] as f}<span class="badge" title={f.note ?? 'Flagged as a notable / pro player: their sets are worth studying for their character'}>★ {f.label}</span>{/each}</h1>
   {#if p.other_names.length}<div class="muted small">Also played as {p.other_names.join(', ')}</div>{/if}
   <div class="tiles" style="margin-top:14px">
     <div class="card tile"><div class="muted small">Sets</div><div class="v">{p.sets_won}-{p.sets - p.sets_won}</div></div>
@@ -109,4 +109,5 @@
   <p class="muted small">Over {pg.games} games{pc && pc.stats_source === 'sets' ? ' (from whole-set stats: these sets were reviewed before per-game stats were kept)' : ''}. Opponents counter-hit them {num(p.opp_did.counter_hits_taken)}×, anti-aired them {num(p.opp_did.anti_aired)}× and threw them {num(p.opp_did.thrown)}× a game.</p>
 {:catch e}<Loading error={e} />{/await}
 
-<style>.timeline { display: flex; flex-wrap: wrap; } .linklike { font: inherit; background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; }</style>
+<style>.badge { display: inline-block; vertical-align: middle; margin-left: 12px; font: 600 .8rem/1 system-ui, sans-serif; letter-spacing: .02em; color: #fff; background: var(--accent); border-radius: 999px; padding: 5px 10px; }
+  .timeline { display: flex; flex-wrap: wrap; } .linklike { font: inherit; background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; }</style>

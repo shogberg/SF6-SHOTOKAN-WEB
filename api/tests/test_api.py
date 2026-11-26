@@ -164,3 +164,11 @@ def test_context_filter(client):
             d = r.json()["data"]
             n[ctx] = sum(b["player_sets"] for b in d["bands"]) if "bands" in d else sum(c["games"] for c in d)
         assert n["ranked"] + n["other"] == n["all"]
+
+
+def test_player_flags(client):
+    p = client.get("/api/v1/players/1").json()["data"]
+    assert p["flags"] and p["flags"][0]["flag"] == "notable" and p["flags"][0]["label"] == "Notable player"
+    lst = client.get("/api/v1/players").json()["data"]
+    assert any(x["flags"] for x in lst if x["player_id"] == 1)
+    assert all("flags" in x for x in lst)

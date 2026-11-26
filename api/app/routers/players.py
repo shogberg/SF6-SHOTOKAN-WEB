@@ -14,8 +14,10 @@ def search(q: str = Query(..., min_length=1), limit: int = Query(20, le=50)):
 @router.get("/players")
 def players():
     r = Q.list_all()
+    fl = Q.flags_by_player()
     for p in r:
         p["characters"] = loads(p["characters"], [])
+        p["flags"] = fl.get(p["player_id"], [])
     return wrap(r)
 
 

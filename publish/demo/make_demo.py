@@ -20,6 +20,7 @@ HABITS = [("Strength", "Offense", "Throws landed"), ("Strength", "Neutral", "Ant
 DDL = """
 create table players (player_id integer primary key, cfn_id text, name text, first_seen text, last_seen text);
 create table player_names (player_id integer, name text, first_seen text, last_seen text);
+create table player_flags (player_id integer, flag text, note text, added text, primary key (player_id, flag));
 create table settings (key text primary key, value text);
 create table sets (set_key text primary key, played_date text, ranked integer, format text, review text, focus_player_id integer, opp_player_id integer,
   focus_char text, opp_char text, focus_games integer, opp_games integer, winner_player_id integer, focus_mr_start integer, games_missing integer, note text,
@@ -117,6 +118,7 @@ def main(out, seed=7):
                 "what_happened": "Synthetic demo set.", "lessons": "Demo data."}]), date))
             con.execute("insert into review_docs values (?,?,?,?)", (key, "story_games", json.dumps([
                 {"game_id": rid, "game_no": i + 1, "summary": "A synthetic game for the demo.", "turning_point": "Round 2 anti-air."} for i, rid in enumerate(ids)]), date))
+    con.execute("insert into player_flags values (1, 'notable', 'demo flag', '2026-11-26')")
     con.commit(); con.close()
     print("demo source written:", out)
 

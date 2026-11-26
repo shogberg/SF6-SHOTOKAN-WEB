@@ -1,6 +1,6 @@
 # Player profile (`/players/{id}`)
 
-**Header:** name (and past names), CFN ID if known, main characters, current MR / league (raw MR, plus effective MR if JP), record in sets and games, date range, number of reviewed sets by level.
+**Header:** name, a "★ Notable player" badge for players flagged in the tools (`player_flags`; added 2026-11-26), past names, CFN ID if known, main characters, current MR / league (raw MR, plus effective MR if JP), record in sets and games, date range, number of reviewed sets by level.
 
 ## Sections
 1. **Summary.** A short generated paragraph (as `profiles_from_db.py` writes today), plus confidence and sample size.

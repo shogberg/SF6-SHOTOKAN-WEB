@@ -63,6 +63,8 @@ python -m pytest -q api/tests                                                   
 
 **Publish to the server:** `python publish/publish.py --source sf6.db --target shotokan@shotokan.hogberg.dev:/srv/shotokan/data`. See [docs/data-sync.md](docs/data-sync.md) and [docs/deployment.md](docs/deployment.md).
 
+Sets the tools mark `excluded` (e.g. 1v1me betting matches) are left out of the snapshot, and flagged players (`player_flags`) get a profile badge.
+
 **Publish config** (optional, keep it outside the repo, see `publish/publish.example.json`): `merge` folds a name used in local matches into the CFN player it belongs to (e.g. a local "shog" into ".shog"); `observations_dir` points at your observation notes (relative to the config file, or absolute; leave it out and the Observations page is empty); `anonymize` replaces opponent names with aliases.
 
 ## What the site does
@@ -72,22 +74,22 @@ Search by player name or CFN ID, then:
 
 | View | What it shows |
 |---|---|
-| **Profile** | Archetype and lean, the eight spectra, strengths and weaknesses, per-game numbers, and how their archetype holds up: in winning vs losing sets, how often they deviate from their usual archetype, and in which direction. |
+| **Profile** | A "Notable player" badge for flagged players. MR over time, one step per game. Game win rates per character played, against opponent MR (100-point bands) and against each opponent character. Archetype and lean, the eight spectra, strengths and weaknesses, per-game numbers, and how their archetype holds up: in winning vs losing sets, how often they deviate from their usual archetype, and in which direction. |
 | **Sets** | Every set they've played: date, opponent, characters, result, review level, MR at the time. |
-| **Set search** | Search any player by name or CFN ID, pick from the matching players, and page through all their sets, 25 per page (or browse every set). |
+| **Set search** | Search any player by name or CFN ID, pick from the matching players, and page through all their sets, 25 per page (or browse every set). Not in the nav; linked from the home page, whose latest sets are sorted by review date. |
 | **Set detail** | One set: games and rounds, the prediction made before review (if any) and how it graded, story, habits, Drive economy, hits. |
 | **Head to head** | All sets between two players (e.g. .shog vs jon): record, how each played the other, what changed over time. |
 
-### Character matchups *(placeholder, later phase)*
-All games of one character pairing (e.g. Cammy vs Blanka) across every player. Planned, not designed yet.
+### Stats by Character
+Game win rates of every character against every other, filtered by set type (ranked by default, other, all) and by MR band. The per-pairing detail (damage each way, starters, punishes) is still planned.
 
 ### General analysis
 | View | What it shows |
 |---|---|
-| **MR bands** | How players differ by skill band: Diamond and below (no MR), below 1400, 1400-1600, 1600-1800, 1800-2000, 2000+. |
+| **Stats by MR** | How players differ by skill band (Under Master, below 1400, 1400-1599, 1600-1699, 1700-1799, 1800-1999, 2000+): button economy, Drive economy, offense / pressure / oki, defense, damage taken, spectra and archetype mix, with dated notes. Ranked sets by default. |
 | **What winning players do** | Typical archetypes and spectra of successful players, weighted toward higher MR. |
 | **Observations** | Written notes on what makes a winning or struggling player, dated, so changes in the model over time stay visible. |
-| **Archetype matchups** | Predicted and observed results when archetypes and spectra meet (e.g. Impulsive defense vs heavy frame-trap offense). |
+| **Archetypes** | What each archetype looks like and why players lean that way; share, set win rate, common characters, head to head and spectra by archetype, filtered by MR band. The predicted-edge matrix is still planned. |
 
 ## How it fits together
 

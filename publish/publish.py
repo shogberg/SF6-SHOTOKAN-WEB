@@ -20,6 +20,7 @@ SOURCE = {
     "hits": None, "events": None, "resources": None, "parries": None, "timings": None, "set_stats": None, "game_stats": None,
     "reads": None, "spectra": None, "habits": None, "usage": None, "review_docs": None, "settings": None,
     "player_baseline": None,   # the configured player vs their own last 7 days (tools: player_baseline.py); optional
+    "player_flags": None,      # notable / pro players (tools: shared_core_db.py flag); optional
 }
 KEEP_SETTINGS = ("me",)
 
@@ -41,10 +42,26 @@ def copy_source(src, dst, cfg):
             rows = [r for r in rows if r[0] in KEEP_SETTINGS]
         dst.executemany(f"insert into {t} values ({','.join('?' * len(cols_out))})", rows)
     s.close()
+    drop_excluded(dst)
     backfill_spectra(dst)
     merge_players(dst, cfg.get("merge") or {})
     if cfg.get("anonymize"):
         anonymize(dst)
+
+
+def drop_excluded(con):
+    """Sets the tools mark `excluded` (e.g. '1v1me' betting matches that open with a warm-up) stay in sf6.db but are left
+    out of the site: the set and every row with its set_key are removed from the snapshot."""
+    if "excluded" not in {r[1] for r in con.execute("pragma table_info(sets)")}:
+        return
+    keys = [r[0] for r in con.execute("select set_key from sets where excluded is not null")]
+    if not keys:
+        return
+    q = ",".join("?" * len(keys))
+    for (t,) in con.execute("select name from sqlite_master where type='table'").fetchall():
+        if "set_key" in {r[1] for r in con.execute(f"pragma table_info({t})")}:
+            con.execute(f"delete from {t} where set_key in ({q})", keys)
+    print(f"  left out {len(keys)} excluded set(s)")
 
 
 def backfill_spectra(con):
@@ -83,7 +100,7 @@ def merge_players(con, merge):
     ids = {r[1]: r[0] for r in con.execute("select player_id, name from players")}
     refs = [("sets", "focus_player_id"), ("sets", "opp_player_id"), ("sets", "winner_player_id"), ("games", "p1_player_id"),
             ("games", "p2_player_id"), ("games", "winner_player_id"), ("hits", "attacker_id"), ("hits", "victim_id")]
-    refs += [(t, "player_id") for t in ("events", "resources", "parries", "timings", "set_stats", "game_stats", "reads", "spectra", "habits", "usage", "player_names", "player_baseline")]
+    refs += [(t, "player_id") for t in ("events", "resources", "parries", "timings", "set_stats", "game_stats", "reads", "spectra", "habits", "usage", "player_names", "player_baseline", "player_flags")]
     have = {r[0] for r in con.execute("select name from sqlite_master where type='table'")}
     refs = [(t, c) for t, c in refs if t in have]   # game_stats only exists in newer source databases
     for local, canon in merge.items():

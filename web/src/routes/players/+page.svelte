@@ -29,9 +29,11 @@
   <div class="wrap card" style="padding:0"><table>
     <thead><tr><th>Player</th><th>Characters</th><th>Sets</th><th>Games</th><th>Rank</th><th>Archetype</th><th>Last set</th></tr></thead>
     <tbody>{#each shown(r.data) as p}
-      <tr><td><a href={`/players/${p.player_id}`}>{p.name}</a></td><td>{chars(p)}</td>
+      <tr><td><a href={`/players/${p.player_id}`}>{p.name}</a>{#if (p.flags ?? []).length}<span class="star" title={p.flags.map((f: any) => f.label).join(', ')}> ★</span>{/if}</td><td>{chars(p)}</td>
         <td>{p.sets_won}-{p.sets - p.sets_won}</td><td>{p.games_won}-{p.games_lost}</td>
         <td>{rank(p.latest_mr, p.latest_league)}</td><td>{p.archetype ?? '—'}</td><td>{p.last_date ?? '—'}</td></tr>
     {/each}</tbody></table></div>
   <p class="muted small">{shown(r.data).length} of {r.data.length} players.</p>
 {:catch e}<Loading error={e} />{/await}
+
+<style>.star { color: var(--accent); }</style>
