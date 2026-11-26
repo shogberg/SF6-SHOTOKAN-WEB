@@ -25,7 +25,7 @@
 - [ ] Derive modules: `mr_band_stats`, `trait_success`, `archetype_matchups`, MR weighting and the Japan adjustment. *(2026-11-26: band, character and archetype stats are computed in the API from the snapshot instead of at publish; MR weighting inside a band and the Japan adjustment are still to do.)*
 - [x] Pages: Stats by MR (first version 2026-11-26), What winning players do, Observations, Archetypes (first version 2026-11-26: notes, mix, head to head and spectra by MR band).
 - [ ] Stats by MR: quartiles, a two-band compare view, MR weighting inside a band.
-- [ ] Archetypes: the ranked / other / all filter that Stats by MR and Stats by Character have, and rewrite its notes from ranked sets (they use all sets today).
+- [x] Archetypes: the ranked / other / all filter that Stats by MR and Stats by Character have, with its notes rewritten from ranked sets (2026-11-26).
 - [ ] Archetypes: the predicted-edge matrix and spectrum pairings (docs/pages/archetype-predictions.md), with a flag where prediction and result disagree.
 - [ ] Prediction accuracy over time on the Archetypes and Observations pages.
 - **Milestone:** band and trait pages useful once there are enough sets per band. Until then they show counts, not rates.

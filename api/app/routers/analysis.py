@@ -27,10 +27,10 @@ def traits(view: str = "all"):
 
 
 @router.get("/archetypes")
-def archetypes(band: str | None = None):
+def archetypes(band: str | None = None, context: str = "all"):
     """Archetype mix, set win rates, typical characters / leans / spectra per archetype, and archetype vs archetype
     set results; `band` filters to one MR band (the band of the player whose archetype it is). `bands` = filter values."""
-    return wrap(A.archetypes(band), bands=C.bands())
+    return wrap(A.archetypes(band, context if context in ("ranked", "other", "all") else "all"), bands=C.bands())
 
 
 @router.get("/archetype-predictions")

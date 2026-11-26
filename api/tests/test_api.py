@@ -156,13 +156,13 @@ def test_stats_pages(client):
 
 
 def test_context_filter(client):
-    for path in ("/api/v1/analysis/mr-bands", "/api/v1/matchups"):
+    for path in ("/api/v1/analysis/mr-bands", "/api/v1/matchups", "/api/v1/analysis/archetypes"):
         n = {}
         for ctx in ("all", "ranked", "other"):
             r = client.get(path, params={"context": ctx})
             assert r.status_code == 200
             d = r.json()["data"]
-            n[ctx] = sum(b["player_sets"] for b in d["bands"]) if "bands" in d else sum(c["games"] for c in d)
+            n[ctx] = d["player_sets"] if "summary" in d else sum(b["player_sets"] for b in d["bands"]) if "bands" in d else sum(c["games"] for c in d)
         assert n["ranked"] + n["other"] == n["all"]
 
 

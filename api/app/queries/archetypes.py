@@ -6,6 +6,7 @@ from collections import defaultdict, Counter
 from statistics import mean
 from ..db import rows
 from .traits import HIGH_END
+from .mr_bands import context_ok
 
 MAIN = ["Aggressive", "Balanced", "Defensive", "Fundamentalist"]
 
@@ -15,10 +16,12 @@ def _arch(a):
     return a if a in MAIN else None
 
 
-def archetypes(band=None):
+def archetypes(band=None, context="all"):
+    """context: 'ranked', 'other' (casual, custom room, local, tournament, unknown) or 'all'."""
     band = None if band in (None, "", "all") else band
-    ps = rows("""select ps.set_key, ps.player_id, ps.opp_id, ps.band, ps.archetype, ps.lean, ps.opp_archetype, ps.won, ps.character
+    ps = rows("""select ps.set_key, ps.player_id, ps.opp_id, ps.band, ps.archetype, ps.lean, ps.opp_archetype, ps.won, ps.character, ps.context
                  from player_set ps""")
+    ps = [p for p in ps if context_ok(p["context"], context)]
     sel = [p for p in ps if _arch(p["archetype"]) and (band is None or p["band"] == band)]
     by = defaultdict(list)
     for p in sel:
@@ -53,4 +56,4 @@ def archetypes(band=None):
             vs[(a, b)][0] += 1 if p["won"] else 0
     matrix = [{"archetype": a, "opp_archetype": b, "sets": v[1], "won": v[0], "win_pct": round(100 * v[0] / v[1]) if v[1] else None}
               for (a, b), v in sorted(vs.items())]
-    return {"band": band or "all", "player_sets": tot, "summary": summary, "matrix": matrix}
+    return {"band": band or "all", "context": context or "all", "player_sets": tot, "summary": summary, "matrix": matrix}

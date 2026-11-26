@@ -74,7 +74,7 @@ Search by player name or CFN ID, then:
 
 | View | What it shows |
 |---|---|
-| **Profile** | A "Notable player" badge for flagged players. MR over time, one step per game. Game win rates per character played, against opponent MR (100-point bands) and against each opponent character. Archetype and lean, the eight spectra, strengths and weaknesses, per-game numbers, and how their archetype holds up: in winning vs losing sets, how often they deviate from their usual archetype, and in which direction. |
+| **Profile** | Badges for flagged players (Notable player; AZFGC with an Arizona flag). MR over time, one step per game. Game win rates per character played, against opponent MR (100-point bands) and against each opponent character. Archetype and lean, the eight spectra, strengths and weaknesses, per-game numbers, and how their archetype holds up: in winning vs losing sets, how often they deviate from their usual archetype, and in which direction. |
 | **Sets** | Every set they've played: date, opponent, characters, result, review level, MR at the time. |
 | **Set search** | Search any player by name or CFN ID, pick from the matching players, and page through all their sets, 25 per page (or browse every set). Not in the nav; linked from the home page, whose latest sets are sorted by review date. |
 | **Set detail** | One set: games and rounds, the prediction made before review (if any) and how it graded, story, habits, Drive economy, hits. |
@@ -89,7 +89,7 @@ Game win rates of every character against every other, filtered by set type (ran
 | **Stats by MR** | How players differ by skill band (Under Master, below 1400, 1400-1599, 1600-1699, 1700-1799, 1800-1999, 2000+): button economy, Drive economy, offense / pressure / oki, defense, damage taken, spectra and archetype mix, with dated notes. Ranked sets by default. |
 | **What winning players do** | Typical archetypes and spectra of successful players, weighted toward higher MR. |
 | **Observations** | Written notes on what makes a winning or struggling player, dated, so changes in the model over time stay visible. |
-| **Archetypes** | What each archetype looks like and why players lean that way; share, set win rate, common characters, head to head and spectra by archetype, filtered by MR band. The predicted-edge matrix is still planned. |
+| **Archetypes** | What each archetype looks like and why players lean that way; share, set win rate, common characters, head to head and spectra by archetype, filtered by set type (ranked by default) and MR band. The predicted-edge matrix is still planned. |
 
 ## How it fits together
 

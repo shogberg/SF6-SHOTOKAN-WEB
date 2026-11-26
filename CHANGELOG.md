@@ -2,6 +2,10 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-26 (AZFGC badge, Archetypes set filter)
+- New `FlagBadge` component. The `azfgc` flag shows a small Arizona state flag with "AZFGC" on profiles; `notable` shows "★ Notable player". The Players list shows the icons in compact form. API label for `azfgc`: "AZFGC".
+- Archetypes: the Sets filter (Ranked by default, Other, All) like Stats by MR and Stats by Character, and `context` on `GET /api/v1/analysis/archetypes`. Notes rewritten from ranked sets.
+
 ## 2026-11-26 (notable players, excluded sets)
 - **Notable players:** publish copies the tools' new `player_flags` table (optional). `GET /api/v1/players/{id}` and `/players` return `flags`. Profiles show a "★ Notable player" badge next to the name, and the Players list shows a star. The demo data flags player 1, with a test.
 - **Excluded sets:** sets the tools mark `excluded` (e.g. `1v1me` betting matches that open with a ~30 s warm-up) are left out of the snapshot, together with every row tied to them (`drop_excluded` in publish). The three CFN Good custom-room sets of 23-24 Nov are excluded, so CFN Good, 801 Strider, NuckleDu and JBJB currently have no sets on the site.

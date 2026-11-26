@@ -4,10 +4,12 @@
   import { num } from '$lib/format';
   import Loading from '$lib/components/Loading.svelte';
   import BandFilter from '$lib/components/BandFilter.svelte';
+  import ContextFilter from '$lib/components/ContextFilter.svelte';
   import { ARCH_NOTES, ARCH_GENERAL, ARCH_NOTES_AS_OF } from '$lib/archetypeNotes';
 
   let band = $state('all');
-  let data = $derived(api('/analysis/archetypes', { band: band === 'all' ? undefined : band }));
+  let context = $state('ranked');
+  let data = $derived(api('/analysis/archetypes', { band: band === 'all' ? undefined : band, context }));
   const MAIN = ['Aggressive', 'Balanced', 'Defensive', 'Fundamentalist'];
   const cell = (m: any[], a: string, b: string) => m.find((x) => x.archetype === a && x.opp_archetype === b);
 </script>
@@ -16,7 +18,7 @@
 <p class="muted">Every reviewed set reads each player as one of four archetypes. What each one looks like, why players lean that way, and how each does, overall and against the others.</p>
 
 <h2>The four archetypes</h2>
-<p class="muted small">Notes as of {ARCH_NOTES_AS_OF}, from all MR bands. The tables below follow the MR filter.</p>
+<p class="muted small">Notes as of {ARCH_NOTES_AS_OF}, from ranked sets in all MR bands. The tables below follow the set and MR filters.</p>
 <div class="grid">{#each ARCH_NOTES as n}
   <div class="card"><h3>{n.archetype}</h3><p>{n.body}</p><p class="small"><b>Why players lean this way:</b> {n.why}</p></div>
 {/each}</div>
@@ -25,6 +27,7 @@
 {#await data}<Loading />{:then r}
   {@const d = r.data}
   <h2>By MR</h2>
+  <ContextFilter bind:value={context} />
   <BandFilter bands={r.bands} bind:value={band} />
   <p class="muted small">{d.player_sets} player-sets with an archetype read{band === 'all' ? '' : ' in this band'}.</p>
 
