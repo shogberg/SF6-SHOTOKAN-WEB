@@ -94,7 +94,7 @@ export const ABOUT: AboutItem[] = [
  {
   "section": "What the data says",
   "title": "How well the reviews predict",
-  "body": "Every review starts with a prediction written before the replay is analysed. Blind predictions picked the winner in 74% of 111 sets (86% at Medium confidence, 8 of 8 at High), a little better than simply picking the higher-MR player (70% of 133 sets). Low-confidence calls do no better than MR, so the predictions are still most useful for naming the factors that decide a set. In the 26 November batch of A.K.I. sets (two players, 32 complete sets) they picked 21 winners (66%): close-MR sets stayed coin flips."
+  "body": "Every review starts with a prediction written before the replay is analysed. Blind predictions picked the winner in 74% of 182 sets (81% at Medium confidence, 31 of 31 at High), better than simply picking the higher-MR player (67% of the 100 sets where both MRs are known). Low-confidence calls do no better than MR, so the predictions are still most useful for naming the factors that decide a set. In the 26 November batch of A.K.I. sets (two players, 32 complete sets) they picked 21 winners (66%): close-MR sets stayed coin flips."
  },
  {
   "section": "What the data says",
