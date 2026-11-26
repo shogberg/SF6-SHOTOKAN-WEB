@@ -6,10 +6,12 @@ router = APIRouter(tags=["character matchups"])
 
 
 @router.get("/matchups")
-def matchups(band: str | None = None):
+def matchups(band: str | None = None, context: str = "all"):
     """Stats by character: game win rates of every character against every other, optionally for one MR band
     (the band of the player using the character). `bands` lists the filter values, "all" first."""
-    return wrap(C.character_stats(band), bands=C.bands(), band=band or "all")
+    """context=ranked | other (casual, custom room, local, tournament) | all"""
+    ctx = context if context in ("ranked", "other", "all") else "all"
+    return wrap(C.character_stats(band, ctx), bands=C.bands(), band=band or "all", context=ctx)
 
 
 @router.get("/matchups/{char_a}/{char_b}")

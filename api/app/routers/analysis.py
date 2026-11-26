@@ -12,9 +12,10 @@ def observations(topic: str | None = None):
 
 
 @router.get("/mr-bands")
-def mr_bands(view: str = "all"):
-    """view=all | others (without the configured player, whose sets are most of the data)"""
-    return wrap(B.mr_bands("others" if view == "others" else "all"))
+def mr_bands(view: str = "all", context: str = "all"):
+    """view=all | others (without the configured player, whose sets are most of the data);
+    context=ranked | other (casual, custom room, local, tournament) | all"""
+    return wrap(B.mr_bands("others" if view == "others" else "all", context if context in B.CONTEXTS else "all"))
 
 
 @router.get("/traits")

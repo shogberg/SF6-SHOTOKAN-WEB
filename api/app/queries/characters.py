@@ -5,20 +5,25 @@ whose player was in that MR band at the set (player_set.band), so "Cammy vs Saga
 Cammy player was 1600-1699, whatever the Sagat player's MR. Mirror matches count as games but have no win rate."""
 from collections import defaultdict
 from ..db import rows
-from .mr_bands import _bands
+from .mr_bands import _bands, context_ok
 
 
 def bands():
     return [{"id": "all", "label": "All"}] + [{"id": b["id"], "label": b["label"]} for b in _bands()]
 
 
-def character_stats(band=None):
+def character_stats(band=None, context="all"):
+    """context: 'ranked', 'other' (casual, custom room, local, tournament, unknown) or 'all'."""
     band = None if band in (None, "", "all") else band
-    pb = {(r["set_key"], r["player_id"]): r["band"] for r in rows("select set_key, player_id, band from player_set")}
+    ps = rows("select set_key, player_id, band, context from player_set")
+    pb = {(r["set_key"], r["player_id"]): r["band"] for r in ps}
+    keep_sets = {r["set_key"] for r in ps if context_ok(r["context"], context)}
     games = rows("""select g.set_key, g.p1_player_id as a, g.p2_player_id as b, g.p1_char as ca, g.p2_char as cb, g.winner_player_id as w
                     from games g where g.winner_player_id is not null and g.p1_char is not null and g.p2_char is not null""")
     m = defaultdict(lambda: defaultdict(lambda: [0, 0]))   # char -> opp char -> [won, games]
     for g in games:
+        if g["set_key"] not in keep_sets:
+            continue
         for me, opp, c, oc in ((g["a"], g["b"], g["ca"], g["cb"]), (g["b"], g["a"], g["cb"], g["ca"])):
             if band and pb.get((g["set_key"], me)) != band:
                 continue

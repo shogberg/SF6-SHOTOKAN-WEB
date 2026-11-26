@@ -51,38 +51,53 @@
   let w = $state(640);
   const H = 260, M = { t: 12, r: 16, b: 28, l: 46 };
   const W = $derived(Math.max(240, w - 34));   // card padding
+  // x is the game number, not time: every game gets the same width, so long gaps between sessions don't stretch the
+  // line and busy days don't squash it. Slot 0 is the MR before the first game in range; game i ends at slot i + 1.
   const t = (s: string) => new Date(s.replace(' ', 'T')).getTime();
-  const x0 = $derived(pts.length ? t(pts[0].at) : 0);
-  const x1 = $derived(pts.length ? t(pts[pts.length - 1].at) : 1);
+  const idx = $derived(new Map(pts.map((p, i) => [p, i])));
+  const n = $derived(pts.length);
   const yv = $derived(pts.flatMap((p) => [p.mr, p.mr_after]));
   const ylo = $derived(yv.length ? Math.floor((Math.min(...yv) - 10) / 25) * 25 : 0);
   const yhi = $derived(yv.length ? Math.ceil((Math.max(...yv) + 10) / 25) * 25 : 1);
-  const sx = (ms: number) => M.l + (x1 === x0 ? (W - M.l - M.r) / 2 : ((ms - x0) / (x1 - x0)) * (W - M.l - M.r));
+  const sx = (slot: number) => M.l + (n ? (slot / n) * (W - M.l - M.r) : (W - M.l - M.r) / 2);
   const sy = (v: number) => M.t + (1 - (v - ylo) / (yhi - ylo || 1)) * (H - M.t - M.b);
   const yticks = $derived.by(() => { const step = Math.max(25, Math.ceil((yhi - ylo) / 5 / 25) * 25); const o = []; for (let v = ylo; v <= yhi; v += step) o.push(v); return o; });
-  const xticks = $derived.by(() => {
-    if (!pts.length) return [];
-    const n = Math.max(2, Math.min(6, Math.floor((W - M.l - M.r) / 110)));
-    return Array.from({ length: n }, (_, i) => x0 + ((x1 - x0) * i) / (n - 1));
+  const span = $derived(pts.length > 1 ? t(pts[n - 1].at) - t(pts[0].at) : 0);
+  const fmtDay = (ms: number) => new Date(ms).toLocaleDateString(undefined, { month: 'short', day: 'numeric', ...(span > 300 * 864e5 ? { year: '2-digit' } : {}) });
+  // where each day starts (slot i = before game i); faint lines there when there aren't too many to read
+  const dayStarts = $derived.by(() => {
+    const o: number[] = n ? [0] : [];
+    for (let i = 1; i < n; i++) if (pts[i].at.slice(0, 10) !== pts[i - 1].at.slice(0, 10)) o.push(i);
+    return o;
   });
-  const fmtDay = (ms: number) => new Date(ms).toLocaleDateString(undefined, { month: 'short', day: 'numeric', ...(x1 - x0 > 300 * 864e5 ? { year: '2-digit' } : {}) });
+  const dayBreaks = $derived(dayStarts.length <= 41 ? dayStarts.slice(1) : []);
+  // date labels at the start of each day, skipping any that would sit within 70px of the one before
+  const xticks = $derived.by(() => {
+    const o: { slot: number; label: string }[] = [];
+    let lastX = -Infinity;
+    for (const sl of dayStarts) {
+      const x = sx(sl);
+      if (x - lastX >= 70) { o.push({ slot: sl, label: fmtDay(t(pts[sl].at)) }); lastX = x; }
+    }
+    return o;
+  });
   // each series: its first MR before the first game, then MR after every game
   const path = (s: { pts: Pt[] }) => {
     const p = s.pts; if (!p.length) return '';
-    let d = `M${sx(t(p[0].at)).toFixed(1)},${sy(p[0].mr).toFixed(1)}`;
-    for (const q of p) d += ` L${sx(t(q.at)).toFixed(1)},${sy(q.mr_after).toFixed(1)}`;
+    let d = `M${sx(idx.get(p[0])!).toFixed(1)},${sy(p[0].mr).toFixed(1)}`;
+    for (const q of p) d += ` L${sx(idx.get(q)! + 1).toFixed(1)},${sy(q.mr_after).toFixed(1)}`;
     return d;
   };
 
   let hx: number | null = $state(null);
   const hover = $derived.by(() => {
     if (hx == null || !pts.length) return null;
-    let best = pts[0], bd = Infinity;
-    for (const p of pts) { const d = Math.abs(sx(t(p.at)) - hx); if (d < bd) { bd = d; best = p; } }
-    const at = t(best.at);
-    // one row per series: that series' latest game at or before the hovered time
-    const rows = series.map((s) => ({ c: s.c, p: [...s.pts].reverse().find((q) => t(q.at) <= at) })).filter((r) => r.p);
-    return { x: sx(at), at: best.at, rows };
+    // nearest game end (slot i + 1 for game i)
+    const k = Math.max(0, Math.min(n - 1, Math.round(((hx - M.l) / (W - M.l - M.r || 1)) * n) - 1));
+    const best = pts[k];
+    // one row per series: that series' latest game at or before the hovered game
+    const rows = series.map((s) => ({ c: s.c, p: [...s.pts].reverse().find((q) => idx.get(q)! <= k) })).filter((r) => r.p);
+    return { x: sx(k + 1), at: best.at, game: k + 1, rows };
   });
   function move(e: PointerEvent) {
     const r = (e.currentTarget as SVGRectElement).getBoundingClientRect();
@@ -116,7 +131,8 @@
     </div>
     <svg width={W} height={H} role="img" aria-label="MR over time">
       {#each yticks as v}<line x1={M.l} x2={W - M.r} y1={sy(v)} y2={sy(v)} class="grid" /><text x={M.l - 6} y={sy(v) + 4} class="tick" text-anchor="end">{v}</text>{/each}
-      {#each xticks as ms}<text x={sx(ms)} y={H - 8} class="tick" text-anchor="middle">{fmtDay(ms)}</text>{/each}
+      {#each dayBreaks as b}<line x1={sx(b)} x2={sx(b)} y1={M.t} y2={H - M.b} class="day" />{/each}
+      {#each xticks as x}<text x={sx(x.slot)} y={H - 8} class="tick" text-anchor="start">{x.label}</text>{/each}
       {#each series as s}<path d={path(s)} fill="none" stroke={color(s.c)} stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />{/each}
       {#if hover}
         <line x1={hover.x} x2={hover.x} y1={M.t} y2={H - M.b} class="cross" />
@@ -127,7 +143,7 @@
     </svg>
     {#if hover}
       <div class="tip small" style:left={`${Math.max(0, Math.min(hover.x + 12, W - 200))}px`}>
-        <div class="muted">{hover.at}</div>
+        <div class="muted">Game {hover.game} of {n} · {hover.at}</div>
         {#each hover.rows as r}
           <div class="row"><span class="key" style:background={color(r.c)}></span><b>{r.p!.mr_after}</b>
             <span class={r.p!.change >= 0 ? 'ok' : 'bad'}>{sign(r.p!.change)}</span>
@@ -145,7 +161,7 @@
     </details>
   {/if}
 </div>
-<p class="muted small">From reviewed ranked games only (sets in this database), so matches that weren't reviewed don't show. Each game's change comes from the next game's MR, or for a set's last game from the MR formula (Elo, K=16, as sfbuff calculates it).</p>
+<p class="muted small">One step per game: games are evenly spaced whatever the time between them, and dotted lines mark a new day. From reviewed ranked games only (sets in this database), so matches that weren't reviewed don't show. Each game's change comes from the next game's MR, or for a set's last game from the MR formula (Elo, K=16, as sfbuff calculates it).</p>
 
 <style>
   .mr { position: relative; padding: 12px 16px; --mr-s1: #257de0; --mr-s2: #f47230; --mr-s3: #00b894; }
@@ -156,6 +172,7 @@
   .grid { stroke: var(--line); stroke-width: 1; }
   .tick { fill: var(--muted); font-size: 11px; }
   .cross { stroke: var(--muted); stroke-width: 1; }
+  .day { stroke: var(--line); stroke-width: 1; stroke-dasharray: 2 3; }
   .tip { position: absolute; top: 34px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 6px 9px; pointer-events: none; min-width: 200px; box-shadow: 0 2px 8px rgb(0 0 0 / .08); }
   .row { display: flex; gap: 6px; align-items: center; }
   .key { display: inline-block; width: 12px; height: 2px; border-radius: 1px; margin-right: 4px; vertical-align: middle; }

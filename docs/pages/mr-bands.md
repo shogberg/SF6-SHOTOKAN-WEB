@@ -16,7 +16,8 @@ How players differ by MR band. Named "MR bands" until 2026-11-26. Bands are defi
 - **Damage taken by lens:** share of damage taken by how it was taken. The analyzer only computes lenses for the reviewed (focus) player, so these come from fewer player-sets.
 - **Spectra (1-5)** and **archetype mix** (share and set win rate per archetype) per band.
 - A toggle leaves out the site owner (settings `me`), whose sets are most of the data.
+- **Sets filter** (added 2026-11-26): Ranked (default), Other (casual, custom room, local, tournament, unknown) or All, on `player_set.context`. Custom room and casual sets are often training and can be lopsided, so the notes are written from ranked sets.
 
-API: `GET /api/v1/analysis/mr-bands?view=all|others` returns `bands` (with player-set and player counts), `unknown_left_out`, `small`, `metrics`, `lenses`, `spectra` (each row: `key`, `label`, `group`, `bands` → `{mean, median, n}`), `archetypes` per band and `biggest_differences`.
+API: `GET /api/v1/analysis/mr-bands?view=all|others&context=ranked|other|all` (API default `all`; the page asks for `ranked`) returns `bands` (with player-set and player counts), `unknown_left_out`, `small`, `metrics`, `lenses`, `spectra` (each row: `key`, `label`, `group`, `bands` → `{mean, median, n}`), `archetypes` per band and `biggest_differences`.
 
 Still to do: quartiles, a two-band compare view, MR weighting inside a band, and the Japan adjustment once region data exists.

@@ -2,6 +2,13 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-26 (MR chart by game)
+- Player profile, MR over time: the x-axis is now the game number instead of the date. Every game gets the same width, dotted lines mark each new day, date labels sit at day starts, and hover shows "Game k of n". The date filters are unchanged.
+
+## 2026-11-26 (ranked / other / all filter)
+- Stats by MR and Stats by Character: new Sets filter (Ranked, Other, All), defaulting to Ranked. Other is casual, custom room, local, tournament and unknown sets, which are often training and can be lopsided. New `context` parameter on `GET /api/v1/analysis/mr-bands` and `GET /api/v1/matchups` (default `all`); shared `ContextFilter` component.
+- Stats by MR notes rewritten from ranked sets. Among other changes, Balanced players at 1700-1799 win 37% of ranked sets, against 70% with custom rooms included.
+
 ## 2026-11-26 (Stats by MR, Stats by Character, Archetypes, reviewed date)
 - **Stats by MR** (was "MR bands", phase 3 first version):
     - Band tables for button economy, Drive economy, offense / pressure / oki, defense, damage taken by lens, spectra and archetype mix.

@@ -4,10 +4,12 @@
   import { api } from '$lib/api';
   import Loading from '$lib/components/Loading.svelte';
   import BandFilter from '$lib/components/BandFilter.svelte';
+  import ContextFilter from '$lib/components/ContextFilter.svelte';
 
   let band = $state('all');
+  let context = $state('ranked');
   let pick = $state('');
-  let data = $derived(api('/matchups', { band: band === 'all' ? undefined : band }));
+  let data = $derived(api('/matchups', { band: band === 'all' ? undefined : band, context }));
   const SMALL = 5;
 </script>
 
@@ -16,6 +18,7 @@
 
 {#await data}<Loading />{:then r}
   {@const d = r.data}
+  <ContextFilter bind:value={context} />
   <BandFilter bands={r.bands} bind:value={band} />
   {@const sel = d.find((c: any) => c.character === pick) ?? null}
   {#if !d.length}<p class="muted">No games in this band yet.</p>{:else}

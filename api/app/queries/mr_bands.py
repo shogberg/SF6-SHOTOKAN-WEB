@@ -48,6 +48,14 @@ LENSES = ["Counter-hit at mid range", "Walked in", "Jumped in on (no anti-air)",
           "Challenging okizeme", "Pressed after turn ended", "Own offense beaten by a reversal", "Unsafe move punished", "Drive Rush / Impact checked",
           "Whiff punished"]
 SMALL = 15   # fewer player-sets than this: the page dims the band
+CONTEXTS = ("ranked", "other", "all")   # ranked sets / everything else (casual, custom room, local, tournament, unknown) / both
+
+
+def context_ok(ctx, want):
+    """player_set.context against a filter value: 'ranked', 'other' (not ranked) or 'all'."""
+    if want in (None, "", "all"):
+        return True
+    return (ctx == "ranked") == (want == "ranked")
 
 
 def _bands():
@@ -63,11 +71,12 @@ def _stats(vals):
     return {"mean": round(mean(vals), 2), "median": round(median(vals), 2), "n": len(vals)}
 
 
-def mr_bands(view="all"):
+def mr_bands(view="all", context="all"):
     bands = _bands()
     ids = [b["id"] for b in bands]
     me = me_id() if view == "others" else None
-    ps = rows("select set_key, player_id, opp_id, band, archetype, won from player_set")
+    ps = rows("select set_key, player_id, opp_id, band, archetype, won, context from player_set")
+    ps = [p for p in ps if context_ok(p["context"], context)]
     unknown = sum(1 for p in ps if p["band"] == "unknown")
     ps = [p for p in ps if p["band"] in ids and (me is None or p["player_id"] != me)]
     st = defaultdict(dict)
@@ -192,5 +201,5 @@ def mr_bands(view="all"):
 
     return {"bands": [{**b, "player_sets": len(by_band.get(b["id"], [])),
                        "players": len({p["player_id"] for p, _v in by_band.get(b["id"], [])})} for b in bands],
-            "unknown_left_out": unknown, "small": SMALL, "view": view,
+            "unknown_left_out": unknown, "small": SMALL, "view": view, "context": context or "all",
             "metrics": metrics, "lenses": lenses, "spectra": spectra, "archetypes": arche, "biggest_differences": diffs[:12]}

@@ -5,9 +5,11 @@
   import { num } from '$lib/format';
   import Loading from '$lib/components/Loading.svelte';
   import { NOTES, NOTES_AS_OF, NOTES_SAMPLE } from '$lib/mrBandsNotes';
+  import ContextFilter from '$lib/components/ContextFilter.svelte';
 
   let view = $state('all');
-  let data = $derived(api('/analysis/mr-bands', { view: view === 'others' ? 'others' : undefined }));
+  let context = $state('ranked');
+  let data = $derived(api('/analysis/mr-bands', { view: view === 'others' ? 'others' : undefined, context }));
   const groups = ['Button economy', 'Drive economy', 'Offense, pressure and oki', 'Defense'];
   const bandLabel = (d: any, id: string) => d.bands.find((b: any) => b.id === id)?.label ?? id;
 </script>
@@ -15,6 +17,7 @@
 <h1>Stats by MR</h1>
 <p class="muted">How players differ by MR band. Each player in each reviewed set counts once, in the band of their MR at that set. A cell is the band's average (hover for the median and how many player-sets it's from).</p>
 
+<ContextFilter bind:value={context} />
 <div class="filters">
   <button class="preset" class:on={view === 'all'} onclick={() => (view = 'all')}>Everyone</button>
   <button class="preset" class:on={view === 'others'} onclick={() => (view = 'others')}>Without the site owner</button>

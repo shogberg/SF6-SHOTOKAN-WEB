@@ -153,3 +153,14 @@ def test_stats_pages(client):
     a = client.get("/api/v1/analysis/archetypes").json()["data"]
     assert [s["archetype"] for s in a["summary"]] == ["Aggressive", "Balanced", "Defensive", "Fundamentalist"]
     assert sum(s["player_sets"] for s in a["summary"]) == a["player_sets"]
+
+
+def test_context_filter(client):
+    for path in ("/api/v1/analysis/mr-bands", "/api/v1/matchups"):
+        n = {}
+        for ctx in ("all", "ranked", "other"):
+            r = client.get(path, params={"context": ctx})
+            assert r.status_code == 200
+            d = r.json()["data"]
+            n[ctx] = sum(b["player_sets"] for b in d["bands"]) if "bands" in d else sum(c["games"] for c in d)
+        assert n["ranked"] + n["other"] == n["all"]
