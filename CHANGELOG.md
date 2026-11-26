@@ -2,6 +2,10 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-26 (A.K.I. character card)
+- About page: new "Learning a character from a stronger player" card (Broski vs Zastorial, A.K.I.: throw loops, fireball Drive Rush follow-ups, wiki move names; obs-0026 to obs-0028), and the A.K.I. batch's prediction accuracy (21 of 32) in "How well the reviews predict".
+- Docs: Observations page doc lists 28 notes; About page doc notes the new card.
+
 ## 2026-11-25 (MR over time)
 - Player profile: **MR over time** chart, one line per character, from reviewed ranked games (MR before the first game, then after each game), with presets (Last day, Last week, Last month, Last phase, 90 days, Year, All), a From / To range, a character picker, a hover crosshair and a table view. New `GET /api/v1/players/{id}/mr` (`date_from`, `date_to`, `character`). Per-game changes come from the tools' new `games.p1/p2_mr_change` (observed from the next game, or sfbuff's Elo formula, K = 16, for a set's last game); older snapshots fall back to the formula.
 - Publish config: optional `phases` (`[{"name", "start"}]`), copied to `snapshot_meta.phases`, drives "Last phase" (Buckler doesn't expose the current phase).

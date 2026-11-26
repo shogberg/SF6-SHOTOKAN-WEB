@@ -94,7 +94,12 @@ export const ABOUT: AboutItem[] = [
  {
   "section": "What the data says",
   "title": "How well the reviews predict",
-  "body": "Every review starts with a prediction written before the replay is analysed. Blind predictions picked the winner in 74% of 111 sets (86% at Medium confidence, 8 of 8 at High), a little better than simply picking the higher-MR player (70% of 133 sets). Low-confidence calls do no better than MR, so the predictions are still most useful for naming the factors that decide a set."
+  "body": "Every review starts with a prediction written before the replay is analysed. Blind predictions picked the winner in 74% of 111 sets (86% at Medium confidence, 8 of 8 at High), a little better than simply picking the higher-MR player (70% of 133 sets). Low-confidence calls do no better than MR, so the predictions are still most useful for naming the factors that decide a set. In the 26 November batch of A.K.I. sets (two players, 32 complete sets) they picked 21 winners (66%): close-MR sets stayed coin flips."
+ },
+ {
+  "section": "What the data says",
+  "title": "Learning a character from a stronger player",
+  "body": "Reviewing a high-level player of your character shows what to lab. Broski's A.K.I. (about 2,000 MR, 15 of 20 sets won) and Zastorial's (about 1,530 MR) won about as many neutral exchanges, but Broski threw twice as often and looped the throw after every knockdown: throws were a quarter of his damage and under a tenth of Zastorial's. Fireball Drive Rush paid for both, as long as the button after the first blocked one was a low or a throw (obs-0026, obs-0027). Move names come from the SuperCombo move lists, checked against each capture's inputs (obs-0028)."
  },
  {
   "section": "What the data says",
