@@ -1,7 +1,7 @@
 from ..db import rows, one
 from ..util import loads
 
-FLAG_LABELS = {"notable": "Notable player", "azfgc": "AZFGC"}   # flag -> badge text; unknown flags show as written
+FLAG_LABELS = {"notable": "Notable player", "azfgc": "AZFGC", "jp": "Japan", "kr": "South Korea", "no": "Norway", "gb": "United Kingdom", "us": "United States"}   # flag -> badge text; unknown flags show as written
 
 
 def _has_flags():
