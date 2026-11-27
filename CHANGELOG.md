@@ -2,6 +2,9 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-27 (jump-out correction)
+- About: the stronger-player card no longer says Broski's throws beat wake-up jumps by timing. A held wake-up jump always beats a throw; jumping out is a read, and opponents stopped making it because Broski hit them when they did (obs-0031). Observations page doc updated to match.
+
 ## 2026-11-27 (player profile links)
 - Player profile: "All N sets" and the "vs opponent (score)" head-to-head links are now outlined buttons with an arrow and a hover state, so they read as links to other pages.
 - Archetype by set shows the 10 most recent sets (oldest first), with a note giving the total and a link to all sets; the chips get a hover outline.
