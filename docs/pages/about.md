@@ -8,3 +8,5 @@ Since 23 Nov 2026 the page also has a **What the data says** section (winner vs 
 26 Nov 2026: added a "Learning a character from a stronger player" card (Broski vs Zastorial, A.K.I.; obs-0026 to obs-0028) and the A.K.I. batch's prediction accuracy to "How well the reviews predict".
 
 27 Nov 2026: "What it measures" adds corner time; "How well the reviews predict" recounted (72% of 223 graded sets; High 39 of 41, Medium 78%, Low 60%; higher MR 71%); the "Learning a character" card points to obs-0031 to obs-0033 (Broski's meaty throw loop, Zastorial a day later, Moke's Mai).
+
+27 Nov 2026 (later): "Winner vs loser" adds Space, Cash-in and the new Adaptability; new cards "Archetypes" (How I evaluate players) and "What notable players do" (What the data says, obs-0039).

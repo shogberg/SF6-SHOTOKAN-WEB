@@ -2,6 +2,11 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-27 (archetype notes, About, observations)
+- Archetypes page: notes rewritten for the recalibrated reads (ranked: Aggressive 38%, Balanced 32%, Fundamentalist 18%, Defensive 13%; Fundamentalist 75% of sets won, with the caveats), plus how a read is made.
+- About: "Winner vs loser" adds Space (76%), Cash-in (68%) and the new Adaptability; new cards "Archetypes" and "What notable players do".
+- Observations obs-0035 to obs-0039 (Space, Adaptability redefined, Cash-in, archetypes recalibrated, notable players), shipped in the snapshot. What winning players do picks up the new spectra from the data.
+
 ## 2026-11-27 (Cash-in spectrum, new Adaptability, "How to beat this player")
 - New spectrum **Cash-in** (Speculative ↔ Cashes in): the share of Drive and super spent that went into combos that landed. Own labels and two profile tips. About now says ten spectra and describes the new Adaptability.
 - **Adaptability** is the tools' new measure (did the opponent's best first-half weapon still work in the second half); scores moved for many sets.

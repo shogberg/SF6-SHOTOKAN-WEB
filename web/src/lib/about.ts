@@ -43,6 +43,11 @@ export const ABOUT: AboutItem[] = [
  },
  {
   "section": "How I evaluate players",
+  "title": "Archetypes",
+  "body": "Every player read also gets one of four archetypes, set against everyone else in the database: Aggressive (presses after blocking and on wake-up, uses Drive Rush pressure, jumps more than their character usually does), Defensive (the opposite), Fundamentalist (wins exchanges with counter hits and punishes without pressing more than most) and Balanced (in between). Like the spectra, it's a read on one set, not a label on the player. In ranked sets Fundamentalists have the best record and Defensive players the worst; the Archetypes page has the numbers and the caveats."
+ },
+ {
+  "section": "How I evaluate players",
   "title": "Chess or poker?",
   "body": "Each decision is judged by its type. A chess decision has a right answer (a punish, an anti-air): did they find it? A poker decision is a read: did it fit what the opponent had shown? Losing a good read isn't a mistake; winning a bad one isn't a plan."
  },
@@ -84,7 +89,7 @@ export const ABOUT: AboutItem[] = [
  {
   "section": "What the data says",
   "title": "Winner vs loser, set by set",
-  "body": "The traits page compares the winner and the loser of the same set, stat by stat, weighted by MR, so the opponent, matchup and day stay the same. As of 25 November 2026 that's 154 complete sets. The steadiest signals: resource use (winners are the bigger spender in 86% of sets, and they spend after hits), throws landed, combo Drive Rush cancels, counter hits and punish counters. Anti-airs, throw techs, burnouts and how often players hold block barely separate them; those track the matchup and the player more than winning."
+  "body": "The traits page compares the winner and the loser of the same set, stat by stat, weighted by MR, so the opponent, matchup and day stay the same. As of 25 November 2026 that's 154 complete sets. The steadiest signals: resource use (winners are the bigger spender in 86% of sets, and they spend after hits), throws landed, combo Drive Rush cancels, counter hits and punish counters. Anti-airs, throw techs, burnouts and how often players hold block barely separate them; those track the matchup and the player more than winning. Three newer measures (27 November 2026, 268 finished sets) separate them as well: the set winner took more ground (the Space spectrum: more time cornering than cornered) in 76% of sets, put more of their Drive and super into hits that landed (Cash-in) in 68%, and adjusted more when the opponent's best weapon was working (Adaptability) in 53% against 29% the other way."
  },
  {
   "section": "What the data says",
@@ -100,6 +105,11 @@ export const ABOUT: AboutItem[] = [
   "section": "What the data says",
   "title": "Learning a character from a stronger player",
   "body": "Reviewing a high-level player of your character shows what to lab. Broski's A.K.I. (about 2,000 MR, 15 of 20 sets won) and Zastorial's (about 1,530 MR) won about as many neutral exchanges, but Broski threw twice as often and looped the throw after every knockdown: throws were a quarter of his damage and under a tenth of Zastorial's. Fireball Drive Rush paid for both, as long as the button after the first blocked one was a low or a throw (obs-0026, obs-0027). Move names come from the SuperCombo move lists, checked against each capture's inputs (obs-0028). A day after a written report, Zastorial's fireball and Drive habits had changed and his throws hadn't caught up (obs-0032); opponents rarely jumped out of Broski's throw loop, a read that a held wake-up jump always wins, because when they did he hit them 15 times out of 17 (obs-0031). For Mai, ll Moke ll's 43 sets show a top player who barely jumps and wins with low pokes, punishes and OD specials (obs-0033)."
+ },
+ {
+  "section": "What the data says",
+  "title": "What notable players do",
+  "body": "Against their own opponents in the same sets (139 sets, a median of about 120 MR higher, so part of it is rank), the players flagged notable land more counter hits (2.3 a round to 1.7) and spend more of the round cornering than cornered (22% to 14% of live time); both held for every one of the six with enough sets. Most also throw more, put their Drive into combo cancels rather than cancels into a block, jump less and spend more super. Close punishes, throw techs and burnouts didn't separate them (obs-0039)."
  },
  {
   "section": "What the data says",
