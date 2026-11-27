@@ -31,8 +31,12 @@
     <div class="card tile"><div class="muted small">Deviates from it</div><div class="v">{p.deviation_rate == null ? '—' : Math.round(p.deviation_rate * 100) + '%'}</div><div class="muted small">{p.deviation_n} sets</div></div>
   </div>
   <p style="margin-top:16px">{p.summary}</p>
-  <p class="small"><a href={`/players/${p.player_id}/sets`}>All {p.sets} sets →</a>
-    {#each p.top_opponents.slice(0, 4) as o} · <a href={`/h2h/${p.player_id}/${o.player_id}`}>vs {o.name} ({o.wins}-{o.sets - o.wins})</a>{/each}</p>
+  <nav class="navlinks" aria-label="Sets and head-to-head">
+    <a class="navlink primary" href={`/players/${p.player_id}/sets`}>All {p.sets} sets <span aria-hidden="true">→</span></a>
+    {#each p.top_opponents.slice(0, 4) as o}
+      <a class="navlink" href={`/h2h/${p.player_id}/${o.player_id}`} title={`Head-to-head with ${o.name}`}>vs {o.name} <span class="score">{o.wins}-{o.sets - o.wins}</span> <span aria-hidden="true">→</span></a>
+    {/each}
+  </nav>
 
   <h2>MR over time</h2>
   <MrChart pid={p.player_id} />
@@ -66,11 +70,12 @@
   <p class="muted small">Bold: the won-vs-lost difference is bigger than their normal set-to-set spread.</p>
 
   <h3 style="margin-top:16px">Archetype by set</h3>
-  <div class="timeline">{#each a.timeline as t}
-    <a href={`/sets/${t.set_key}`} class="chip" title={`${t.played_date} vs ${t.opponent}: ${t.archetype ?? 'unread'} (${t.read_confidence ?? '—'})`}
+  <div class="timeline">{#each a.timeline.slice(-10) as t}
+    <a href={`/sets/${t.set_key}`} class="chip setchip" title={`${t.played_date} vs ${t.opponent}: ${t.archetype ?? 'unread'} (${t.read_confidence ?? '—'}). Open the set`}
        style:outline={t.is_deviation ? '1px dashed var(--accent)' : 'none'}><span class={t.won == null ? '' : t.won ? 'ok' : 'bad'}>{t.won == null ? '–' : t.won ? 'W' : 'L'}</span> {t.archetype ?? '?'}</a>
   {/each}</div>
-  <p class="muted small">Dashed: a deviation from their usual archetype.</p>
+  <p class="muted small">{a.timeline.length > 10 ? `The ${Math.min(10, a.timeline.length)} most recent of ${a.timeline.length} sets, oldest first. ` : 'Oldest first. '}Click one to open the set. Dashed: a deviation from their usual archetype.
+    {#if a.timeline.length > 10}<a href={`/players/${p.player_id}/sets`}>All sets →</a>{/if}</p>
 
   {#if (p.by_character ?? []).length > 1}
     <h2>By character</h2>
@@ -110,4 +115,15 @@
   <p class="muted small">Over {pg.games} games{pc && pc.stats_source === 'sets' ? ' (from whole-set stats: these sets were reviewed before per-game stats were kept)' : ''}. Opponents counter-hit them {num(p.opp_did.counter_hits_taken)}×, anti-aired them {num(p.opp_did.anti_aired)}× and threw them {num(p.opp_did.thrown)}× a game.</p>
 {:catch e}<Loading error={e} />{/await}
 
-<style>.timeline { display: flex; flex-wrap: wrap; } .linklike { font: inherit; background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; }</style>
+<style>.timeline { display: flex; flex-wrap: wrap; }
+  .navlinks { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px; }
+  .navlink { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 8px;
+             background: var(--panel, transparent); color: var(--fg, inherit); text-decoration: none; font-size: .88rem; font-weight: 600;
+             transition: border-color .12s, color .12s, background .12s; }
+  .navlink:hover, .navlink:focus-visible { border-color: var(--accent); color: var(--accent); }
+  .navlink.primary { border-color: var(--accent); color: var(--accent); }
+  .navlink.primary:hover { background: var(--accent); color: var(--panel); }
+  .navlink .score { font-variant-numeric: tabular-nums; color: var(--muted, #777); font-weight: 500; }
+  .navlink:hover .score { color: inherit; }
+  .setchip { text-decoration: none; border: 1px solid transparent; transition: border-color .12s; }
+  .setchip:hover, .setchip:focus-visible { border-color: var(--accent); color: inherit; } .linklike { font: inherit; background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; }</style>

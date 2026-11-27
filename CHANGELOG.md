@@ -2,6 +2,11 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-27 (player profile links)
+- Player profile: "All N sets" and the "vs opponent (score)" head-to-head links are now outlined buttons with an arrow and a hover state, so they read as links to other pages.
+- Archetype by set shows the 10 most recent sets (oldest first), with a note giving the total and a link to all sets; the chips get a hover outline.
+- About: corner time in "What it measures", prediction accuracy recounted (72% of 223 graded sets), and the stronger-player card points to obs-0031 to obs-0033. README and page docs (profile, About, Observations) updated for flags, the new links and the timeline.
+
 ## 2026-11-27 (badge order)
 - Player flags come back in a fixed order: country / group flags first, the notable star last (`flags_by_player`), so profiles and the Players list always show the flag, then the star.
 

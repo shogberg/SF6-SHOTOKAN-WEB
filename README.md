@@ -74,7 +74,7 @@ Search by player name or CFN ID, then:
 
 | View | What it shows |
 |---|---|
-| **Profile** | Badges for flagged players (Notable player; AZFGC with an Arizona flag). MR over time, one step per game. Game win rates per character played, against opponent MR (100-point bands) and against each opponent character. Archetype and lean, the eight spectra, strengths and weaknesses, per-game numbers, and how their archetype holds up: in winning vs losing sets, how often they deviate from their usual archetype, and in which direction. |
+| **Profile** | Badges for flagged players: a country or group flag first (AZFGC with an Arizona flag; Japan, South Korea, Norway, United Kingdom, United States), then ★ Notable player. Outlined buttons to all their sets and to head-to-heads with their most frequent opponents. MR over time, one step per game. Game win rates per character played, against opponent MR (100-point bands) and against each opponent character. Archetype and lean, the eight spectra, strengths and weaknesses, per-game numbers, and how their archetype holds up: in winning vs losing sets, how often they deviate from their usual archetype, and in which direction; archetype by set for the 10 most recent sets. |
 | **Sets** | Every set they've played: date, opponent, characters, result, review level, MR at the time. |
 | **Set search** | Search any player by name or CFN ID, pick from the matching players, and page through all their sets, 25 per page (or browse every set). Not in the nav; linked from the home page, whose latest sets are sorted by review date. |
 | **Set detail** | One set: games and rounds, the prediction made before review (if any) and how it graded, story, habits, Drive economy, hits. |

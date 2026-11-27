@@ -9,7 +9,7 @@ export const ABOUT: AboutItem[] = [
  {
   "section": "SHOTOKAN as a model",
   "title": "What it measures, and what it can't",
-  "body": "It measures exactly: damage, hit types, counter hits, anti-airs, throws, techs, Drive spent and lost, timings after blocking and on wake-up. Damage is the permanent life a hit takes, so when a hit cashes in white (recoverable) health, such as after Arjun's blocked pressure or a Drive Reversal, that counts too. It can't see intent. When the review says why something happened, that's a read on the data, and it says how confident it is."
+  "body": "It measures exactly: damage, hit types, counter hits, anti-airs, throws, techs, Drive spent and lost, timings after blocking and on wake-up, and how long each player spends cornered. Damage is the permanent life a hit takes, so when a hit cashes in white (recoverable) health, such as after Arjun's blocked pressure or a Drive Reversal, that counts too. It can't see intent. When the review says why something happened, that's a read on the data, and it says how confident it is."
  },
  {
   "section": "SHOTOKAN as a model",
@@ -94,12 +94,12 @@ export const ABOUT: AboutItem[] = [
  {
   "section": "What the data says",
   "title": "How well the reviews predict",
-  "body": "Every review starts with a prediction written before the replay is analysed. Blind predictions picked the winner in 74% of 182 sets (81% at Medium confidence, 31 of 31 at High), better than simply picking the higher-MR player (67% of the 100 sets where both MRs are known). Low-confidence calls do no better than MR, so the predictions are still most useful for naming the factors that decide a set. In the 26 November batch of A.K.I. sets (two players, 32 complete sets) they picked 21 winners (66%): close-MR sets stayed coin flips."
+  "body": "Every review starts with a prediction written before the replay is analysed. Blind predictions picked the winner in 72% of 223 graded sets as of 27 November 2026: 39 of 41 at High confidence, 78% at Medium and 60% at Low. Simply picking the higher-MR player gets 71% of the 122 of those sets where both MRs are known, so the edge comes from the confident calls; close-MR sets stay coin flips. Low-confidence calls are still most useful for naming the factors that decide a set. Sets where the result was seen before the prediction was written, and incomplete sets, are left out."
  },
  {
   "section": "What the data says",
   "title": "Learning a character from a stronger player",
-  "body": "Reviewing a high-level player of your character shows what to lab. Broski's A.K.I. (about 2,000 MR, 15 of 20 sets won) and Zastorial's (about 1,530 MR) won about as many neutral exchanges, but Broski threw twice as often and looped the throw after every knockdown: throws were a quarter of his damage and under a tenth of Zastorial's. Fireball Drive Rush paid for both, as long as the button after the first blocked one was a low or a throw (obs-0026, obs-0027). Move names come from the SuperCombo move lists, checked against each capture's inputs (obs-0028)."
+  "body": "Reviewing a high-level player of your character shows what to lab. Broski's A.K.I. (about 2,000 MR, 15 of 20 sets won) and Zastorial's (about 1,530 MR) won about as many neutral exchanges, but Broski threw twice as often and looped the throw after every knockdown: throws were a quarter of his damage and under a tenth of Zastorial's. Fireball Drive Rush paid for both, as long as the button after the first blocked one was a low or a throw (obs-0026, obs-0027). Move names come from the SuperCombo move lists, checked against each capture's inputs (obs-0028). A day after a written report, Zastorial's fireball and Drive habits had changed and his throws hadn't caught up (obs-0032); Broski's throw loop rarely gets jumped because his throws land on the wake-up frame (obs-0031). For Mai, ll Moke ll's 43 sets show a top player who barely jumps and wins with low pokes, punishes and OD specials (obs-0033)."
  },
  {
   "section": "What the data says",
