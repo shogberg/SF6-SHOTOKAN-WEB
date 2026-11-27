@@ -23,7 +23,7 @@ def h2h(a, b):
     sets = rows("""select ss.*, case when ss.p1_id = ps.player_id then ss.game_scores else ss.game_scores_p2 end as a_game_scores, ps.won as a_won, ps.character as a_char, ps.opp_character as b_char,
                           ps.archetype as a_archetype, ps.opp_archetype as b_archetype, ps.games_won as a_games, ps.games_lost as b_games
                    from player_set ps join set_summary ss on ss.set_key=ps.set_key
-                   where ps.player_id=:a and ps.opp_id=:b order by ps.played_date, ps.set_key""", a=a, b=b)
+                   where ps.player_id=:a and ps.opp_id=:b order by ps.played_date, (select min(g.played_time) from games g where g.set_key = ps.set_key), ps.set_key""", a=a, b=b)
     keys = [s["set_key"] for s in sets]
     def side(pid, arch_key):
         overall = one("select archetype, archetype_n, sets from player_profile where player_id=:p", p=pid) or {}

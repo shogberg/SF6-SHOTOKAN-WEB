@@ -67,7 +67,8 @@ def archetypes(pid):
         "timeline": rows("""select ps.set_key, ps.played_date, ps.archetype, ps.lean, ps.read_confidence, ps.won, ps.is_deviation, ps.lost_game1,
                                    ps.character, ps.opp_archetype, ps.band_label, o.name as opponent
                             from player_set ps join players o on o.player_id=ps.opp_id
-                            where ps.player_id=:pid order by ps.played_date, ps.set_key""", pid=pid),
+                            where ps.player_id=:pid
+                            order by ps.played_date, (select min(g.played_time) from games g where g.set_key = ps.set_key), ps.set_key""", pid=pid),
     }
 
 
@@ -94,7 +95,7 @@ def sets(pid, **f):
         join set_summary ss on ss.set_key = ps.set_key
         left join player_set opp on opp.set_key = ps.set_key and opp.player_id = ps.opp_id
         where {' and '.join(where)}
-        order by ps.played_date desc, ps.set_key desc""", **params)
+        order by ps.played_date desc, (select min(g.played_time) from games g where g.set_key = ps.set_key) desc, ps.set_key desc""", **params)
 
 
 def _mr_change(my_mr, opp_mr, won):

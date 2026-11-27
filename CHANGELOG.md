@@ -2,6 +2,10 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-27 (rank by best character, played order)
+- Players list and profile header: the rank shown is the highest MR among each character's most recent rated set, not the most recent set overall (a player trying a new character, e.g. .shog's Mai at 1696, keeps their main's rank, Cammy 1762). Band label follows the same set.
+- Sets within a day are ordered by their first game's time instead of the set key (replay IDs don't sort by time): the profile's latest rank, Archetype by set, the player's set list, head to head and the sets list. Moke's rank was 2038 (alphabetically last set) and is now 2136 (his actual last set).
+
 ## 2026-11-27 (jump-out correction)
 - About: the stronger-player card no longer says Broski's throws beat wake-up jumps by timing. A held wake-up jump always beats a throw; jumping out is a read, and opponents stopped making it because Broski hit them when they did (obs-0031). Observations page doc updated to match.
 

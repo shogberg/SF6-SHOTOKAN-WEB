@@ -39,7 +39,9 @@ def build(con, cfg):
     me = (con.execute("select value from settings where key='me'").fetchone() or [None])[0]
     players = {r["player_id"]: r for r in con.execute("select * from players")}
     ps_all = collections.defaultdict(list)
-    for r in con.execute("select * from player_set order by played_date, set_key"):
+    # played order: date, then the set's first game time (set keys are replay IDs, so they don't sort by time)
+    for r in con.execute("""select ps.* from player_set ps
+                            order by ps.played_date, (select min(g.played_time) from games g where g.set_key = ps.set_key), ps.set_key"""):
         ps_all[r["player_id"]].append(r)
     n = 0
     for pid, sets in ps_all.items():
@@ -50,7 +52,14 @@ def build(con, cfg):
         ph = ",".join("?" * len(keys))
         won = sum(s["won"] or 0 for s in sets); gw = sum(s["games_won"] or 0 for s in sets); gl = sum(s["games_lost"] or 0 for s in sets)
         chars = collections.Counter(s["character"] for s in sets)
-        latest = next((s for s in reversed(sets) if s["mr"] or s["league"]), sets[-1])
+        # rank shown for the player: each character's most recent rated set, then the highest MR among them (a player
+        # trying a new character keeps their main's rank); with no MR on any character, the most recent rated set
+        by_char = {}
+        for s in sets:
+            if s["mr"] or s["league"]:
+                by_char[s["character"]] = s
+        rated = [s for s in by_char.values() if s["mr"]]
+        latest = max(rated, key=lambda s: s["mr"]) if rated else next((s for s in reversed(sets) if s["mr"] or s["league"]), sets[-1])
         reviews = collections.Counter(s["review"] for s in sets)
 
         st = collections.defaultdict(float); games = 0

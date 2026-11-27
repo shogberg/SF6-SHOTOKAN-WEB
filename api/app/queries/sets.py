@@ -51,7 +51,7 @@ def all_sets():
                           ss.p1_char, ss.p2_char, ss.p1_games, ss.p2_games, ss.winner_id, ss.game_scores,
                           ss.p1_mr, ss.p2_mr, ss.p1_league, ss.p2_league, ss.has_prediction, ss.prediction_correct
                    from set_summary ss join players a on a.player_id=ss.p1_id join players b on b.player_id=ss.p2_id
-                   order by ss.played_date desc, ss.set_key desc""")
+                   order by ss.played_date desc, (select min(g.played_time) from games g where g.set_key = ss.set_key) desc, ss.set_key desc""")
 
 
 def recent(limit=12):

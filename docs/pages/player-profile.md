@@ -1,6 +1,6 @@
 # Player profile (`/players/{id}`)
 
-**Header:** name, badges for players flagged in the tools (`player_flags`, added 2026-11-26): "★ Notable player" for `notable`, an Arizona state flag with "AZFGC" for `azfgc`, and a drawn country flag with the country's name for `jp`, `kr`, `no`, `gb` and `us` (2026-11-27). The API returns country / group flags first and the star last, so badges read the same everywhere. The Players list shows the same icons in compact form. past names, CFN ID if known, main characters, current MR / league (raw MR, plus effective MR if JP), record in sets and games, date range, number of reviewed sets by level.
+**Header:** name, badges for players flagged in the tools (`player_flags`, added 2026-11-26): "★ Notable player" for `notable`, an Arizona state flag with "AZFGC" for `azfgc`, and a drawn country flag with the country's name for `jp`, `kr`, `no`, `gb` and `us` (2026-11-27). The API returns country / group flags first and the star last, so badges read the same everywhere. The Players list shows the same icons in compact form. past names, CFN ID if known, main characters, current MR / league (raw MR, plus effective MR if JP; the highest MR among each character's latest rated set, as on the Players list), record in sets and games, date range, number of reviewed sets by level.
 
 ## Sections
 1. **Summary.** A short generated paragraph (as `profiles_from_db.py` writes today), plus confidence and sample size.
