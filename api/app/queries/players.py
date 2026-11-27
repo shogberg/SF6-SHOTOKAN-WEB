@@ -17,7 +17,7 @@ def flags_by_player():
             out.setdefault(r["player_id"], []).append({"flag": r["flag"], "label": FLAG_LABELS.get(r["flag"], r["flag"]), "note": r["note"]})
     return out
 
-PROFILE_JSON = ("characters", "reviews_json", "spectra_json", "per_game_json", "opp_did_json")
+PROFILE_JSON = ("characters", "reviews_json", "spectra_json", "per_game_json", "opp_did_json", "habit_windows_json")   # habit_windows: schema 1.3+
 
 
 def search(q, limit=20):
@@ -43,7 +43,7 @@ def profile(pid):
     if not p:
         return None
     for k in PROFILE_JSON:
-        p[k.replace("_json", "")] = loads(p.pop(k), [] if k == "characters" else {})
+        p[k.replace("_json", "")] = loads(p.pop(k, None), [] if k == "characters" else {})
     p["other_names"] = [r["name"] for r in rows("select distinct name from player_names where player_id=:pid and lower(name)<>lower(:n)", pid=pid, n=p["name"])]
     p["flags"] = flags_by_player().get(pid, [])
     try:   # snapshots before schema 1.2 have no player_character table

@@ -16,6 +16,15 @@
   let char = $state('');   // '' = all characters
   $effect(() => { id; char = ''; });
   const byChar = (p: any) => (char ? (p.by_character ?? []).find((c: any) => c.character === char) : null);
+  // strengths / leaks window: last 10 sets, last 7 days (before the snapshot was built) or all time
+  const WINDOWS: [string, string][] = [['recent10', 'Last 10 sets'], ['last7', 'Last 7 days'], ['all', 'All time']];
+  let win = $state('recent10');
+  $effect(() => { id; win = 'recent10'; });
+  const points = (s?: string | null) => (s ?? '').split(/;\s+(?![^()]*\))/).map((x) => x.trim()).filter(Boolean).map((x) => x[0].toUpperCase() + x.slice(1));
+  const winOf = (p: any) => {
+    const w = p.habit_windows ?? {};
+    return w[win] ?? (win === 'all' || !Object.keys(w).length ? { strengths: p.strengths, leaks: p.leaks, sets: p.sets } : null);
+  };
 </script>
 
 {#await data}<Loading />{:then [pr, ar]}
@@ -100,10 +109,19 @@
   <div class="card">{#each (pc ? pc.spectra : p.spectra) as s}<SpectrumBar {s} />{/each}</div>
 
   <h2>Strengths and weaknesses</h2>
-  <div class="grid">
-    <div class="card"><h3 class="ok">Strengths</h3><p>{p.strengths || '—'}</p></div>
-    <div class="card"><h3 class="bad">Leaks</h3><p>{p.leaks || '—'}</p></div>
+  {@const hw = winOf(p)}
+  <div class="filters seg" role="group" aria-label="Window">
+    {#each WINDOWS as [k, l]}<button class:active={win === k} aria-pressed={win === k} onclick={() => (win = k)}>{l}</button>{/each}
   </div>
+  {#if hw}
+    <p class="muted small">{hw.sets} set{hw.sets === 1 ? '' : 's'}{hw.won != null ? ` (won ${hw.won}, lost ${hw.lost})` : ''}{hw.first ? `, ${hw.first === hw.last ? hw.first : `${hw.first} to ${hw.last}`}` : ''}{hw.games ? ` · ${hw.games} games` : ''}</p>
+    <div class="grid">
+      <div class="card"><h3 class="ok">Strengths</h3>{#if points(hw.strengths).length}<ul class="pts">{#each points(hw.strengths) as x}<li>{x}</li>{/each}</ul>{:else}<p class="muted">—</p>{/if}</div>
+      <div class="card"><h3 class="bad">Leaks</h3>{#if points(hw.leaks).length}<ul class="pts">{#each points(hw.leaks) as x}<li>{x}</li>{/each}</ul>{:else}<p class="muted">—</p>{/if}</div>
+    </div>
+  {:else}
+    <p class="muted">No sets in this window.</p>
+  {/if}
   <div class="card try" style="margin-top:14px">{p.player_id && p.how_to_beat ? p.how_to_beat : '—'}</div>
 
   <h2>Per game{pc ? ` on ${pc.character}` : ''}</h2>
@@ -126,4 +144,9 @@
   .navlink .score { font-variant-numeric: tabular-nums; color: var(--muted, #777); font-weight: 500; }
   .navlink:hover .score { color: inherit; }
   .setchip { text-decoration: none; border: 1px solid transparent; transition: border-color .12s; }
-  .setchip:hover, .setchip:focus-visible { border-color: var(--accent); color: inherit; } .linklike { font: inherit; background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; }</style>
+  .setchip:hover, .setchip:focus-visible { border-color: var(--accent); color: inherit; } .seg { display: flex; gap: 6px; margin: 4px 0 8px; }
+  .seg button { font: inherit; font-size: .85rem; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--fg); cursor: pointer; }
+  .seg button:hover { border-color: var(--accent); }
+  .seg button.active { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+  .pts { margin: 6px 0 0; padding-left: 1.2em; } .pts li { margin: 3px 0; }
+  .linklike { font: inherit; background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; }</style>

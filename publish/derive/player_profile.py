@@ -2,7 +2,7 @@
 
 Aggregates every set a player is in. Sentences are built from the numbers only (same approach as
 the tools repo's profiles_from_db.py)."""
-import collections, json, re, statistics
+import collections, datetime, json, re, statistics
 from common import AXES, ENDS, spectrum_label, confidence_for
 
 RULES = {
@@ -140,6 +140,42 @@ def build(con, cfg):
         if (ab or 0) >= 40: derived.append(f"attacks first after blocking {ab}% of the time")
         leaks = "; ".join(x for x in [top_h("Leak"), "; ".join(derived)] if x)
 
+        # the same strengths / leaks over recent windows (all time is the columns above)
+        def window(sub):
+            if not sub: return None
+            ks = [s["set_key"] for s in sub]; q = ",".join("?" * len(ks))
+            h = collections.defaultdict(lambda: [0, 0])
+            for r in con.execute(f"select kind, habit, times from habits where player_id=? and set_key in ({q})", [pid, *ks]):
+                if any(x in r["habit"] for x in SKIP_PATTERNS): continue
+                h[(r["kind"], r["habit"])][0] += 1; h[(r["kind"], r["habit"])][1] += r["times"] or 0
+            def top(kind, n=4):
+                xs = sorted(((v[0], v[1], hb) for (k, hb), v in h.items() if k == kind), reverse=True)[:n]
+                return "; ".join(hb + ((f" ({t}×" + (f" in {c} sets" if c > 1 else "") + ")") if t and "×" not in hb else (f" (in {c} sets)" if c > 1 else "")) for c, t, hb in xs)
+            m = collections.defaultdict(float); o = collections.defaultdict(float); g = 0
+            for s in sub:
+                for r in con.execute("select metric, value from set_stats where player_id=? and set_key=?", (pid, s["set_key"])):
+                    if r["metric"] == "games": g += r["value"]
+                    elif not r["metric"].startswith("taken_"): m[r["metric"]] += r["value"]
+                for r in con.execute("select metric, value from set_stats where player_id=? and set_key=?", (s["opp_id"], s["set_key"])):
+                    if r["metric"] != "games": o[r["metric"]] += r["value"]
+            g = g or sum((s["games_won"] or 0) + (s["games_lost"] or 0) for s in sub) or 1
+            ch = round((o["counter_hits"] + o["punish_counters"]) / g, 1); aa = round(o["anti_airs"] / g, 1); th = round(o["throws"] / g, 1)
+            tt = round(m["throw_techs"] / g, 1); bo = round(m["burnouts"] / g, 1)
+            abw = round(100 * m["after_block_attack"] / m["after_block_n"]) if m["after_block_n"] else None
+            d = []
+            if ch >= 5: d.append(f"got counter-hit {ch}× a game")
+            if aa >= 1.5: d.append(f"anti-aired {aa}× a game")
+            if th >= 1.5 and tt < th / 2: d.append(f"thrown {th}× a game, teching {tt}")
+            if bo >= 0.5 and not any(hb.startswith("Burn") for (k, hb) in h if k == "Leak"): d.append(f"burned out {bo}× a game")
+            if (abw or 0) >= 40: d.append(f"attacks first after blocking {abw}% of the time")
+            won_ = sum(s["won"] or 0 for s in sub)
+            return dict(sets=len(sub), won=won_, lost=sum(1 for s in sub if s["won"] == 0), first=sub[0]["played_date"], last=sub[-1]["played_date"],
+                        games=int(g), strengths=top("Strength"), leaks="; ".join(x for x in [top("Leak"), "; ".join(d)] if x))
+        today = datetime.date.today()
+        week = [s for s in sets if s["played_date"] and (today - datetime.date.fromisoformat(s["played_date"][:10])).days < 7]
+        windows = dict(recent10=window(sets[-10:]), last7=window(week), all=dict(sets=len(sets), won=won, lost=sum(1 for s in sets if s["won"] == 0),
+                       first=sets[0]["played_date"], last=sets[-1]["played_date"], games=int(games), strengths=top_h("Strength"), leaks=leaks))
+
         # damage taken
         share = collections.defaultdict(list)
         for r in con.execute(f"select metric, value from set_stats where player_id=? and set_key in ({ph}) and metric like 'taken_share:%'", [pid, *keys]):
@@ -171,12 +207,12 @@ def build(con, cfg):
         beat = " ".join(t[0].upper() + t[1:] + "." for t in tips[:4])
         if notes: beat += (" " if beat else "") + ("What cost them" if p["name"] == me else "From the reviews") + ": " + "; ".join(notes[:5]) + "."
 
-        con.execute("insert into player_profile values (?,?,?,?,?, ?,?,?,?,?,?, ?,?,?,?, ?, ?,?,?,?,?,?, ?,?,?,?,?, ?,?,?)", (
+        con.execute("insert into player_profile values (?,?,?,?,?, ?,?,?,?,?,?, ?,?,?,?, ?, ?,?,?,?,?,?, ?,?,?,?,?, ?,?,?,?)", (
             pid, p["name"], p["cfn_id"], p["region"], json.dumps(chars.most_common()),
             len(sets), won, gw, gl, sets[0]["played_date"], sets[-1]["played_date"],
             latest["mr"], latest["league"], latest["band"], latest["band_label"], json.dumps(dict(reviews)),
             top, top_n, lean, conf, round(len(devs) / len(arch_sets), 2) if arch_sets else None, len(devs),
             summ, top_h("Strength"), leaks, top_h("Pattern", 3), beat,
-            json.dumps(spectra), json.dumps(per_game), json.dumps(opp_did)))
+            json.dumps(spectra), json.dumps(per_game), json.dumps(opp_did), json.dumps(windows)))
         n += 1
     return n

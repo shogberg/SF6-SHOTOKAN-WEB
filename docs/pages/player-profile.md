@@ -21,7 +21,7 @@
    - **Deviation:** how often they leave their usual archetype (rate, n), and where they go. A small transition list shows from → to, count, and context (after losing game 1 / vs Aggressive opponents / on character X).
    - **Timeline:** archetype per set, coloured by result: the 10 most recent sets, oldest first, each a chip that opens the set (hover outline), with a note giving the total and a link to all sets.
 5. **Spectra.** Eight spectrum bars (mean score, range across sets), each with its evidence line and a sparkline of per-set scores.
-6. **Strengths and weaknesses.** Top Strength and Leak habits (count and number of sets), plus "what opponents did to them" (counter hits taken, anti-airs taken, throws taken vs teched).
+6. **Strengths and weaknesses.** Top Strength and Leak habits (count and number of sets), plus "what opponents did to them" (counter hits taken, anti-airs taken, throws taken vs teched). Since 2026-11-27 (schema 1.3) a switch picks the window: **Last 10 sets** (default), **Last 7 days** (counted back from when the snapshot was built) or **All time**, each with its record, date range and games; the points are bullet lists. Built at publish time into `player_profile.habit_windows_json` (`{recent10, last7, all}`), so a window only moves when the site is published.
 7. **Per game.** Throws, techs, anti-airs, counter hits, punish counters, raw Drive Rushes, burnouts, after-block and wake-up attack %, compared with their MR band's median.
 8. **Drive economy.** Spent / lost / gained per round vs band median.
 9. **How to beat them.** Generated from extreme spectra plus review counter notes. For the site owner's own profile, this reads "How opponents beat you".

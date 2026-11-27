@@ -18,7 +18,8 @@ CREATE TABLE player_profile (
   reviews_json TEXT,                -- {"Quick": n, "Full": n, "Tournament": n}
   archetype TEXT, archetype_n INTEGER, lean TEXT, confidence TEXT, deviation_rate REAL, deviation_n INTEGER,
   summary TEXT, strengths TEXT, leaks TEXT, patterns TEXT, how_to_beat TEXT,
-  spectra_json TEXT, per_game_json TEXT, opp_did_json TEXT);
+  spectra_json TEXT, per_game_json TEXT, opp_did_json TEXT,
+  habit_windows_json TEXT);         -- schema 1.3: strengths / leaks over recent10, last7 (days before the build) and all: {sets, won, lost, first, last, games, strengths, leaks}
 
 CREATE TABLE player_character (       -- per player per character: record, per-game stats and spectra on that character
   player_id INTEGER, character TEXT, sets INTEGER, sets_won INTEGER, games INTEGER, games_won INTEGER, games_lost INTEGER,
