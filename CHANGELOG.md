@@ -2,6 +2,12 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-27 (anti-air rate, whiff punishes)
+- Player profile, Per game: **Jump-ins anti-aired (when free)** and **Whiff-punish chances taken**, each with its count (also per character). Jump-ins taken while busy and whiffs recovering in under 15 frames aren't counted.
+- MR bands: Defense adds the anti-air rate, the stopped rate (anti-air, parry or landing punish), and jump-ins that hit or were blocked while free per game; a new Neutral group has the whiff-punish rate and own whiffs punished.
+- What winning players do: the anti-air rate, stopped rate and whiff-punish rate (share), jump-ins that hit while free and own whiffs punished (per game).
+- Docs: mr-bands, player-profile and data-model pages.
+
 ## 2026-11-27 (lean tags)
 - Archetypes page: Most common leans counts individual lean tags with their counts (top three), so the same style is counted together; hand-written leans are mapped onto the generated tags for common words (throws, anti-airs, raw Drive Rush). Its spectra table and What winning players do now label Space ("takes ground") and Cash-in ("cashes in").
 

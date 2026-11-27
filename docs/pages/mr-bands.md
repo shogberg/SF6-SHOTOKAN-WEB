@@ -12,7 +12,8 @@ How players differ by MR band. Named "MR bands" until 2026-11-26. Bands are defi
   - Button economy: decision presses per round, damage per decision press, share of the set's decision presses, damage dealt per round.
   - Drive economy: raw / pressure / combo Drive Rushes, Drive Reversals and burnouts per game; Drive spent, OD, lost blocking and gained on block per round; super spent per round; lost rounds ending with 3 super bars. The round's loser is taken as the player who took its last hit, so time-outs can miss.
   - Offense, pressure and oki: throws, counter hits and punish counters per game; share of damage dealt in neutral, pressure, oki and punishes.
-  - Defense: anti-airs, throw techs and perfect parries per game; hold-block and press rates after blocking and on wake-up; close punish windows punished; damage taken per round.
+  - Defense: anti-airs, throw techs and perfect parries per game; hold-block and press rates after blocking and on wake-up; close punish windows punished; jump-ins anti-aired and stopped when the player was free to anti-air (%), and jump-ins that hit or were blocked while free, per game (since 2026-11-27); damage taken per round.
+  - Neutral (since 2026-11-27): whiff-punish chances taken (%) and own whiffs punished per game.
 - **Damage taken by lens:** share of damage taken by how it was taken. The analyzer only computes lenses for the reviewed (focus) player, so these come from fewer player-sets.
 - **Spectra (1-5)** and **archetype mix** (share and set win rate per archetype) per band.
 - A toggle leaves out the site owner (settings `me`), whose sets are most of the data.

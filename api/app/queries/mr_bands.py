@@ -42,6 +42,12 @@ METRICS = [
     ("wake_up_hold", "Held block on wake-up (%)", "Defense", "rate", ("wake_up_hold", "wake_up_n")),
     ("wake_up_attack", "Pressed a button on wake-up (%)", "Defense", "rate", ("wake_up_attack", "wake_up_n")),
     ("punish_close", "Close punish windows punished (%)", "Defense", "rate", ("punishes_landed_close", "punish_windows_close")),
+    ("anti_air_rate", "Jump-ins anti-aired, when free to (%)", "Defense", "rate", ("jump_ins_anti_aired", "jump_ins_free")),
+    ("jump_in_stopped", "Jump-ins stopped (anti-air, parry or landing punish), when free to (%)", "Defense", "rate", ("jump_ins_stopped", "jump_ins_free")),
+    ("jump_ins_hit", "Jump-ins that hit while free to anti-air", "Defense", "per_game", "jump_ins_hit"),
+    ("jump_ins_blocked", "Jump-ins blocked while free to anti-air", "Defense", "per_game", "jump_ins_blocked"),
+    ("whiff_punish_rate", "Whiff-punish chances taken (%)", "Neutral", "rate", ("whiff_punishes", "whiff_chances")),
+    ("whiffs_punished", "Own whiffs punished", "Neutral", "per_game", "whiffs_punished"),
     ("damage_taken_pr", "Damage taken per round", "Defense", "value", None),
 ]
 LENSES = ["Counter-hit at mid range", "Walked in", "Jumped in on (no anti-air)", "Jumped", "Blocking, opened up", "Challenging pressure",

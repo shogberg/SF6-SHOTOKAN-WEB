@@ -18,6 +18,8 @@ PER_GAME = [  # (metric, label, group, lower_is_better)
     ("anti_airs", "Anti-airs", "Defense", False),
     ("throw_techs", "Throw techs", "Defense", False),
     ("perfect_parries", "Perfect parries", "Defense", False),
+    ("jump_ins_hit", "Jump-ins that hit while free to anti-air", "Defense", True),
+    ("whiffs_punished", "Own whiffs punished", "Neutral", True),
 ]
 RATES = [  # (numerator, denominator, label, group)
     ("after_block_hold", "after_block_n", "Held block after blocking a string", "Defense"),
@@ -26,6 +28,9 @@ RATES = [  # (numerator, denominator, label, group)
     ("wake_up_attack", "wake_up_n", "Pressed a button on wake-up", "Defense"),
     ("wake_up_jump", "wake_up_n", "Jumped on wake-up", "Defense"),
     ("decision_presses", "press_rounds", "Decision presses per round", "Neutral"),
+    ("jump_ins_anti_aired", "jump_ins_free", "Jump-ins anti-aired, when free to", "Defense"),
+    ("jump_ins_stopped", "jump_ins_free", "Jump-ins stopped (anti-air, parry or landing punish), when free to", "Defense"),
+    ("whiff_punishes", "whiff_chances", "Whiff-punish chances taken", "Neutral"),
 ]
 SITUATIONS = ["neutral", "pressure", "oki", "punish", "defense"]
 HIGH_END = {"Temperament (defense)": "mindful", "Temperament (offense)": "mindful", "Adaptability": "elastic", "Risk tolerance": "high risk",

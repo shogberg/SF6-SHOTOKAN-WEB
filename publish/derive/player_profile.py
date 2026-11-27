@@ -76,7 +76,9 @@ def build(con, cfg):
         ab, wu = pct("after_block_attack", "after_block_n"), pct("wake_up_attack", "wake_up_n")
         per_game = dict(throws=pg("throws"), throw_techs=pg("throw_techs"), anti_airs=pg("anti_airs"), counter_hits=pg("counter_hits"),
                         punish_counters=pg("punish_counters"), raw_drive_rush=pg("raw_drive_rush"), burnouts=pg("burnouts"),
-                        perfect_parries=pg("perfect_parries"), after_block_attack_pct=ab, wake_up_attack_pct=wu, games=int(games))
+                        perfect_parries=pg("perfect_parries"), after_block_attack_pct=ab, wake_up_attack_pct=wu,
+                        anti_air_pct=pct("jump_ins_anti_aired", "jump_ins_free"), jump_ins_free=int(st.get("jump_ins_free", 0)),
+                        whiff_punish_pct=pct("whiff_punishes", "whiff_chances"), whiff_chances=int(st.get("whiff_chances", 0)), games=int(games))
 
         # what opponents did to them
         os_ = collections.defaultdict(float)

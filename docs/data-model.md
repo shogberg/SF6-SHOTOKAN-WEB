@@ -46,7 +46,7 @@ Excluded from the snapshot: local file paths (`games.capture_file`), dashboard l
   - Modal archetype, lean and confidence.
   - Spectra means and spread per axis.
   - Record in sets and games, characters played.
-  - Per-game rates (throws, techs, anti-airs, counter hits, raw Drive Rushes, burnouts, after-block and wake-up attack %).
+  - Per-game rates (throws, techs, anti-airs, counter hits, raw Drive Rushes, burnouts, after-block and wake-up attack %), plus the anti-air rate (`jump_ins_anti_aired` / `jump_ins_free`) and whiff-punish rate (`whiff_punishes` / `whiff_chances`) from set_stats.
   - Top strengths and leaks (as `profiles_from_db.py` builds them today); schema 1.3 adds `habit_windows_json` with the same over the last 10 sets, the last 7 days and all time.
   - MR band at their latest set.
 - **`player_archetype_history`**: one row per player per set.

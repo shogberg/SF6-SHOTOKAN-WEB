@@ -138,6 +138,8 @@
     {#each PG as [k, l]}<div class="card tile"><div class="muted small">{l}</div><div class="v">{num(pg[k])}</div></div>{/each}
     <div class="card tile"><div class="muted small">Attacks first after blocking</div><div class="v">{pct(pg.after_block_attack_pct)}</div></div>
     <div class="card tile"><div class="muted small">Attacks first on wake-up</div><div class="v">{pct(pg.wake_up_attack_pct)}</div></div>
+    <div class="card tile" title="Jump-ins anti-aired (anti-air, air-to-air or trade) out of the jump-ins they were free to anti-air. Jump-ins taken while busy (in their own move, blockstun, hitstun or a knockdown) aren't counted."><div class="muted small">Jump-ins anti-aired (when free)</div><div class="v">{pct(pg.anti_air_pct)}</div>{#if pg.jump_ins_free}<div class="muted small">of {pg.jump_ins_free}</div>{/if}</div>
+    <div class="card tile" title="Whiffed opponent normals or throws with 15+ frames of recovery, while they were free and in reach, that they punished."><div class="muted small">Whiff-punish chances taken</div><div class="v">{pct(pg.whiff_punish_pct)}</div>{#if pg.whiff_chances}<div class="muted small">of {pg.whiff_chances}</div>{/if}</div>
   </div>
   <p class="muted small">Over {pg.games} games{pc && pc.stats_source === 'sets' ? ' (from whole-set stats: these sets were reviewed before per-game stats were kept)' : ''}. Opponents counter-hit them {num(p.opp_did.counter_hits_taken)}×, anti-aired them {num(p.opp_did.anti_aired)}× and threw them {num(p.opp_did.thrown)}× a game.</p>
 {:catch e}<Loading error={e} />{/await}

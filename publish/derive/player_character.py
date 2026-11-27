@@ -64,7 +64,9 @@ def build(con, cfg):
         m, gms = st[key], st_games[key] or g_n[key] or 1
         pg = {k: round(m.get(k, 0) / gms, 1) for k in PG}
         pct = lambda a, b: round(100 * m.get(a, 0) / m[b]) if m.get(b) else None
-        pg.update(after_block_attack_pct=pct("after_block_attack", "after_block_n"), wake_up_attack_pct=pct("wake_up_attack", "wake_up_n"), games=int(gms))
+        pg.update(after_block_attack_pct=pct("after_block_attack", "after_block_n"), wake_up_attack_pct=pct("wake_up_attack", "wake_up_n"),
+                  anti_air_pct=pct("jump_ins_anti_aired", "jump_ins_free"), jump_ins_free=int(m.get("jump_ins_free", 0)),
+                  whiff_punish_pct=pct("whiff_punishes", "whiff_chances"), whiff_chances=int(m.get("whiff_chances", 0)), games=int(gms))
         spectra = []
         for a in AXES:
             v = sp[key].get(a) or []

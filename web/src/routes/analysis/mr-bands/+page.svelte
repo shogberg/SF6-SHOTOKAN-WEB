@@ -10,7 +10,7 @@
   let view = $state('all');
   let context = $state('ranked');
   let data = $derived(api('/analysis/mr-bands', { view: view === 'others' ? 'others' : undefined, context }));
-  const groups = ['Button economy', 'Drive economy', 'Offense, pressure and oki', 'Defense'];
+  const groups = ['Button economy', 'Drive economy', 'Offense, pressure and oki', 'Neutral', 'Defense'];
   const bandLabel = (d: any, id: string) => d.bands.find((b: any) => b.id === id)?.label ?? id;
 </script>
 
