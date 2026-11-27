@@ -2,6 +2,10 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-27 (Space spectrum, recalibrated archetypes)
+- New spectrum **Space** (Gives ground ↔ Takes ground): share of live time cornering the opponent minus share cornered, from the tools' corner time. Shown on profiles with its own labels (Gives ground ... Even ... Takes ground) and two "how to beat" tips; About now says nine spectra.
+- Archetypes in the snapshot come from the tools' recalibrated generated reads: Aggressive 209, Balanced 187, Fundamentalist 90, Defensive 76 (was 309 / 202 / 14 / 25).
+
 ## 2026-11-27 (strengths and weaknesses by window)
 - Player profile: Strengths and weaknesses has a switch: Last 10 sets (default), Last 7 days, All time, each with its record, date range and games, and the points as bullet lists instead of a paragraph.
 - Snapshot schema 1.3: `player_profile.habit_windows_json` holds the three windows (habits ranked as before, and the derived leaks recomputed from each window's own per-game numbers). "Last 7 days" counts back from the publish date. The API reads 1.1+ snapshots; without the column the page shows all time only.

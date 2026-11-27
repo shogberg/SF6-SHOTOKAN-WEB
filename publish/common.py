@@ -62,11 +62,16 @@ def weight_for(mr, league=None, region=None):
 # ---- spectra -----------------------------------------------------------------
 ENDS = {"Temperament (defense)": ("Impulsive", "Mindful"), "Temperament (offense)": ("Impulsive", "Mindful"),
         "Adaptability": ("Inelastic", "Elastic"), "Risk tolerance": ("Low", "High"), "Initiative": ("Reactive", "Proactive"),
-        "Composure": ("Steady", "Tilts"), "Variety": ("Scripted", "Mixed"), "Resource use": ("Conservative", "Spendthrift")}
+        "Composure": ("Steady", "Tilts"), "Variety": ("Scripted", "Mixed"), "Resource use": ("Conservative", "Spendthrift"),
+        "Space": ("Gives ground", "Takes ground")}
 AXES = list(ENDS)
 
 
+LABELS = {"Space": ("Gives ground", "Leans to giving ground", "Even", "Leans to taking ground", "Takes ground")}
+
+
 def spectrum_label(axis, s):
+    if axis in LABELS: return LABELS[axis][s - 1]
     l, r = ENDS[axis]
     return {1: f"Very {l.lower()}", 2: f"Leans {l.lower()}", 3: "Middle", 4: f"Leans {r.lower()}", 5: f"Very {r.lower()}"}[s]
 

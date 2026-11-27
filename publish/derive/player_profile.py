@@ -27,6 +27,8 @@ RULES = {
     ("Variety", 2): "they lean on one or two defensive defaults: find them early and call them out",
     ("Resource use", 1): "they sit on Drive and super: respect their reversal and parry, and don't gamble into full meter",
     ("Resource use", 5): "they spend Drive freely: block their pressure, make them spend, and corner them when they burn out",
+    ("Space", 1): "they give ground and spend rounds cornered: keep them there with plus strings and throws, and cover the jump out",
+    ("Space", 5): "they take ground and keep you cornered: don't walk back into the wall, and spend Drive or a reversal to get out",
 }
 LENS_SHORT = {"Pressed in their pressure / on wake-up": "pressing in pressure or on wake-up", "Pressed at mid range": "pressing at mid range",
               "Walked in": "walking in", "Teched a throw": "teching throws", "Blocking, opened up": "getting opened up while blocking",
