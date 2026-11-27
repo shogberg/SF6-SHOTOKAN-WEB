@@ -2,6 +2,9 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-27 (badge order)
+- Player flags come back in a fixed order: country / group flags first, the notable star last (`flags_by_player`), so profiles and the Players list always show the flag, then the star.
+
 ## 2026-11-27 (country flag badges)
 - `FlagBadge` shows country flags for the new `jp`, `kr`, `no`, `gb` and `us` player flags: a small SVG flag plus the country name, in a pill of the flag's colour (icon only in player lists). Flags are drawn as SVG because flag emoji show as letters on Windows. Korea's trigrams and the US stars are simplified.
 - API labels for the new flags: Japan, South Korea, Norway, United Kingdom, United States.

@@ -9,10 +9,11 @@ def _has_flags():
 
 
 def flags_by_player():
-    """{player_id: [{flag, label, note}]} from player_flags (snapshots before 2026-11-26 have none)."""
+    """{player_id: [{flag, label, note}]} from player_flags (snapshots before 2026-11-26 have none).
+    Order: country / group flags first (alphabetical), the notable star last, so badges read the same on every page."""
     out = {}
     if _has_flags():
-        for r in rows("select player_id, flag, note from player_flags order by flag"):
+        for r in rows("select player_id, flag, note from player_flags order by flag = 'notable', flag"):
             out.setdefault(r["player_id"], []).append({"flag": r["flag"], "label": FLAG_LABELS.get(r["flag"], r["flag"]), "note": r["note"]})
     return out
 
