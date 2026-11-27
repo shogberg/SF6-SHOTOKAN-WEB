@@ -2,6 +2,12 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-27 (Cash-in spectrum, new Adaptability, "How to beat this player")
+- New spectrum **Cash-in** (Speculative ↔ Cashes in): the share of Drive and super spent that went into combos that landed. Own labels and two profile tips. About now says ten spectra and describes the new Adaptability.
+- **Adaptability** is the tools' new measure (did the opponent's best first-half weapon still work in the second half); scores moved for many sets.
+- Profile: the "how to beat" card is titled **How to beat this player** and shows bullets: tips from the player's spectrum extremes, then up to five notes from their reviews, newest reviews first (they were the oldest five before). Stored as JSON in `how_to_beat`; older snapshots show the old paragraph. Review notes are split on semicolons only, so a point with a comma stays whole.
+- Set page: Top highs also reads story items marked "Strength" (29 items from the 2026-11-27 Full reviews used it instead of "Worked well" and didn't show; the data is fixed too).
+
 ## 2026-11-27 (Space spectrum, recalibrated archetypes)
 - New spectrum **Space** (Gives ground ↔ Takes ground): share of live time cornering the opponent minus share cornered, from the tools' corner time. Shown on profiles with its own labels (Gives ground ... Even ... Takes ground) and two "how to beat" tips; About now says nine spectra.
 - Archetypes in the snapshot come from the tools' recalibrated generated reads: Aggressive 209, Balanced 187, Fundamentalist 90, Defensive 76 (was 309 / 202 / 14 / 25).

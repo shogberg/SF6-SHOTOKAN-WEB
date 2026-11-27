@@ -34,7 +34,7 @@ export const ABOUT: AboutItem[] = [
  {
   "section": "How I evaluate players",
   "title": "Spectra, not labels",
-  "body": "Each player gets nine 1-5 scores between two opposite ends: temperament on defense and on offense (impulsive to mindful), adaptability (inelastic to elastic), risk tolerance, initiative (reactive to proactive), composure, variety, resource use, and space (gives ground to takes ground: how much of the round they spend cornered vs cornering the opponent). They describe how someone played in this set, not who they are, and they move from set to set. Adaptability only counts a reused move against a player while it was losing them the game: keeping a winning plan isn't inelastic."
+  "body": "Each player gets ten 1-5 scores between two opposite ends: temperament on defense and on offense (impulsive to mindful), adaptability (inelastic to elastic), risk tolerance, initiative (reactive to proactive), composure, variety, resource use, cash-in (speculative to cashes in: how much of their Drive and super went into combos that landed), and space (gives ground to takes ground: how much of the round they spend cornered vs cornering the opponent). They describe how someone played in this set, not who they are, and they move from set to set. Adaptability asks whether the opponent's best weapon in the first half of the set still worked in the second half."
  },
  {
   "section": "How I evaluate players",

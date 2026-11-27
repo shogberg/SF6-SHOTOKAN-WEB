@@ -27,6 +27,8 @@ RULES = {
     ("Variety", 2): "they lean on one or two defensive defaults: find them early and call them out",
     ("Resource use", 1): "they sit on Drive and super: respect their reversal and parry, and don't gamble into full meter",
     ("Resource use", 5): "they spend Drive freely: block their pressure, make them spend, and corner them when they burn out",
+    ("Cash-in", 1): "they spend Drive and super before landing anything (rushes, parries, OD into block): let them spend, block, and punish the empty gauge",
+    ("Cash-in", 5): "their Drive and super go into combos that land: deny the first hit, and respect a full gauge once they confirm",
     ("Space", 1): "they give ground and spend rounds cornered: keep them there with plus strings and throws, and cover the jump out",
     ("Space", 5): "they take ground and keep you cornered: don't walk back into the wall, and spend Drive or a reversal to get out",
 }
@@ -199,15 +201,20 @@ def build(con, cfg):
         if ext: summ += " Stands out on: " + ", ".join(f"{x['axis']} ({x['label'].lower()})" for x in ext) + "."
         tips = [RULES[(x["axis"], x["score"])] for x in spectra if (x["axis"], x["score"]) in RULES]
         notes = []
-        reads = con.execute(f"select counter_note from reads where player_id=? and set_key in ({ph})", [pid, *keys]).fetchall()
+        # newest reviews first, so the notes describe how they play now
+        reads = con.execute(f"""select r.counter_note from reads r join sets s on s.set_key = r.set_key
+                                where r.player_id=? and r.set_key in ({ph})
+                                order by s.played_date desc, (select min(g.played_time) from games g where g.set_key = r.set_key) desc""", [pid, *keys]).fetchall()
         for (cn,) in reads:
             cn = (cn or "").strip()
             cn = re.sub(r"^(How to beat (this|them|him|her): |What costs (you|him|her|them)( in this set)?: )", "", cn)
-            for frag in [f.strip().rstrip(".") for f in re.split(r"[;,]\s(?![^()]*\))", cn)]:
+            for frag in [f.strip().rstrip(".") for f in re.split(r";\s(?![^()]*\))", cn)]:   # points are ';'-separated (commas stay inside a point)
                 frag = re.sub(r"^(What costs (you|him|her|them)( in this set)?|How to beat (this|them|him|her)): ", "", frag)
                 if frag and frag not in notes: notes.append(frag)
-        beat = " ".join(t[0].upper() + t[1:] + "." for t in tips[:4])
-        if notes: beat += (" " if beat else "") + ("What cost them" if p["name"] == me else "From the reviews") + ": " + "; ".join(notes[:5]) + "."
+        # stored as JSON lists (the page shows them as bullets): tips from their spectrum extremes, then notes from their newest reviews
+        beat = json.dumps(dict(tips=[x[0].upper() + x[1:] for x in tips[:4]],
+                               notes_label=("What cost them" if p["name"] == me else "From the reviews") if notes else None,
+                               notes=[x[0].upper() + x[1:] for x in notes[:5]]))
 
         con.execute("insert into player_profile values (?,?,?,?,?, ?,?,?,?,?,?, ?,?,?,?, ?, ?,?,?,?,?,?, ?,?,?,?,?, ?,?,?,?)", (
             pid, p["name"], p["cfn_id"], p["region"], json.dumps(chars.most_common()),

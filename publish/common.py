@@ -63,11 +63,12 @@ def weight_for(mr, league=None, region=None):
 ENDS = {"Temperament (defense)": ("Impulsive", "Mindful"), "Temperament (offense)": ("Impulsive", "Mindful"),
         "Adaptability": ("Inelastic", "Elastic"), "Risk tolerance": ("Low", "High"), "Initiative": ("Reactive", "Proactive"),
         "Composure": ("Steady", "Tilts"), "Variety": ("Scripted", "Mixed"), "Resource use": ("Conservative", "Spendthrift"),
-        "Space": ("Gives ground", "Takes ground")}
+        "Space": ("Gives ground", "Takes ground"), "Cash-in": ("Speculative", "Cashes in")}
 AXES = list(ENDS)
 
 
-LABELS = {"Space": ("Gives ground", "Leans to giving ground", "Even", "Leans to taking ground", "Takes ground")}
+LABELS = {"Space": ("Gives ground", "Leans to giving ground", "Even", "Leans to taking ground", "Takes ground"),
+          "Cash-in": ("Speculative", "Leans speculative", "Mixed", "Leans to cashing in", "Cashes in")}
 
 
 def spectrum_label(axis, s):

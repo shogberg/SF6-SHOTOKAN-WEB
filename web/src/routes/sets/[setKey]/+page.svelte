@@ -101,7 +101,7 @@
     {@const setRows = d.docs.story.filter((x: any) => x.scope === 'set' && x.confidence !== 'Low')}
     <div class="grid">
       {#each [['Top highs', 'Worked well'], ['Top lows', 'To improve']] as [t, pol]}
-        <div class="card"><h3>{t}</h3>{#each setRows.filter((x: any) => x.polarity === pol).sort((a: any, b: any) => a.rank - b.rank).slice(0, 3) as x}
+        <div class="card"><h3>{t}</h3>{#each setRows.filter((x: any) => (x.polarity === 'Strength' ? 'Worked well' : x.polarity) === pol).sort((a: any, b: any) => a.rank - b.rank).slice(0, 3) as x}
           <p class="small"><b>{x.headline}</b><br />{x.detail} <span class="muted">({x.evidence})</span>{#if x.try_this}<span class="try" style="display:block">Try this: {x.try_this}</span>{/if}</p>{/each}</div>
       {/each}
     </div>

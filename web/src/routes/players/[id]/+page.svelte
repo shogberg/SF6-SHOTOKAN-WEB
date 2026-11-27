@@ -21,6 +21,8 @@
   let win = $state('recent10');
   $effect(() => { id; win = 'recent10'; });
   const points = (s?: string | null) => (s ?? '').split(/;\s+(?![^()]*\))/).map((x) => x.trim()).filter(Boolean).map((x) => x[0].toUpperCase() + x.slice(1));
+  // how to beat: JSON {tips, notes_label, notes} since 2026-11-27; plain text in older snapshots
+  const beatOf = (s?: string | null) => { try { const o = JSON.parse(s ?? ''); return o && Array.isArray(o.tips) ? o : null; } catch { return null; } };
   const winOf = (p: any) => {
     const w = p.habit_windows ?? {};
     return w[win] ?? (win === 'all' || !Object.keys(w).length ? { strengths: p.strengths, leaks: p.leaks, sets: p.sets } : null);
@@ -122,7 +124,14 @@
   {:else}
     <p class="muted">No sets in this window.</p>
   {/if}
-  <div class="card try" style="margin-top:14px">{p.player_id && p.how_to_beat ? p.how_to_beat : '—'}</div>
+  {@const hb = beatOf(p.how_to_beat)}
+  <div class="card try" style="margin-top:14px">
+    {#if hb && (hb.tips.length || hb.notes.length)}
+      <h3>How to beat this player</h3>
+      {#if hb.tips.length}<ul class="pts">{#each hb.tips as x}<li>{x}</li>{/each}</ul>{/if}
+      {#if hb.notes.length}<h4 class="muted small" style="margin:10px 0 0">{hb.notes_label} (newest reviews first)</h4><ul class="pts">{#each hb.notes as x}<li>{x}</li>{/each}</ul>{/if}
+    {:else}{p.how_to_beat || '—'}{/if}
+  </div>
 
   <h2>Per game{pc ? ` on ${pc.character}` : ''}</h2>
   <div class="tiles">
