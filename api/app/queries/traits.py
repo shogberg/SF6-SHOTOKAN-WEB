@@ -29,7 +29,8 @@ RATES = [  # (numerator, denominator, label, group)
 ]
 SITUATIONS = ["neutral", "pressure", "oki", "punish", "defense"]
 HIGH_END = {"Temperament (defense)": "mindful", "Temperament (offense)": "mindful", "Adaptability": "elastic", "Risk tolerance": "high risk",
-            "Initiative": "proactive", "Composure": "tilts", "Variety": "mixed", "Resource use": "spendthrift"}
+            "Initiative": "proactive", "Composure": "tilts", "Variety": "mixed", "Resource use": "spendthrift",
+            "Cash-in": "cashes in", "Space": "takes ground"}
 
 
 def me_id():

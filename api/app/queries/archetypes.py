@@ -9,6 +9,14 @@ from .traits import HIGH_END
 from .mr_bands import context_ok
 
 MAIN = ["Aggressive", "Balanced", "Defensive", "Fundamentalist"]
+# hand-written (Full review) leans use free words; map the common ones onto the generated tags so they count together
+_SYN = {"throws": "throw-heavy", "throw loop": "throw-heavy", "throws and shimmies": "throw-heavy", "anti-airs": "anti-airs a lot",
+        "raw drive rush": "Drive Rush pressure", "drive rush": "Drive Rush pressure", "counter-pokes": "counter-pokes and punishes"}
+
+
+def _tag(x):
+    x = x.strip()
+    return _SYN.get(x.lower(), x)
 
 
 def _arch(a):
@@ -38,7 +46,8 @@ def archetypes(band=None, context="all"):
         xs = by.get(a, [])
         dec = [p for p in xs if p["won"] is not None]
         chars = Counter(p["character"] for p in xs if p["character"])
-        leans = Counter((p["lean"] or "").strip() for p in xs if p["lean"])
+        # count each lean tag ("Drive Rush pressure, stays grounded" counts both); "no strong lean" is left out
+        leans = Counter(_tag(x) for p in xs if p["lean"] for x in p["lean"].split(", ") if x.strip() and x.strip() != "no strong lean")
         summary.append({
             "archetype": a, "player_sets": len(xs), "share_pct": round(100 * len(xs) / tot) if tot else None,
             "decided": len(dec), "won": sum(1 for p in dec if p["won"]), "win_pct": round(100 * sum(1 for p in dec if p["won"]) / len(dec)) if dec else None,

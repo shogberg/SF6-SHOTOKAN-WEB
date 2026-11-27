@@ -37,7 +37,7 @@
       <tr><td>{s.archetype}</td><td class="n">{s.share_pct == null ? '—' : s.share_pct + '%'}</td><td class="n">{s.player_sets}</td><td class="n">{s.players}</td>
         <td class="n">{s.win_pct == null ? '—' : `${s.win_pct}% (${s.won} of ${s.decided})`}</td>
         <td class="small">{s.top_characters.map((c: any) => `${c.character} ${c.n}`).join(', ') || '—'}</td>
-        <td class="small">{s.top_leans.map((l: any) => l.lean).slice(0, 2).join('; ') || '—'}</td></tr>
+        <td class="small">{s.top_leans.slice(0, 3).map((l: any) => `${l.lean} (${l.n})`).join('; ') || '—'}</td></tr>
     {/each}</tbody></table></div>
 
   <h3 style="margin-top:18px">Head to head</h3>

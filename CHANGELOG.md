@@ -2,6 +2,9 @@
 
 Notable changes to SHOTOKAN Web, newest first. Every push adds its changes here.
 
+## 2026-11-27 (lean tags)
+- Archetypes page: Most common leans counts individual lean tags with their counts (top three), so the same style is counted together; hand-written leans are mapped onto the generated tags for common words (throws, anti-airs, raw Drive Rush). Its spectra table and What winning players do now label Space ("takes ground") and Cash-in ("cashes in").
+
 ## 2026-11-27 (archetype notes, About, observations)
 - Archetypes page: notes rewritten for the recalibrated reads (ranked: Aggressive 38%, Balanced 32%, Fundamentalist 18%, Defensive 13%; Fundamentalist 75% of sets won, with the caveats), plus how a read is made.
 - About: "Winner vs loser" adds Space (76%), Cash-in (68%) and the new Adaptability; new cards "Archetypes" and "What notable players do".
